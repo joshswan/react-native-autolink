@@ -1,8 +1,9 @@
 # React Native AutoLink
+[![NPM Version][npm-image]][npm-url] [![Build Status][build-image]][build-url] [![Dependency Status][depstat-image]][depstat-url] [![Dev Dependency Status][devdepstat-image]][devdepstat-url]
 
 Auto-Linking component for React Native. Parses text and wraps URLs, phone numbers, emails, twitter handles, and hashtags with Text nodes and onPress handlers using the [Autolinker.js](https://github.com/gregjacobs/Autolinker.js).
 
-**Note:** Currently uses LinkingIOS in default press handler until cross-platform Linking module becomes available.
+**Note:** Currently uses LinkingIOS in the default press handler until the cross-platform Linking module becomes available (hopefully in React Native's next release).
 
 ## Installation
 
