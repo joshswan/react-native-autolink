@@ -36,7 +36,6 @@ export default class Autolink extends Component {
           default:
             return match.getMatchedText();
         }
-        break;
       case 'phone':
         return 'tel://' + match.getNumber();
       case 'twitter':
