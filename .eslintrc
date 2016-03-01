@@ -139,6 +139,7 @@
       "beforeColon": false,
       "afterColon": true
     }],
+    "keyword-spacing": 2,
     "new-cap": [2, {
       "newIsCap": true,
       "capIsNew": false
@@ -159,11 +160,9 @@
       "before": false,
       "after": true
     }],
-    "space-after-keywords": 2,
     "space-before-blocks": 2,
     "space-before-function-paren": [2, "never"],
     "space-infix-ops": 2,
-    "space-return-throw-case": 2,
     "spaced-comment": [2, "always",  {
       "exceptions": ["-", "+"],
       "markers": ["=", "!"]
@@ -172,9 +171,9 @@
     /**
      * JSX style
      */
+    "jsx-quotes": [2, "prefer-double"],
     "react/display-name": 0,
     "react/jsx-boolean-value": 2,
-    "react/jsx-quotes": [2, "double"],
     "react/jsx-no-undef": 2,
     "react/jsx-sort-props": 0,
     "react/jsx-sort-prop-types": 0,
