@@ -130,7 +130,7 @@ export default class Autolink extends Component {
 
 const styles = StyleSheet.create({
   link: {
-    color: '#3b78a3',
+    color: '#0E7AFE',
   },
 });
 
