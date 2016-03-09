@@ -11,7 +11,7 @@ import React, {Component, PropTypes, createElement} from 'react-native';
 import Autolinker from 'autolinker';
 
 const {
-  LinkingIOS,
+  Linking,
   StyleSheet,
   Text,
 } = React;
@@ -51,7 +51,7 @@ export default class Autolink extends Component {
     if (this.props.onPress) {
       this.props.onPress(url, match);
     } else {
-      LinkingIOS.openURL(url);
+      Linking.openURL(url);
     }
   }
 
