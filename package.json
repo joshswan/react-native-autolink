@@ -28,7 +28,7 @@
     "prepublish": "npm run clean && npm run build"
   },
   "dependencies": {
-    "autolinker": "^0.25.1"
+    "autolinker": "^0.26.0"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.0",
@@ -37,7 +37,7 @@
     "babel-plugin-add-module-exports": "^0.1.2",
     "babel-plugin-transform-object-rest-spread": "^6.3.13",
     "eslint": "^2.2.0",
-    "eslint-plugin-react": "^4.1.0",
+    "eslint-plugin-react": "^5.0.1",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",
     "rimraf": "^2.4.3"
