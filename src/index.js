@@ -7,14 +7,9 @@
  */
 'use strict';
 
-import React, {Component, PropTypes, createElement} from 'react-native';
+import React, {Component, PropTypes, createElement} from 'react';
 import Autolinker from 'autolinker';
-
-const {
-  Linking,
-  StyleSheet,
-  Text,
-} = React;
+import {Linking, StyleSheet, Text} from 'react-native';
 
 export default class Autolink extends Component {
   getURL(match) {
