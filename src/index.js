@@ -55,6 +55,7 @@ export default class Autolink extends Component {
 
     return (
       <Text
+        key={text}
         style={[styles.link, this.props.linkStyle]}
         onPress={this._onPress.bind(this, url, match)}>
           {truncated}
