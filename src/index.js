@@ -120,7 +120,7 @@ export default class Autolink extends Component {
         }
       });
 
-    return createElement(Text, {ref: (component) => { this._root = component; }, style: this.props.style}, ...nodes);
+    return createElement(Text, {ref: (component) => { this._root = component; }, numberOfLines: this.props.numberOfLines, style: this.props.style}, ...nodes);
   }
 }
 
@@ -145,6 +145,7 @@ Autolink.propTypes = {
   email: PropTypes.bool,
   hashtag: PropTypes.oneOf([false, 'facebook', 'instagram', 'twitter']),
   linkStyle: Text.propTypes.style,
+  numberOfLines: PropTypes.number,
   onPress: PropTypes.func,
   phone: PropTypes.bool,
   renderLink: PropTypes.func,
