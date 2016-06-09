@@ -3,7 +3,7 @@
   "version": "0.4.1",
   "description": "Autolinking component for React Native",
   "author": "Josh Swan <josh@sportifik.com>",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/joshswan/react-native-autolink"
@@ -18,15 +18,10 @@
     "linking"
   ],
   "files": [
-    "lib/",
+    "src/",
     "LICENSE",
     "README.md"
   ],
-  "scripts": {
-    "build": "gulp build",
-    "clean": "rimraf lib/",
-    "prepublish": "npm run clean && npm run build"
-  },
   "dependencies": {
     "autolinker": "^0.26.0"
   },
@@ -37,10 +32,7 @@
     "babel-plugin-add-module-exports": "^0.1.2",
     "babel-plugin-transform-object-rest-spread": "^6.3.13",
     "eslint": "^2.2.0",
-    "eslint-plugin-react": "^5.0.1",
-    "gulp": "^3.9.0",
-    "gulp-babel": "^6.1.1",
-    "rimraf": "^2.4.3"
+    "eslint-plugin-react": "^5.0.1"
   },
   "peerDependencies": {
     "react-native": ">=0.25.0"
