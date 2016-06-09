@@ -50,12 +50,12 @@ export default class Autolink extends Component {
     }
   }
 
-  renderLink(text, url, match) {
+  renderLink(text, url, match, index) {
     let truncated = (this.props.truncate > 0) ? Autolinker.truncate.TruncateSmart(text, this.props.truncate, this.props.truncateChars) : text;
 
     return (
       <Text
-        key={text}
+        key={index}
         style={[styles.link, this.props.linkStyle]}
         onPress={this._onPress.bind(this, url, match)}>
           {truncated}
@@ -103,7 +103,7 @@ export default class Autolink extends Component {
     let nodes = text
       .split(tokenRegexp)
       .filter((part) => !!part)
-      .map((part) => {
+      .map((part, index) => {
         let match = matches[part];
 
         if (!match) return part;
@@ -114,7 +114,7 @@ export default class Autolink extends Component {
           case 'phone':
           case 'twitter':
           case 'url':
-            return (this.props.renderLink) ? this.props.renderLink(match.getAnchorText(), this.getURL(match), match) : this.renderLink(match.getAnchorText(), this.getURL(match), match);
+            return (this.props.renderLink) ? this.props.renderLink(match.getAnchorText(), this.getURL(match), match, index) : this.renderLink(match.getAnchorText(), this.getURL(match), match, index);
           default:
             return part;
         }
