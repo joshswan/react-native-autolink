@@ -39,6 +39,7 @@
     "react": "^15.1.0",
     "react-addons-test-utils": "^15.1.0",
     "react-dom": "^15.1.0",
+    "react-native": ">=0.25.0",
     "react-native-mock": "^0.2.3",
     "sinon": "^1.17.4"
   },
