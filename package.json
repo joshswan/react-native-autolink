@@ -22,13 +22,25 @@
     "LICENSE",
     "README.md"
   ],
+  "scripts": {
+    "test": "mocha --require react-native-mock/mock --compilers js:babel-core/register --recursive test/*.js"
+  },
   "dependencies": {
     "autolinker": "^0.26.0"
   },
   "devDependencies": {
+    "babel-core": "^6.9.1",
     "babel-eslint": "^6.0.4",
     "babel-preset-react-native": "^1.9.0",
-    "eslint": "^2.11.1"
+    "chai": "^3.5.0",
+    "enzyme": "^2.3.0",
+    "eslint": "^2.11.1",
+    "mocha": "^2.5.3",
+    "react": "^15.1.0",
+    "react-addons-test-utils": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-native-mock": "^0.2.3",
+    "sinon": "^1.17.4"
   },
   "peerDependencies": {
     "react-native": ">=0.25.0"
