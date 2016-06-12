@@ -17,7 +17,7 @@ export default class Autolink extends Component {
 
     switch (type) {
       case 'email':
-        return `mailto://${encodeURIComponent(match.getEmail())}`;
+        return `mailto:${encodeURIComponent(match.getEmail())}`;
       case 'hashtag':
         let tag = encodeURIComponent(match.getHashtag());
 
@@ -32,7 +32,7 @@ export default class Autolink extends Component {
             return match.getMatchedText();
         }
       case 'phone':
-        return `tel://${match.getNumber()}`;
+        return `tel:${match.getNumber()}`;
       case 'twitter':
         return `twitter://user?screen_name=${encodeURIComponent(match.getTwitterHandle())}`;
       case 'url':
