@@ -119,6 +119,6 @@ describe('<Autolink />', () => {
     const onPress = sinon.spy();
     const wrapper = shallow(<Autolink text="josh@sportifik.com" onPress={onPress} />);
     wrapper.children().find('Text').simulate('press');
-    expect(onPress.calledWith('mailto://josh%40sportifik.com')).to.equal(true);
+    expect(onPress.calledWith('mailto:josh%40sportifik.com')).to.equal(true);
   });
 });
