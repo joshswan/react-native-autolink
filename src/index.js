@@ -73,7 +73,7 @@ export default class Autolink extends Component {
 
     let generateToken = (() => {
       let counter = 0;
-      return () => `@__ELEMENT-${uid}-${counter += 1}__@`;
+      return () => `@__ELEMENT-${uid}-${counter++}__@`;
     })();
 
     let matches = {};
