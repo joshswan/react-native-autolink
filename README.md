@@ -42,6 +42,7 @@ class MyComponent extends Component {
 * `stripPrefix`: Enable stripping of protocol (https://url -> url). Values: `true`, `false`. Default: `true`.
 * `style`: Custom styles to apply to parent Text node.
 * `linkStyle`: Custom styles to apply to Text nodes of links.
+* `numberOfLines`: Max number of lines to display (passed to `Text` component).
 * `onPress`: Custom function handler for link press events. Arguments: `link:String`, `match:Object` ([Autolinker.js match object](http://gregjacobs.github.io/Autolinker.js/docs/#!/api/Autolinker.match.Match))
 * `renderLink`: Custom render function for rendering link nodes. Arguments: `text:String`, `link:String`, `match:Object` ([Autolinker.js match object](http://gregjacobs.github.io/Autolinker.js/docs/#!/api/Autolinker.match.Match))
 * `truncate`: Truncate long link text for display (e.g. https://www.google.com/../something.html). Values: `0` to disable, `1+` to truncate to that maximum length. Default: `32`.
