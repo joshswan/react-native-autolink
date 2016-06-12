@@ -1,9 +1,9 @@
 {
   "name": "react-native-autolink",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Autolinking component for React Native",
   "author": "Josh Swan <josh@sportifik.com>",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/joshswan/react-native-autolink"
@@ -18,29 +18,30 @@
     "linking"
   ],
   "files": [
-    "lib/",
+    "src/",
     "LICENSE",
     "README.md"
   ],
   "scripts": {
-    "build": "gulp build",
-    "clean": "rimraf lib/",
-    "prepublish": "npm run clean && npm run build"
+    "test": "mocha --require react-native-mock/mock --compilers js:babel-core/register --recursive test/*.js"
   },
   "dependencies": {
     "autolinker": "^0.26.0"
   },
   "devDependencies": {
-    "babel-eslint": "^6.0.0",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-preset-react": "^6.3.13",
-    "babel-plugin-add-module-exports": "^0.1.2",
-    "babel-plugin-transform-object-rest-spread": "^6.3.13",
-    "eslint": "^2.2.0",
-    "eslint-plugin-react": "^5.0.1",
-    "gulp": "^3.9.0",
-    "gulp-babel": "^6.1.1",
-    "rimraf": "^2.4.3"
+    "babel-core": "^6.9.1",
+    "babel-eslint": "^6.0.4",
+    "babel-preset-react-native": "^1.9.0",
+    "chai": "^3.5.0",
+    "enzyme": "^2.3.0",
+    "eslint": "^2.11.1",
+    "mocha": "^2.5.3",
+    "react": "^15.1.0",
+    "react-addons-test-utils": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-native": ">=0.25.0",
+    "react-native-mock": "^0.2.3",
+    "sinon": "^1.17.4"
   },
   "peerDependencies": {
     "react-native": ">=0.25.0"

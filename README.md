@@ -14,7 +14,7 @@ npm install react-native-autolink --save
 Simply import the library and pass desired props:
 
 ```javascript
-const AutoLink = require('react-native-autolink');
+import Autolink from 'react-native-autolink';
 
 class MyComponent extends Component {
   render() {

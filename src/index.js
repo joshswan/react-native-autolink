@@ -17,24 +17,24 @@ export default class Autolink extends Component {
 
     switch (type) {
       case 'email':
-        return 'mailto://' + encodeURIComponent(match.getEmail());
+        return `mailto://${encodeURIComponent(match.getEmail())}`;
       case 'hashtag':
         let tag = encodeURIComponent(match.getHashtag());
 
         switch (this.props.hashtag) {
           case 'facebook':
-            return 'facebook://hashtag/' + tag;
+            return `facebook://hashtag/${tag}`;
           case 'instagram':
-            return 'instagram://tag?name=' + tag;
+            return `instagram://tag?name=${tag}`;
           case 'twitter':
-            return 'twitter://search?query=%23' + tag;
+            return `twitter://search?query=%23${tag}`;
           default:
             return match.getMatchedText();
         }
       case 'phone':
-        return 'tel://' + match.getNumber();
+        return `tel://${match.getNumber()}`;
       case 'twitter':
-        return 'twitter://user?screen_name=' + encodeURIComponent(match.getTwitterHandle());
+        return `twitter://user?screen_name=${encodeURIComponent(match.getTwitterHandle())}`;
       case 'url':
         return match.getAnchorHref();
       default:
