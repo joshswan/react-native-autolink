@@ -57,7 +57,9 @@ export default class Autolink extends Component {
       <Text
         key={index}
         style={[styles.link, this.props.linkStyle]}
-        onPress={this._onPress.bind(this, url, match)}>
+        onPress={this._onPress.bind(this, url, match)}
+        ...this.props.textProps
+        >
           {truncated}
       </Text>
     );
@@ -120,7 +122,7 @@ export default class Autolink extends Component {
         }
       });
 
-    return createElement(Text, {ref: (component) => { this._root = component; }, numberOfLines: this.props.numberOfLines, style: this.props.style}, ...nodes);
+    return createElement(Text, {ref: (component) => { this._root = component; }, numberOfLines: this.props.numberOfLines, style: this.props.style, ...this.props.textProps}, ...nodes);
   }
 }
 
@@ -135,6 +137,7 @@ Autolink.defaultProps = {
   hashtag: false,
   phone: true,
   stripPrefix: true,
+  textProps: {},
   truncate: 32,
   truncateChars: '..',
   twitter: false,
@@ -152,6 +155,7 @@ Autolink.propTypes = {
   stripPrefix: PropTypes.bool,
   style: Text.propTypes.style,
   text: PropTypes.string.isRequired,
+  textProps: PropTypes.any,
   truncate: PropTypes.number,
   truncateChars: PropTypes.string,
   twitter: PropTypes.bool,
