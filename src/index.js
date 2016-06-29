@@ -64,7 +64,24 @@ export default class Autolink extends Component {
   }
 
   render() {
-    let text = this.props.text || '';
+    // Destructure props
+    /* eslint-disable no-unused-vars */
+    /* https://github.com/babel/babel-eslint/issues/95 */
+    let {
+      email,
+      hashtag,
+      linkStyle,
+      onPress,
+      phone,
+      renderLink,
+      stripPrefix,
+      text,
+      truncate,
+      truncateChars,
+      twitter,
+      url,
+      ...other,
+    } = this.props;
 
     // Creates a token with a random UID that should not be guessable or
     // conflict with other parts of the string.
@@ -79,13 +96,13 @@ export default class Autolink extends Component {
     let matches = {};
 
     try {
-      text = Autolinker.link(text, {
-        email: this.props.email,
-        hashtag: this.props.hashtag,
-        phone: this.props.phone,
-        twitter: this.props.twitter,
-        urls: this.props.url,
-        stripPrefix: this.props.stripPrefix,
+      text = Autolinker.link(text || '', {
+        email,
+        hashtag,
+        phone,
+        twitter,
+        urls: url,
+        stripPrefix,
         replaceFn: (autolinker, match) => {
           let token = generateToken();
 
@@ -114,13 +131,13 @@ export default class Autolink extends Component {
           case 'phone':
           case 'twitter':
           case 'url':
-            return (this.props.renderLink) ? this.props.renderLink(match.getAnchorText(), this.getURL(match), match, index) : this.renderLink(match.getAnchorText(), this.getURL(match), match, index);
+            return (renderLink) ? renderLink(match.getAnchorText(), this.getURL(match), match, index) : this.renderLink(match.getAnchorText(), this.getURL(match), match, index);
           default:
             return part;
         }
       });
 
-    return createElement(Text, {ref: (component) => { this._root = component; }, numberOfLines: this.props.numberOfLines, style: this.props.style}, ...nodes);
+    return createElement(Text, {ref: (component) => { this._root = component; }, ...other}, ...nodes);
   }
 }
 
@@ -150,7 +167,6 @@ Autolink.propTypes = {
   phone: PropTypes.bool,
   renderLink: PropTypes.func,
   stripPrefix: PropTypes.bool,
-  style: Text.propTypes.style,
   text: PropTypes.string.isRequired,
   truncate: PropTypes.number,
   truncateChars: PropTypes.string,

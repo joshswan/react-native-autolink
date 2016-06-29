@@ -13,6 +13,7 @@
     "classes": true,
     "defaultParams": true,
     "destructuring": true,
+    "experimentalObjectRestSpread": true,
     "forOf": true,
     "generators": false,
     "modules": true,
