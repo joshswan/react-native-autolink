@@ -1,6 +1,6 @@
 {
   "name": "react-native-autolink",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Autolinking component for React Native",
   "author": "Josh Swan <josh@sportifik.com>",
   "main": "src/index.js",
