@@ -35,7 +35,7 @@ class MyComponent extends Component {
 
 ###### Optional
 * `email`: Enable email linking (`mailto://{email}`). Values: `true`, `false`. Default: `true`.
-* `hashtag`: Enable hashtag linking to supplied service (`facebook://hashtag/{hashtag}`). Values: `false`, `"facebook"`, `"instagram"`, `"twitter"`. Default: `false`.
+* `hashtag`: Enable hashtag linking to supplied service (`instagram://tag?name=${tag}`). Values: `false`, `"instagram"`, `"twitter"`. Default: `false`.
 * `phone`: Enable phone linking (`tel://{number}`). Values: `true`, `false`. Default `true`.
 * `twitter`: Enable twitter handle linking (`twitter://user?screen_name={handle}`). Values: `true`, `false`. Default: `false`.
 * `url`: Enable url linking (`https://{url}`). Values: `true`, `false`. Default: `true`.

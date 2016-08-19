@@ -22,8 +22,6 @@ export default class Autolink extends Component {
         let tag = encodeURIComponent(match.getHashtag());
 
         switch (this.props.hashtag) {
-          case 'facebook':
-            return `facebook://hashtag/${tag}`;
           case 'instagram':
             return `instagram://tag?name=${tag}`;
           case 'twitter':
@@ -160,7 +158,7 @@ Autolink.defaultProps = {
 
 Autolink.propTypes = {
   email: PropTypes.bool,
-  hashtag: PropTypes.oneOf([false, 'facebook', 'instagram', 'twitter']),
+  hashtag: PropTypes.oneOf([false, 'instagram', 'twitter']),
   linkStyle: Text.propTypes.style,
   numberOfLines: PropTypes.number,
   onPress: PropTypes.func,
