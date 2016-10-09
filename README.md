@@ -35,8 +35,9 @@ class MyComponent extends Component {
 | `text` | `String` | | ***Required.*** The string to parse for links. |
 | `email` | `Boolean` | `true` | Enable email linking (`mailto:{email}`). |
 | `hashtag` | `Boolean/String` | `false` | Enable hashtag linking to supplied service. Possible values: `false`, `"instagram"`, `"twitter"`. |
+| `mention` | `Boolean/String` | `false` | Enable mention/handle linking to supplied service. Possible values: `false`, `"instagram"`, `"twitter"`. |
 | `phone` | `Boolean` | `true` | Enable phone linking (`tel://{number}`). |
-| `twitter` | `Boolean` | `false` | Enable Twitter handle linking (`twitter://user?screen_name={handle}`). |
+| `twitter` | `Boolean` | `false` | **DEPRECATED. Use `mention` prop.** Enable Twitter handle linking (`twitter://user?screen_name={handle}`). |
 | `url` | `Boolean` | `true` | Enable url linking (`https://{url}`). |
 | `stripPrefix` | `Boolean` | `true` | Enable stripping of protocol from link text (`https://url` -> `url`). |
 | `linkStyle` | `TextStyle` | | Custom styling to apply to Text nodes of links. |
