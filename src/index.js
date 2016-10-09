@@ -9,7 +9,7 @@
 
 import React, {Component, PropTypes, createElement} from 'react';
 import Autolinker from 'autolinker';
-import {Linking, StyleSheet, Text} from 'react-native';
+import {Linking, Platform, StyleSheet, Text} from 'react-native';
 
 export default class Autolink extends Component {
   getURL(match) {
@@ -23,9 +23,9 @@ export default class Autolink extends Component {
 
         switch (this.props.hashtag) {
           case 'instagram':
-            return `instagram://tag?name=${tag}`;
+            return this.selectURL(`instagram://tag?name=${tag}`, `https://www.instagram.com/explore/tags/${tag}/`);
           case 'twitter':
-            return `twitter://search?query=%23${tag}`;
+            return this.selectURL(`twitter://search?query=%23${tag}`, `https://twitter.com/hashtag/${tag}`);
           default:
             return match.getMatchedText();
         }
@@ -34,9 +34,9 @@ export default class Autolink extends Component {
 
         switch (this.props.mention) {
           case 'instagram':
-            return `instagram://user?username=${mention}`;
+            return this.selectURL(`instagram://user?username=${mention}`, `https://www.instagram.com/${mention}/`);
           case 'twitter':
-            return `twitter://user?screen_name=${mention}`;
+            return this.selectURL(`twitter://user?screen_name=${mention}`, `https://twitter.com/${mention}`);
           default:
             return match.getMatchedText();
         }
@@ -47,6 +47,14 @@ export default class Autolink extends Component {
       default:
         return match.getMatchedText();
     }
+  }
+
+  selectURL(url, fallback) {
+    if (this.props.webFallback) {
+      return Linking.canOpenURL(url) ? url : fallback;
+    }
+
+    return url;
   }
 
   _onPress(url, match) {
@@ -88,6 +96,7 @@ export default class Autolink extends Component {
       truncateChars,
       twitter,
       url,
+      webFallback,
       ...other,
     } = this.props;
 
@@ -170,6 +179,7 @@ Autolink.defaultProps = {
   truncateChars: '..',
   twitter: false,
   url: true,
+  webFallback: Platform.OS !== 'ios', // iOS requires LSApplicationQueriesSchemes for Linking.canOpenURL
 };
 
 Autolink.propTypes = {
@@ -187,4 +197,5 @@ Autolink.propTypes = {
   truncateChars: PropTypes.string,
   twitter: PropTypes.bool,
   url: PropTypes.bool,
+  webFallback: PropTypes.bool,
 };

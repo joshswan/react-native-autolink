@@ -20,9 +20,9 @@ class MyComponent extends Component {
   render() {
     return (
       <AutoLink
-        text="This is the string to parse for urls (https://github.com/joshswan/react-native-autolink), phone numbers (415-555-5555), emails (josh@sportifik.com), twitter handles (@twitter), and hashtags (#exciting)"
+        text="This is the string to parse for urls (https://github.com/joshswan/react-native-autolink), phone numbers (415-555-5555), emails (josh@sportifik.com), mentions/handles (@twitter), and hashtags (#exciting)"
         hashtag="instagram"
-        twitter />
+        mention="twitter" />
     );
   }
 }
@@ -45,6 +45,7 @@ class MyComponent extends Component {
 | `renderLink` | `function` | | Custom render function for rendering link nodes. Arguments: `text:String`, `link:String`, `match:Object`. *See [Autolinker.js match object](http://gregjacobs.github.io/Autolinker.js/docs/#!/api/Autolinker.match.Match) for more information about the match object.* |
 | `truncate` | `Number` | `32` | Truncate long link text for display (e.g. `https://www.google.com/../something.html`). Possible values: `0` to disable, `1+` to truncate to that maximum length. |
 | `truncateChars` | `String` | `..` | Characters to replace truncated url segments with, if enabled. |
+| `webFallback` | `Boolean` | Android: `true` iOS: `false` | Link to web versions of Instagram/Twitter for hashtag and mention links when users don't have the respective app installed. **Requires `LSApplicationQueriesSchemes` on iOS. See: https://facebook.github.io/react-native/docs/linking.html |
 
 **Any other props will be passed through to the main Text node (e.g. style, numberOfLines).**
 
