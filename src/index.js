@@ -86,9 +86,15 @@ export default class Autolink extends Component {
       text,
       truncate,
       truncateChars,
+      twitter,
       url,
       ...other,
     } = this.props;
+
+    // Backwards compatibility for Twitter prop
+    if (!mention && twitter) {
+      mention = 'twitter';
+    }
 
     // Creates a token with a random UID that should not be guessable or
     // conflict with other parts of the string.
@@ -162,6 +168,7 @@ Autolink.defaultProps = {
   stripPrefix: true,
   truncate: 32,
   truncateChars: '..',
+  twitter: false,
   url: true,
 };
 
@@ -178,5 +185,6 @@ Autolink.propTypes = {
   text: PropTypes.string.isRequired,
   truncate: PropTypes.number,
   truncateChars: PropTypes.string,
+  twitter: PropTypes.bool,
   url: PropTypes.bool,
 };

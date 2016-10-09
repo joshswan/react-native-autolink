@@ -49,6 +49,11 @@ describe('<Autolink />', () => {
     expect(wrapper.find('Text')).to.have.length(2);
   });
 
+  it('should wrap a mention/handle in a Text node when twitter prop enabled (backwards compatibility)', () => {
+    const wrapper = shallow(<Autolink text="@twitter" twitter />);
+    expect(wrapper.find('Text')).to.have.length(2);
+  });
+
   it('should not wrap a mention/handle in a Text node when mention prop disabled', () => {
     const wrapper = shallow(<Autolink text="@twitter" mention={false} />);
     expect(wrapper.find('Text')).to.have.length(1);
