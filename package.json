@@ -26,7 +26,7 @@
     "test": "mocha --require react-native-mock/mock --compilers js:babel-core/register --recursive test/*.js"
   },
   "dependencies": {
-    "autolinker": "^0.27.0"
+    "autolinker": "^1.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.13.2",

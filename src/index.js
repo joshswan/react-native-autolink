@@ -19,7 +19,7 @@ export default class Autolink extends Component {
       case 'email':
         return `mailto:${encodeURIComponent(match.getEmail())}`;
       case 'hashtag':
-        let tag = encodeURIComponent(match.getHashtag());
+        const tag = encodeURIComponent(match.getHashtag());
 
         switch (this.props.hashtag) {
           case 'instagram':
@@ -29,10 +29,19 @@ export default class Autolink extends Component {
           default:
             return match.getMatchedText();
         }
+      case 'mention':
+        const mention = match.getMention();
+
+        switch (this.props.mention) {
+          case 'instagram':
+            return `instagram://user?username=${mention}`;
+          case 'twitter':
+            return `twitter://user?screen_name=${mention}`;
+          default:
+            return match.getMatchedText();
+        }
       case 'phone':
         return `tel:${match.getNumber()}`;
-      case 'twitter':
-        return `twitter://user?screen_name=${encodeURIComponent(match.getTwitterHandle())}`;
       case 'url':
         return match.getAnchorHref();
       default:
@@ -69,6 +78,7 @@ export default class Autolink extends Component {
       email,
       hashtag,
       linkStyle,
+      mention,
       onPress,
       phone,
       renderLink,
@@ -76,7 +86,6 @@ export default class Autolink extends Component {
       text,
       truncate,
       truncateChars,
-      twitter,
       url,
       ...other,
     } = this.props;
@@ -97,11 +106,11 @@ export default class Autolink extends Component {
       text = Autolinker.link(text || '', {
         email,
         hashtag,
+        mention,
         phone,
-        twitter,
         urls: url,
         stripPrefix,
-        replaceFn: (autolinker, match) => {
+        replaceFn: (match) => {
           let token = generateToken();
 
           matches[token] = match;
@@ -126,8 +135,8 @@ export default class Autolink extends Component {
         switch (match.getType()) {
           case 'email':
           case 'hashtag':
+          case 'mention':
           case 'phone':
-          case 'twitter':
           case 'url':
             return (renderLink) ? renderLink(match.getAnchorText(), this.getURL(match), match, index) : this.renderLink(match.getAnchorText(), this.getURL(match), match, index);
           default:
@@ -148,11 +157,11 @@ const styles = StyleSheet.create({
 Autolink.defaultProps = {
   email: true,
   hashtag: false,
+  mention: false,
   phone: true,
   stripPrefix: true,
   truncate: 32,
   truncateChars: '..',
-  twitter: false,
   url: true,
 };
 
@@ -160,6 +169,7 @@ Autolink.propTypes = {
   email: PropTypes.bool,
   hashtag: PropTypes.oneOf([false, 'instagram', 'twitter']),
   linkStyle: Text.propTypes.style,
+  mention: PropTypes.oneOf([false, 'instagram', 'twitter']),
   numberOfLines: PropTypes.number,
   onPress: PropTypes.func,
   phone: PropTypes.bool,
@@ -168,6 +178,5 @@ Autolink.propTypes = {
   text: PropTypes.string.isRequired,
   truncate: PropTypes.number,
   truncateChars: PropTypes.string,
-  twitter: PropTypes.bool,
   url: PropTypes.bool,
 };

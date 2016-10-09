@@ -44,6 +44,16 @@ describe('<Autolink />', () => {
     expect(wrapper.find('Text')).to.have.length(1);
   });
 
+  it('should wrap a mention/handle in a Text node when mention prop enabled', () => {
+    const wrapper = shallow(<Autolink text="@twitter" mention="twitter" />);
+    expect(wrapper.find('Text')).to.have.length(2);
+  });
+
+  it('should not wrap a mention/handle in a Text node when mention prop disabled', () => {
+    const wrapper = shallow(<Autolink text="@twitter" mention={false} />);
+    expect(wrapper.find('Text')).to.have.length(1);
+  });
+
   it('should wrap a phone number in a Text node when phone prop enabled', () => {
     const wrapper = shallow(<Autolink text="415-555-5555" phone />);
     expect(wrapper.find('Text')).to.have.length(2);
@@ -51,16 +61,6 @@ describe('<Autolink />', () => {
 
   it('should not wrap a phone number in a Text node when phone prop disabled', () => {
     const wrapper = shallow(<Autolink text="415-555-5555" phone={false} />);
-    expect(wrapper.find('Text')).to.have.length(1);
-  });
-
-  it('should wrap a Twitter handle in a Text node when twitter prop enabled', () => {
-    const wrapper = shallow(<Autolink text="@twitter" twitter />);
-    expect(wrapper.find('Text')).to.have.length(2);
-  });
-
-  it('should not wrap a Twitter handle in a Text node when twitter prop disabled', () => {
-    const wrapper = shallow(<Autolink text="@twitter" twitter={false} />);
     expect(wrapper.find('Text')).to.have.length(1);
   });
 
@@ -75,7 +75,7 @@ describe('<Autolink />', () => {
   });
 
   it('should link multiple elements individually', () => {
-    const wrapper = shallow(<Autolink text="Hi @josh (josh@sportifik.com or 415-555-5555), check out https://github.com/joshswan/react-native-autolink. It's #awesome!" email hashtag="instagram" phone twitter url />);
+    const wrapper = shallow(<Autolink text="Hi @josh (josh@sportifik.com or 415-555-5555), check out https://github.com/joshswan/react-native-autolink. It's #awesome!" email hashtag="instagram" mention="twitter" phone url />);
     expect(wrapper.find('Text')).to.have.length(6);
   });
 
