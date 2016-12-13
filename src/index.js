@@ -41,13 +41,14 @@ export default class Autolink extends Component {
             return match.getMatchedText();
         }
       case 'phone':
-        const number = match.getNumber()
+        const number = match.getNumber();
 
         switch (this.props.phone) {
+          case 'sms':
           case 'text':
-            return `sms:${match.getNumber()}`;
+            return `sms:${number}`;
           default:
-            return `tel:${match.getNumber()}`;
+            return `tel:${number}`;
         }
       case 'url':
         return match.getAnchorHref();
