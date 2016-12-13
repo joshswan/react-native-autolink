@@ -41,7 +41,14 @@ export default class Autolink extends Component {
             return match.getMatchedText();
         }
       case 'phone':
-        return `tel:${match.getNumber()}`;
+        const number = match.getNumber()
+
+        switch (this.props.phone) {
+          case 'text':
+            return `sms:${match.getNumber()}`;
+          default:
+            return `tel:${match.getNumber()}`;
+        }
       case 'url':
         return match.getAnchorHref();
       default:
