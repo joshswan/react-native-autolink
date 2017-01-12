@@ -82,9 +82,9 @@ export default class Autolink extends Component {
           { text: 'Cancel', style: 'cancel' },
           { text: 'OK', onPress: () => this._onPress(url, match)},
         ]
-      )
+      );
     } else {
-      this._onPress(url, match)
+      this._onPress(url, match);
     }
   }
 
@@ -113,6 +113,7 @@ export default class Autolink extends Component {
       onPress,
       phone,
       renderLink,
+      showAlert,
       stripPrefix,
       text,
       truncate,
@@ -197,13 +198,13 @@ Autolink.defaultProps = {
   hashtag: false,
   mention: false,
   phone: true,
+  showAlert: false,
   stripPrefix: true,
   truncate: 32,
   truncateChars: '..',
   twitter: false,
   url: true,
   webFallback: Platform.OS !== 'ios', // iOS requires LSApplicationQueriesSchemes for Linking.canOpenURL
-  showAlert: false,
 };
 
 Autolink.propTypes = {
@@ -215,6 +216,7 @@ Autolink.propTypes = {
   onPress: PropTypes.func,
   phone: PropTypes.bool,
   renderLink: PropTypes.func,
+  showAlert: PropTypes.bool,
   stripPrefix: PropTypes.bool,
   text: PropTypes.string.isRequired,
   truncate: PropTypes.number,
@@ -222,5 +224,4 @@ Autolink.propTypes = {
   twitter: PropTypes.bool,
   url: PropTypes.bool,
   webFallback: PropTypes.bool,
-  showAlert: PropTypes.bool,
 };
