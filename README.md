@@ -46,6 +46,7 @@ class MyComponent extends Component {
 | `truncate` | `Number` | `32` | Truncate long link text for display (e.g. `https://www.google.com/../something.html`). Possible values: `0` to disable, `1+` to truncate to that maximum length. |
 | `truncateChars` | `String` | `..` | Characters to replace truncated url segments with, if enabled. |
 | `webFallback` | `Boolean` | Android: `true` iOS: `false` | Link to web versions of Instagram/Twitter for hashtag and mention links when users don't have the respective app installed. *Requires `LSApplicationQueriesSchemes` on iOS. See: https://facebook.github.io/react-native/docs/linking.html* |
+| `showAlert` | `Boolean` | `false` | Displays an alert before leaving the app to help with accidental clicks. Possible values: `true`, `false` |
 
 **Any other props will be passed through to the main Text node (e.g. style, numberOfLines).**
 

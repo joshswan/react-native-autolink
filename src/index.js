@@ -9,7 +9,7 @@
 
 import React, {Component, PropTypes, createElement} from 'react';
 import Autolinker from 'autolinker';
-import {Linking, Platform, StyleSheet, Text} from 'react-native';
+import {Alert, Linking, Platform, StyleSheet, Text} from 'react-native';
 
 export default class Autolink extends Component {
   getURL(match) {
@@ -73,6 +73,21 @@ export default class Autolink extends Component {
     }
   }
 
+  _handlePress(url, match) {
+    if (this.props.showAlert) {
+      Alert.alert(
+        'Leaving App',
+        'Do you want to continue?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'OK', onPress: () => this._onPress(url, match)},
+        ]
+      )
+    } else {
+      this._onPress(url, match)
+    }
+  }
+
   renderLink(text, url, match, index) {
     let truncated = (this.props.truncate > 0) ? Autolinker.truncate.TruncateSmart(text, this.props.truncate, this.props.truncateChars) : text;
 
@@ -80,7 +95,7 @@ export default class Autolink extends Component {
       <Text
         key={index}
         style={[styles.link, this.props.linkStyle]}
-        onPress={this._onPress.bind(this, url, match)}>
+        onPress={this._handlePress.bind(this, url, match)}>
           {truncated}
       </Text>
     );
@@ -188,6 +203,7 @@ Autolink.defaultProps = {
   twitter: false,
   url: true,
   webFallback: Platform.OS !== 'ios', // iOS requires LSApplicationQueriesSchemes for Linking.canOpenURL
+  showAlert: false,
 };
 
 Autolink.propTypes = {
@@ -206,4 +222,5 @@ Autolink.propTypes = {
   twitter: PropTypes.bool,
   url: PropTypes.bool,
   webFallback: PropTypes.bool,
+  showAlert: PropTypes.bool,
 };
