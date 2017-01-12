@@ -121,7 +121,7 @@ export default class Autolink extends Component {
       twitter,
       url,
       webFallback,
-      ...other,
+      ...other
     } = this.props;
 
     // Backwards compatibility for Twitter prop
