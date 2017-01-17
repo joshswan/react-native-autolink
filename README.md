@@ -19,7 +19,7 @@ import Autolink from 'react-native-autolink';
 class MyComponent extends Component {
   render() {
     return (
-      <AutoLink
+      <Autolink
         text="This is the string to parse for urls (https://github.com/joshswan/react-native-autolink), phone numbers (415-555-5555), emails (josh@sportifik.com), mentions/handles (@twitter), and hashtags (#exciting)"
         hashtag="instagram"
         mention="twitter" />
