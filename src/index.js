@@ -88,15 +88,22 @@ export default class Autolink extends Component {
     }
   }
 
+  _handleLongPress() {
+    return this.props.onLongPress || false
+  }
+
   renderLink(text, url, match, index) {
     let truncated = (this.props.truncate > 0) ? Autolinker.truncate.TruncateSmart(text, this.props.truncate, this.props.truncateChars) : text;
 
     return (
-      <Text
-        key={index}
-        style={[styles.link, this.props.linkStyle]}
-        onPress={this._handlePress.bind(this, url, match)}>
-          {truncated}
+      <Text selectable={this.props.selectable || false}>
+        <Text
+          key={index}
+          style={[styles.link, this.props.linkStyle]}
+          onPress={this._handlePress.bind(this, url, match)}
+          onLongPress={this._handleLongPress.bind(this)}>
+            {truncated}
+        </Text>
       </Text>
     );
   }
