@@ -42,7 +42,7 @@ class MyComponent extends Component {
 | `stripPrefix` | `Boolean` | `true` | Enable stripping of protocol from link text (`https://url` -> `url`). |
 | `linkStyle` | `TextStyle` | | Custom styling to apply to Text nodes of links. |
 | `onPress` | `function` | | Custom function handler for link press events. Arguments: `link:String`, `match:Object`. *See [Autolinker.js match object](http://gregjacobs.github.io/Autolinker.js/docs/#!/api/Autolinker.match.Match) for more information about the match object.* |
-| `renderLink` | `function` | | Custom render function for rendering link nodes. Arguments: `text:String`, `link:String`, `match:Object`. *See [Autolinker.js match object](http://gregjacobs.github.io/Autolinker.js/docs/#!/api/Autolinker.match.Match) for more information about the match object.* |
+| `renderLink` | `function` | | Custom render function for rendering link nodes. Arguments: `text:String`, `match:Object`, `index:Number`. *See [Autolinker.js match object](http://gregjacobs.github.io/Autolinker.js/docs/#!/api/Autolinker.match.Match) for more information about the match object.* |
 | `showAlert` | `Boolean` | `false` | Displays an alert before leaving the app to help with accidental clicks. Possible values: `true`, `false` |
 | `truncate` | `Number` | `32` | Truncate long link text for display (e.g. `https://www.google.com/../something.html`). Possible values: `0` to disable, `1+` to truncate to that maximum length. |
 | `truncateChars` | `String` | `..` | Characters to replace truncated url segments with, if enabled. |

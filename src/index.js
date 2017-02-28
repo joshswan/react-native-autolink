@@ -17,31 +17,56 @@ const styles = StyleSheet.create({
 });
 
 export default class Autolink extends Component {
-  onPress(url, match) {
+  onPress(match, alertShown) {
+    // Check if alert needs to be shown
+    if (this.props.showAlert && !alertShown) {
+      Alert.alert(
+        'Leaving App',
+        'Do you want to continue?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'OK', onPress: () => this.onPress(match, true) },
+        ],
+      );
+
+      return;
+    }
+
+    // Get url(s) for match
+    const [
+      url,
+      fallback,
+    ] = this.getUrl(match);
+
+    // Call custom onPress handler or open link/fallback
     if (this.props.onPress) {
       this.props.onPress(url, match);
+    } else if (this.props.webFallback) {
+      Linking.canOpenURL(url).then((supported) => {
+        Linking.openURL(!supported && fallback ? fallback : url);
+      });
     } else {
       Linking.openURL(url);
     }
   }
 
-  getURL(match) {
+  getUrl(match) {
     const type = match.getType();
 
     switch (type) {
       case 'email': {
-        return `mailto:${encodeURIComponent(match.getEmail())}`;
+        return [`mailto:${encodeURIComponent(match.getEmail())}`];
       }
       case 'hashtag': {
         const tag = encodeURIComponent(match.getHashtag());
 
         switch (this.props.hashtag) {
           case 'instagram':
-            return this.selectURL(`instagram://tag?name=${tag}`, `https://www.instagram.com/explore/tags/${tag}/`);
+            return [`instagram://tag?name=${tag}`, `https://www.instagram.com/explore/tags/${tag}/`];
           case 'twitter':
-            return this.selectURL(`twitter://search?query=%23${tag}`, `https://twitter.com/hashtag/${tag}`);
+            return [`twitter://search?query=%23${tag}`, `https://twitter.com/hashtag/${tag}`];
           default:
-            return match.getMatchedText();
+            return [match.getMatchedText()];
         }
       }
       case 'mention': {
@@ -49,11 +74,11 @@ export default class Autolink extends Component {
 
         switch (this.props.mention) {
           case 'instagram':
-            return this.selectURL(`instagram://user?username=${mention}`, `https://www.instagram.com/${mention}/`);
+            return [`instagram://user?username=${mention}`, `https://www.instagram.com/${mention}/`];
           case 'twitter':
-            return this.selectURL(`twitter://user?screen_name=${mention}`, `https://twitter.com/${mention}`);
+            return [`twitter://user?screen_name=${mention}`, `https://twitter.com/${mention}`];
           default:
-            return match.getMatchedText();
+            return [match.getMatchedText()];
         }
       }
       case 'phone': {
@@ -62,44 +87,21 @@ export default class Autolink extends Component {
         switch (this.props.phone) {
           case 'sms':
           case 'text':
-            return `sms:${number}`;
+            return [`sms:${number}`];
           default:
-            return `tel:${number}`;
+            return [`tel:${number}`];
         }
       }
       case 'url': {
-        return match.getAnchorHref();
+        return [match.getAnchorHref()];
       }
       default: {
-        return match.getMatchedText();
+        return [match.getMatchedText()];
       }
     }
   }
 
-  selectURL(url, fallback) {
-    if (this.props.webFallback) {
-      return Linking.canOpenURL(url) ? url : fallback;
-    }
-
-    return url;
-  }
-
-  handlePress(url, match) {
-    if (this.props.showAlert) {
-      Alert.alert(
-        'Leaving App',
-        'Do you want to continue?',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'OK', onPress: () => this.onPress(url, match) },
-        ],
-      );
-    } else {
-      this.onPress(url, match);
-    }
-  }
-
-  renderLink(text, url, match, index) {
+  renderLink(text, match, index) {
     const truncated = (this.props.truncate > 0) ?
       Autolinker.truncate.TruncateSmart(text, this.props.truncate, this.props.truncateChars) :
       text;
@@ -108,7 +110,7 @@ export default class Autolink extends Component {
       <Text
         key={index}
         style={[styles.link, this.props.linkStyle]}
-        onPress={() => this.handlePress(url, match)}
+        onPress={() => this.onPress(match)}
       >
         {truncated}
       </Text>
@@ -192,8 +194,8 @@ export default class Autolink extends Component {
           case 'phone':
           case 'url':
             return (renderLink) ?
-              renderLink(match.getAnchorText(), this.getURL(match), match, index) :
-              this.renderLink(match.getAnchorText(), this.getURL(match), match, index);
+              renderLink(match.getAnchorText(), match, index) :
+              this.renderLink(match.getAnchorText(), match, index);
           default:
             return part;
         }
