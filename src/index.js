@@ -5,20 +5,34 @@
  * Released under the MIT license
  * https://github.com/joshswan/react-native-autolink/blob/master/LICENSE
  */
-'use strict';
 
-import React, {Component, PropTypes, createElement} from 'react';
+import React, { Component, PropTypes, createElement } from 'react';
 import Autolinker from 'autolinker';
-import {Alert, Linking, Platform, StyleSheet, Text} from 'react-native';
+import { Alert, Linking, Platform, StyleSheet, Text } from 'react-native';
+
+const styles = StyleSheet.create({
+  link: {
+    color: '#0E7AFE',
+  },
+});
 
 export default class Autolink extends Component {
+  onPress(url, match) {
+    if (this.props.onPress) {
+      this.props.onPress(url, match);
+    } else {
+      Linking.openURL(url);
+    }
+  }
+
   getURL(match) {
-    let type = match.getType();
+    const type = match.getType();
 
     switch (type) {
-      case 'email':
+      case 'email': {
         return `mailto:${encodeURIComponent(match.getEmail())}`;
-      case 'hashtag':
+      }
+      case 'hashtag': {
         const tag = encodeURIComponent(match.getHashtag());
 
         switch (this.props.hashtag) {
@@ -29,7 +43,8 @@ export default class Autolink extends Component {
           default:
             return match.getMatchedText();
         }
-      case 'mention':
+      }
+      case 'mention': {
         const mention = match.getMention();
 
         switch (this.props.mention) {
@@ -40,7 +55,8 @@ export default class Autolink extends Component {
           default:
             return match.getMatchedText();
         }
-      case 'phone':
+      }
+      case 'phone': {
         const number = match.getNumber();
 
         switch (this.props.phone) {
@@ -50,10 +66,13 @@ export default class Autolink extends Component {
           default:
             return `tel:${number}`;
         }
-      case 'url':
+      }
+      case 'url': {
         return match.getAnchorHref();
-      default:
+      }
+      default: {
         return match.getMatchedText();
+      }
     }
   }
 
@@ -65,38 +84,33 @@ export default class Autolink extends Component {
     return url;
   }
 
-  _onPress(url, match) {
-    if (this.props.onPress) {
-      this.props.onPress(url, match);
-    } else {
-      Linking.openURL(url);
-    }
-  }
-
-  _handlePress(url, match) {
+  handlePress(url, match) {
     if (this.props.showAlert) {
       Alert.alert(
         'Leaving App',
         'Do you want to continue?',
         [
           { text: 'Cancel', style: 'cancel' },
-          { text: 'OK', onPress: () => this._onPress(url, match)},
-        ]
+          { text: 'OK', onPress: () => this.onPress(url, match) },
+        ],
       );
     } else {
-      this._onPress(url, match);
+      this.onPress(url, match);
     }
   }
 
   renderLink(text, url, match, index) {
-    let truncated = (this.props.truncate > 0) ? Autolinker.truncate.TruncateSmart(text, this.props.truncate, this.props.truncateChars) : text;
+    const truncated = (this.props.truncate > 0) ?
+      Autolinker.truncate.TruncateSmart(text, this.props.truncate, this.props.truncateChars) :
+      text;
 
     return (
       <Text
         key={index}
         style={[styles.link, this.props.linkStyle]}
-        onPress={this._handlePress.bind(this, url, match)}>
-          {truncated}
+        onPress={() => this.handlePress(url, match)}
+      >
+        {truncated}
       </Text>
     );
   }
@@ -131,15 +145,15 @@ export default class Autolink extends Component {
 
     // Creates a token with a random UID that should not be guessable or
     // conflict with other parts of the string.
-    let uid = Math.floor(Math.random() * 0x10000000000).toString(16);
-    let tokenRegexp = new RegExp(`(@__ELEMENT-${uid}-\\d+__@)`, 'g');
+    const uid = Math.floor(Math.random() * 0x10000000000).toString(16);
+    const tokenRegexp = new RegExp(`(@__ELEMENT-${uid}-\\d+__@)`, 'g');
 
-    let generateToken = (() => {
+    const generateToken = (() => {
       let counter = 0;
-      return () => `@__ELEMENT-${uid}-${counter++}__@`;
+      return () => `@__ELEMENT-${uid}-${counter++}__@`; // eslint-disable-line no-plusplus
     })();
 
-    let matches = {};
+    const matches = {};
 
     try {
       text = Autolinker.link(text || '', {
@@ -150,7 +164,7 @@ export default class Autolink extends Component {
         urls: url,
         stripPrefix,
         replaceFn: (match) => {
-          let token = generateToken();
+          const token = generateToken();
 
           matches[token] = match;
 
@@ -158,16 +172,16 @@ export default class Autolink extends Component {
         },
       });
     } catch (e) {
-      console.warn(e);
+      console.warn(e); // eslint-disable-line no-console
 
       return null;
     }
 
-    let nodes = text
+    const nodes = text
       .split(tokenRegexp)
-      .filter((part) => !!part)
+      .filter(part => !!part)
       .map((part, index) => {
-        let match = matches[part];
+        const match = matches[part];
 
         if (!match) return part;
 
@@ -177,21 +191,20 @@ export default class Autolink extends Component {
           case 'mention':
           case 'phone':
           case 'url':
-            return (renderLink) ? renderLink(match.getAnchorText(), this.getURL(match), match, index) : this.renderLink(match.getAnchorText(), this.getURL(match), match, index);
+            return (renderLink) ?
+              renderLink(match.getAnchorText(), this.getURL(match), match, index) :
+              this.renderLink(match.getAnchorText(), this.getURL(match), match, index);
           default:
             return part;
         }
       });
 
-    return createElement(Text, {ref: (component) => { this._root = component; }, ...other}, ...nodes);
+    return createElement(Text, {
+      ref: (component) => { this._root = component; }, // eslint-disable-line no-underscore-dangle
+      ...other,
+    }, ...nodes);
   }
 }
-
-const styles = StyleSheet.create({
-  link: {
-    color: '#0E7AFE',
-  },
-});
 
 Autolink.defaultProps = {
   email: true,
