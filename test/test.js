@@ -25,12 +25,12 @@ describe('<Autolink />', () => {
   });
 
   it('should wrap an email address in a Text node when email prop enabled', () => {
-    const wrapper = shallow(<Autolink text="josh@sportifik.com" email />);
+    const wrapper = shallow(<Autolink text="josh@example.com" email />);
     expect(wrapper.find('Text')).to.have.length(2);
   });
 
   it('should not wrap an email address in a Text node when email prop disabled', () => {
-    const wrapper = shallow(<Autolink text="josh@sportifik.com" email={false} />);
+    const wrapper = shallow(<Autolink text="josh@example.com" email={false} />);
     expect(wrapper.find('Text')).to.have.length(1);
   });
 
@@ -82,7 +82,7 @@ describe('<Autolink />', () => {
   it('should link multiple elements individually', () => {
     const wrapper = shallow(
       <Autolink
-        text="Hi @josh (josh@sportifik.com or 415-555-5555), check out https://github.com/joshswan/react-native-autolink. It's #awesome!"
+        text="Hi @josh (josh@example.com or 415-555-5555), check out https://github.com/joshswan/react-native-autolink. It's #awesome!"
         email
         hashtag="instagram"
         mention="twitter"
@@ -132,27 +132,27 @@ describe('<Autolink />', () => {
 
   it('should use function to render links if passed using renderLink prop', () => {
     const renderLink = (text, match, index) => <Text>{`${text}:${index}`}</Text>;
-    const wrapper = shallow(<Autolink text="josh@sportifik.com" renderLink={renderLink} />);
-    expect(wrapper.contains(<Text>josh@sportifik.com:0</Text>)).to.equal(true);
+    const wrapper = shallow(<Autolink text="josh@example.com" renderLink={renderLink} />);
+    expect(wrapper.contains(<Text>josh@example.com:0</Text>)).to.equal(true);
   });
 
   it('should call press handler when link clicked', () => {
     const onPress = sinon.spy();
-    const wrapper = shallow(<Autolink text="josh@sportifik.com" onPress={onPress} />);
+    const wrapper = shallow(<Autolink text="josh@example.com" onPress={onPress} />);
     wrapper.children().find('Text').simulate('press');
     expect(onPress.called).to.equal(true);
   });
 
   it('should call press handler with appropriate Linking url', () => {
     const onPress = sinon.spy();
-    const wrapper = shallow(<Autolink text="josh@sportifik.com" onPress={onPress} />);
+    const wrapper = shallow(<Autolink text="josh@example.com" onPress={onPress} />);
     wrapper.children().find('Text').simulate('press');
-    expect(onPress.calledWith('mailto:josh%40sportifik.com')).to.equal(true);
+    expect(onPress.calledWith('mailto:josh%40example.com')).to.equal(true);
   });
 
   it('should call long press handler when link long pressed', () => {
     const onLongPress = sinon.spy();
-    const wrapper = shallow(<Autolink text="josh@sportifik.com" onLongPress={onLongPress} />);
+    const wrapper = shallow(<Autolink text="josh@example.com" onLongPress={onLongPress} />);
     wrapper.children().find('Text').simulate('longPress');
     expect(onLongPress.called).to.equal(true);
   });
