@@ -51,10 +51,9 @@ export default class Autolink extends Component {
   }
 
   onLongPress(match) {
-    // Get url(s) for match
+    // Get url for match
     const [
       url,
-      fallback,
     ] = this.getUrl(match);
 
     if (this.props.onLongPress) {
