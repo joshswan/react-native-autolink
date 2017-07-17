@@ -50,6 +50,18 @@ export default class Autolink extends Component {
     }
   }
 
+  onLongPress(match) {
+    // Get url(s) for match
+    const [
+      url,
+      fallback,
+    ] = this.getUrl(match);
+
+    if (this.props.onLongPress) {
+      this.props.onLongPress(url, match);
+    }
+  }
+
   getUrl(match) {
     const type = match.getType();
 
@@ -111,6 +123,7 @@ export default class Autolink extends Component {
         key={index}
         style={[styles.link, this.props.linkStyle]}
         onPress={() => this.onPress(match)}
+        onLongPress={() => this.onLongPress(match)}
       >
         {truncated}
       </Text>
@@ -127,6 +140,7 @@ export default class Autolink extends Component {
       linkStyle,
       mention,
       onPress,
+      onLongPress,
       phone,
       renderLink,
       showAlert,
@@ -229,6 +243,7 @@ Autolink.propTypes = {
   mention: PropTypes.oneOf([false, 'instagram', 'twitter']),
   numberOfLines: PropTypes.number,
   onPress: PropTypes.func,
+  onLongPress: PropTypes.func,
   phone: PropTypes.bool,
   renderLink: PropTypes.func,
   showAlert: PropTypes.bool,
