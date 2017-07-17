@@ -149,4 +149,11 @@ describe('<Autolink />', () => {
     wrapper.children().find('Text').simulate('press');
     expect(onPress.calledWith('mailto:josh%40sportifik.com')).to.equal(true);
   });
+
+  it('should call long press handler when link long pressed', () => {
+    const onLongPress = sinon.spy();
+    const wrapper = shallow(<Autolink text="josh@sportifik.com" onLongPress={onLongPress} />);
+    wrapper.children().find('Text').simulate('longPress');
+    expect(onLongPress.called).to.equal(true);
+  });
 });
