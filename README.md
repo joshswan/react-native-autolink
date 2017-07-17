@@ -20,7 +20,7 @@ class MyComponent extends Component {
   render() {
     return (
       <Autolink
-        text="This is the string to parse for urls (https://github.com/joshswan/react-native-autolink), phone numbers (415-555-5555), emails (josh@sportifik.com), mentions/handles (@twitter), and hashtags (#exciting)"
+        text="This is the string to parse for urls (https://github.com/joshswan/react-native-autolink), phone numbers (415-555-5555), emails (josh@example.com), mentions/handles (@twitter), and hashtags (#exciting)"
         hashtag="instagram"
         mention="twitter" />
     );
@@ -41,8 +41,9 @@ class MyComponent extends Component {
 | `url` | `Boolean` | `true` | Enable url linking (`https://{url}`). |
 | `stripPrefix` | `Boolean` | `true` | Enable stripping of protocol from link text (`https://url` -> `url`). |
 | `linkStyle` | `TextStyle` | | Custom styling to apply to Text nodes of links. |
-| `onPress` | `function` | | Custom function handler for link press events. Arguments: `link:String`, `match:Object`. *See [Autolinker.js match object](http://gregjacobs.github.io/Autolinker.js/docs/#!/api/Autolinker.match.Match) for more information about the match object.* |
-| `renderLink` | `function` | | Custom render function for rendering link nodes. Arguments: `text:String`, `match:Object`, `index:Number`. *See [Autolinker.js match object](http://gregjacobs.github.io/Autolinker.js/docs/#!/api/Autolinker.match.Match) for more information about the match object.* |
+| `onPress` | `function` | | Custom function handler for link press events. Arguments: `url:String`, [`match:Object`][match-url]. |
+| `onLongPress` | `function` | | Function handler for long press events. Arguments: `url:String`, [`match:Object`][match-url] |
+| `renderLink` | `function` | | Custom render function for rendering link nodes. Arguments: `text:String`, [`match:Object`][match-url], `index:Number`. |
 | `showAlert` | `Boolean` | `false` | Displays an alert before leaving the app to help with accidental clicks. Possible values: `true`, `false` |
 | `truncate` | `Number` | `32` | Truncate long link text for display (e.g. `https://www.google.com/../something.html`). Possible values: `0` to disable, `1+` to truncate to that maximum length. |
 | `truncateChars` | `String` | `..` | Characters to replace truncated url segments with, if enabled. |
@@ -58,3 +59,4 @@ class MyComponent extends Component {
 [devdepstat-image]: https://david-dm.org/joshswan/react-native-autolink/dev-status.svg
 [npm-url]: https://www.npmjs.com/package/react-native-autolink
 [npm-image]: https://badge.fury.io/js/react-native-autolink.svg
+[match-url]: http://greg-jacobs.com/Autolinker.js/api/index.html#!/api/Autolinker.match.Match
