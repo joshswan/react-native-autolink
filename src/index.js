@@ -6,7 +6,8 @@
  * https://github.com/joshswan/react-native-autolink/blob/master/LICENSE
  */
 
-import React, { Component, PropTypes, createElement } from 'react';
+import React, { Component, createElement } from 'react';
+import PropTypes from 'prop-types';
 import Autolinker from 'autolinker';
 import { Alert, Linking, Platform, StyleSheet, Text } from 'react-native';
 
