@@ -75,22 +75,22 @@ describe('<Autolink />', () => {
   });
 
   it('should match top-level domain url when wwwMatches enabled', () => {
-    const wrapper = shallow(<Autolink text="github.com" url={{tldMatches: true}} />);
+    const wrapper = shallow(<Autolink text="github.com" url={{ tldMatches: true }} />);
     expect(wrapper.find('Text')).to.have.length(2);
   });
 
   it('should not match top-level domain url when wwwMatches disabled', () => {
-    const wrapper = shallow(<Autolink text="github.com" url={{tldMatches: false}} />);
+    const wrapper = shallow(<Autolink text="github.com" url={{ tldMatches: false }} />);
     expect(wrapper.find('Text')).to.have.length(1);
   });
 
   it('should not match www containing url when wwwMatches disabled', () => {
-    const wrapper = shallow(<Autolink text="www.github.com" url={{wwwMatches: false}} />);
+    const wrapper = shallow(<Autolink text="www.github.com" url={{ wwwMatches: false }} />);
     expect(wrapper.find('Text')).to.have.length(1);
   });
 
   it('should not match scheme containing url when schemeMatches disabled', () => {
-    const wrapper = shallow(<Autolink text="http://github.com" url={{schemeMatches: false}} />);
+    const wrapper = shallow(<Autolink text="http://github.com" url={{ schemeMatches: false }} />);
     expect(wrapper.find('Text')).to.have.length(1);
   });
 

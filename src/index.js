@@ -256,9 +256,9 @@ Autolink.propTypes = {
     PropTypes.bool,
     PropTypes.shape({
       schemeMatches: PropTypes.bool,
-      wwwMatches:    PropTypes.bool,
-      tldMatches:    PropTypes.bool
-    })
+      wwwMatches: PropTypes.bool,
+      tldMatches: PropTypes.bool,
+    }),
   ),
   webFallback: PropTypes.bool,
 };
