@@ -24,30 +24,33 @@
   ],
   "scripts": {
     "lint": "eslint src/**/*.js test/**/*.js",
-    "test": "mocha --require react-native-mock/mock --compilers js:babel-core/register --recursive test/*.js"
+    "test": "mocha --require react-native-mock/mock --require test/setup.js --compilers js:babel-core/register --recursive test/*.js"
   },
   "dependencies": {
-    "autolinker": "^1.2.0",
-    "prop-types": "^15.5.10"
+    "autolinker": "^1.6.0",
+    "prop-types": "^15.6.0"
   },
   "devDependencies": {
-    "babel-core": "^6.17.0",
-    "babel-eslint": "^7.0.0",
-    "babel-preset-react-native": "^1.9.0",
-    "chai": "^3.5.0",
-    "enzyme": "^2.4.1",
-    "eslint": "^3.13.0",
-    "eslint-config-airbnb": "^14.1.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^3.0.2",
-    "eslint-plugin-react": "^6.9.0",
-    "mocha": "^3.1.0",
-    "react": "^15.3.2",
-    "react-addons-test-utils": "^15.3.2",
-    "react-dom": "^15.3.2",
-    "react-native": ">=0.25.0",
+    "add": "^2.0.6",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.2",
+    "babel-preset-react-native": "^4.0.0",
+    "chai": "^4.1.2",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-15": "^1.0.5",
+    "eslint": "^4.11.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.5.1",
+    "mocha": "^4.0.1",
+    "react": "^15.6.2",
+    "react-dom": "^15.6.2",
+    "react-native": "^0.50.3",
     "react-native-mock": "^0.3.1",
-    "sinon": "^1.17.6"
+    "react-test-renderer": "^15.6.2",
+    "sinon": "^4.1.2",
+    "yarn": "^1.3.2"
   },
   "peerDependencies": {
     "react-native": ">=0.25.0"

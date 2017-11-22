@@ -100,7 +100,7 @@ describe('<Autolink />', () => {
   });
 
   it('should link multiple elements individually', () => {
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Autolink
         text="Hi @josh (josh@example.com or 415-555-5555), check out https://github.com/joshswan/react-native-autolink. It's #awesome!"
         email
@@ -109,7 +109,7 @@ describe('<Autolink />', () => {
         phone
         url
       />
-    );
+    ));
     expect(wrapper.find('Text')).to.have.length(6);
   });
 
@@ -120,23 +120,23 @@ describe('<Autolink />', () => {
   });
 
   it('should truncate urls to length specified in truncate prop', () => {
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Autolink
         text="github.com/joshswan/react-native-autolink"
         truncate={32}
       />
-    );
+    ));
     expect(wrapper.contains('github.com/joshswan/react-native-autolink')).to.equal(false);
     expect(wrapper.contains('github.com/joshswan/..e-autolink')).to.equal(true);
   });
 
   it('should not truncate urls when zero is passed for truncate prop', () => {
-    const wrapper = shallow(
+    const wrapper = shallow((
       <Autolink
         text="github.com/joshswan/react-native-autolink"
         truncate={0}
       />
-    );
+    ));
     expect(wrapper.contains('github.com/joshswan/react-native-autolink')).to.equal(true);
     expect(wrapper.contains('github.com/joshswan/..e-autolink')).to.equal(false);
   });

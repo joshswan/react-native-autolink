@@ -239,7 +239,7 @@ Autolink.defaultProps = {
 Autolink.propTypes = {
   email: PropTypes.bool,
   hashtag: PropTypes.oneOf([false, 'instagram', 'twitter']),
-  linkStyle: Text.propTypes.style,
+  linkStyle: Text.propTypes.style, // eslint-disable-line react/no-typos
   mention: PropTypes.oneOf([false, 'instagram', 'twitter']),
   numberOfLines: PropTypes.number,
   onPress: PropTypes.func,
