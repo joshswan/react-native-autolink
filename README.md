@@ -38,7 +38,7 @@ class MyComponent extends Component {
 | `mention` | `Boolean/String` | `false` | Enable mention/handle linking to supplied service. Possible values: `false`, `"instagram"`, `"twitter"`. |
 | `phone` | `Boolean/String` | `true` | Enable phone linking (`tel:{number}`, `sms:{number}`) for calling/texting. Possible values: `false`, `"text"`|
 | `twitter` | `Boolean` | `false` | **DEPRECATED. Use `mention` prop.** Enable Twitter handle linking (`twitter://user?screen_name={handle}`). |
-| `urls` | `Boolean/Object` | `true` | Enable url linking (`https://{url}`). Possible values: true/false or {schemeMatches: true/false, wwwMatches: true/false, tldMatches: true/false}} |
+| `url` | `Boolean/Object` | `true` | Enable url linking (`https://{url}`). Possible values: `true`, `false`, `{ schemeMatches: true/false, wwwMatches: true/false, tldMatches: true/false }` |
 | `stripPrefix` | `Boolean` | `true` | Enable stripping of protocol from link text (`https://url` -> `url`). |
 | `linkStyle` | `TextStyle` | | Custom styling to apply to Text nodes of links. |
 | `onPress` | `function` | | Custom function handler for link press events. Arguments: `url:String`, [`match:Object`][match-url]. |
