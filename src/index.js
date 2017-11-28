@@ -113,29 +113,23 @@ export default class Autolink extends Component {
     }
   }
 
-  renderLink(text, match, index) {
+  renderLink(text, match, index, textProps) {
     const truncated = (this.props.truncate > 0) ?
       Autolinker.truncate.TruncateSmart(text, this.props.truncate, this.props.truncateChars) :
       text;
 
-    // also supply other props to the link, minus the style prop
-    const { ...other } = this.props;
-    const otherProps = Object.keys(other)
-      .filter(key => ['style'].indexOf(key) < 0)
-      .reduce((newObj, key) => Object.assign(newObj, { [key]: other[key] }), {});
-
     return (
       <Text
+        {...textProps}
         key={index}
         style={[styles.link, this.props.linkStyle]}
         onPress={() => this.onPress(match)}
         onLongPress={() => this.onLongPress(match)}
-        {...otherProps}
       >
         {truncated}
       </Text>
     );
-  }  
+  }
 
   render() {
     // Destructure props
@@ -152,6 +146,7 @@ export default class Autolink extends Component {
       renderLink,
       showAlert,
       stripPrefix,
+      style,
       text,
       truncate,
       truncateChars,
@@ -216,7 +211,7 @@ export default class Autolink extends Component {
           case 'url':
             return (renderLink) ?
               renderLink(match.getAnchorText(), match, index) :
-              this.renderLink(match.getAnchorText(), match, index);
+              this.renderLink(match.getAnchorText(), match, index, other);
           default:
             return part;
         }
@@ -224,6 +219,7 @@ export default class Autolink extends Component {
 
     return createElement(Text, {
       ref: (component) => { this._root = component; }, // eslint-disable-line no-underscore-dangle
+      style,
       ...other,
     }, ...nodes);
   }
@@ -255,6 +251,7 @@ Autolink.propTypes = {
   renderLink: PropTypes.func,
   showAlert: PropTypes.bool,
   stripPrefix: PropTypes.bool,
+  style: Text.propTypes.style, // eslint-disable-line react/no-typos
   text: PropTypes.string.isRequired,
   truncate: PropTypes.number,
   truncateChars: PropTypes.string,
