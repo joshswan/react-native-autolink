@@ -118,17 +118,24 @@ export default class Autolink extends Component {
       Autolinker.truncate.TruncateSmart(text, this.props.truncate, this.props.truncateChars) :
       text;
 
+    // also supply other props to the link, minus the style prop
+    const { ...other } = this.props;
+    const otherProps = Object.keys(other)
+      .filter(key => ['style'].indexOf(key) < 0)
+      .reduce((newObj, key) => Object.assign(newObj, { [key]: other[key] }), {});
+
     return (
       <Text
         key={index}
         style={[styles.link, this.props.linkStyle]}
         onPress={() => this.onPress(match)}
         onLongPress={() => this.onLongPress(match)}
+        {...otherProps}
       >
         {truncated}
       </Text>
     );
-  }
+  }  
 
   render() {
     // Destructure props
