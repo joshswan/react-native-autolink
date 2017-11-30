@@ -256,13 +256,13 @@ Autolink.propTypes = {
   truncate: PropTypes.number,
   truncateChars: PropTypes.string,
   twitter: PropTypes.bool,
-  url: PropTypes.oneOfType(
+  url: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.shape({
       schemeMatches: PropTypes.bool,
       wwwMatches: PropTypes.bool,
       tldMatches: PropTypes.bool,
     }),
-  ),
+  ]),
   webFallback: PropTypes.bool,
 };
