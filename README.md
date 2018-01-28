@@ -35,6 +35,7 @@ class MyComponent extends Component {
 | `text` | `String` | | ***Required.*** The string to parse for links. |
 | `email` | `Boolean` | `true` | Enable email linking (`mailto:{email}`). |
 | `hashtag` | `Boolean/String` | `false` | Enable hashtag linking to supplied service. Possible values: `false`, `"instagram"`, `"twitter"`. |
+| `latlng` | `Boolean` | `false` | *Experimental* Enable latitude, longitude linking to maps. |
 | `mention` | `Boolean/String` | `false` | Enable mention/handle linking to supplied service. Possible values: `false`, `"instagram"`, `"twitter"`. |
 | `phone` | `Boolean/String` | `true` | Enable phone linking (`tel:{number}`, `sms:{number}`) for calling/texting. Possible values: `false`, `"text"`|
 | `twitter` | `Boolean` | `false` | **DEPRECATED. Use `mention` prop.** Enable Twitter handle linking (`twitter://user?screen_name={handle}`). |
