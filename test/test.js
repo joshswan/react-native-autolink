@@ -176,4 +176,17 @@ describe('<Autolink />', () => {
     wrapper.children().find('Text').simulate('longPress');
     expect(onLongPress.called).to.equal(true);
   });
+
+  /**
+   * EXPERIMENTAL
+   */
+  it('should wrap a latitude/longitude pair in a Text node when latlng prop enabled', () => {
+    const wrapper = shallow(<Autolink text="34.0522, -118.2437" latlng />);
+    expect(wrapper.find('Text')).to.have.length(2);
+  });
+
+  it('should not wrap a latitude/longitude pair in a Text node when latlng prop disabled', () => {
+    const wrapper = shallow(<Autolink text="34.0522, -118.2437" latlng={false} />);
+    expect(wrapper.find('Text')).to.have.length(1);
+  });
 });

@@ -10,6 +10,9 @@ import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
 import Autolinker from 'autolinker';
 import { Alert, Linking, Platform, StyleSheet, Text } from 'react-native';
+import matchers from './matchers';
+
+const tagBuilder = Autolinker.prototype.getTagBuilder();
 
 const styles = StyleSheet.create({
   link: {
@@ -81,6 +84,12 @@ export default class Autolink extends Component {
             return [match.getMatchedText()];
         }
       }
+      case 'latlng': {
+        const latlng = match.getLatLng();
+        const query = latlng.replace(/\s/g, '');
+
+        return [Platform.OS === 'ios' ? `http://maps.apple.com/?q=${encodeURIComponent(latlng)}&ll=${query}` : `https://www.google.com/maps/search/?api=1&query=${query}`];
+      }
       case 'mention': {
         const mention = match.getMention();
 
@@ -138,6 +147,7 @@ export default class Autolink extends Component {
     let {
       email,
       hashtag,
+      latlng,
       linkStyle,
       mention,
       onPress,
@@ -189,6 +199,25 @@ export default class Autolink extends Component {
           return token;
         },
       });
+
+      // Custom matchers
+      matchers.forEach(({ id, regex, Match }) => {
+        if (this.props[id]) {
+          text = text.replace(regex, (...args) => {
+            const token = generateToken();
+            const matchedText = args[0];
+
+            matches[token] = new Match({
+              tagBuilder,
+              matchedText,
+              offset: args[args.length - 2],
+              [id]: matchedText,
+            });
+
+            return token;
+          });
+        }
+      });
     } catch (e) {
       console.warn(e); // eslint-disable-line no-console
 
@@ -206,6 +235,7 @@ export default class Autolink extends Component {
         switch (match.getType()) {
           case 'email':
           case 'hashtag':
+          case 'latlng':
           case 'mention':
           case 'phone':
           case 'url':
@@ -228,6 +258,7 @@ export default class Autolink extends Component {
 Autolink.defaultProps = {
   email: true,
   hashtag: false,
+  latlng: false,
   mention: false,
   phone: true,
   showAlert: false,
@@ -242,6 +273,7 @@ Autolink.defaultProps = {
 Autolink.propTypes = {
   email: PropTypes.bool,
   hashtag: PropTypes.oneOf([false, 'instagram', 'twitter']),
+  latlng: PropTypes.bool,
   linkStyle: Text.propTypes.style, // eslint-disable-line react/no-typos
   mention: PropTypes.oneOf([false, 'instagram', 'twitter']),
   numberOfLines: PropTypes.number,
