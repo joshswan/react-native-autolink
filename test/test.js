@@ -119,6 +119,11 @@ describe('<Autolink />', () => {
     expect(wrapper.contains('github.com')).to.equal(true);
   });
 
+  it('should not remove url prefixes when stripPrefix prop disabled', () => {
+    const wrapper = shallow(<Autolink text="https://github.com" stripPrefix={false} />);
+    expect(wrapper.contains('https://github.com')).to.equal(true);
+  });
+
   it('should truncate urls to length specified in truncate prop', () => {
     const wrapper = shallow((
       <Autolink
