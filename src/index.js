@@ -274,7 +274,7 @@ Autolink.propTypes = {
   email: PropTypes.bool,
   hashtag: PropTypes.oneOf([false, 'instagram', 'twitter']),
   latlng: PropTypes.bool,
-  linkStyle: Text.propTypes.style, // eslint-disable-line react/no-typos
+  linkStyle: PropTypes.object, // eslint-disable-line react/no-typos
   mention: PropTypes.oneOf([false, 'instagram', 'twitter']),
   numberOfLines: PropTypes.number,
   onPress: PropTypes.func,
@@ -283,7 +283,7 @@ Autolink.propTypes = {
   renderLink: PropTypes.func,
   showAlert: PropTypes.bool,
   stripPrefix: PropTypes.bool,
-  style: Text.propTypes.style, // eslint-disable-line react/no-typos
+  style: PropTypes.object, // eslint-disable-line react/no-typos
   text: PropTypes.string.isRequired,
   truncate: PropTypes.number,
   truncateChars: PropTypes.string,
