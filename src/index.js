@@ -21,6 +21,27 @@ const styles = StyleSheet.create({
 });
 
 export default class Autolink extends Component {
+  static truncate(text, {
+    truncate = 32,
+    truncateChars = '..',
+    truncateLocation = 'smart',
+  } = {}) {
+    let fn;
+
+    switch (truncateLocation) {
+      case 'end':
+        fn = Autolinker.truncate.TruncateEnd;
+        break;
+      case 'middle':
+        fn = Autolinker.truncate.TruncateMiddle;
+        break;
+      default:
+        fn = Autolinker.truncate.TruncateSmart;
+    }
+
+    return fn(text, truncate, truncateChars);
+  }
+
   onPress(match, alertShown) {
     // Check if alert needs to be shown
     if (this.props.showAlert && !alertShown) {
@@ -123,9 +144,7 @@ export default class Autolink extends Component {
   }
 
   renderLink(text, match, index, textProps) {
-    const truncated = (this.props.truncate > 0) ?
-      Autolinker.truncate.TruncateSmart(text, this.props.truncate, this.props.truncateChars) :
-      text;
+    const truncated = this.props.truncate ? this.constructor.truncate(text, this.props) : text;
 
     return (
       <Text
@@ -265,6 +284,7 @@ Autolink.defaultProps = {
   stripPrefix: true,
   truncate: 32,
   truncateChars: '..',
+  truncateLocation: 'smart',
   twitter: false,
   url: true,
   webFallback: Platform.OS !== 'ios', // iOS requires LSApplicationQueriesSchemes for Linking.canOpenURL
@@ -287,6 +307,11 @@ Autolink.propTypes = {
   text: PropTypes.string.isRequired,
   truncate: PropTypes.number,
   truncateChars: PropTypes.string,
+  truncateLocation: PropTypes.oneOf([
+    'end',
+    'middle',
+    'smart',
+  ]),
   twitter: PropTypes.bool,
   url: PropTypes.oneOfType([
     PropTypes.bool,

@@ -155,6 +155,32 @@ describe('<Autolink />', () => {
     expect(wrapper.contains('github.com/joshswan/__e-autolink')).to.equal(true);
   });
 
+  it('should truncate urls at the end when specified in truncateLocation prop', () => {
+    const wrapper = shallow((
+      <Autolink
+        stripPrefix={false}
+        text="https://github.com/joshswan/react-native-autolink"
+        truncate={32}
+        truncateLocation="end"
+      />
+    ));
+    expect(wrapper.contains('https://github.com/joshswan/react-native-autolink')).to.equal(false);
+    expect(wrapper.contains('https://github.com/joshswan/re..')).to.equal(true);
+  });
+
+  it('should truncate urls in the middle when specified in truncateLocation prop', () => {
+    const wrapper = shallow((
+      <Autolink
+        stripPrefix={false}
+        text="https://github.com/joshswan/react-native-autolink"
+        truncate={32}
+        truncateLocation="middle"
+      />
+    ));
+    expect(wrapper.contains('https://github.com/joshswan/react-native-autolink')).to.equal(false);
+    expect(wrapper.contains('https://github...native-autolink')).to.equal(true);
+  });
+
   it('should use function to render links if passed using renderLink prop', () => {
     const renderLink = (text, match, index) => <Text>{`${text}:${index}`}</Text>;
     const wrapper = shallow(<Autolink text="josh@example.com" renderLink={renderLink} />);
