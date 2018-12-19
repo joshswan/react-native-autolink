@@ -299,7 +299,10 @@ Autolink.propTypes = {
   numberOfLines: PropTypes.number,
   onPress: PropTypes.func,
   onLongPress: PropTypes.func,
-  phone: PropTypes.bool,
+  phone: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.string,
+  ]),
   renderLink: PropTypes.func,
   showAlert: PropTypes.bool,
   stripPrefix: PropTypes.bool,
