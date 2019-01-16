@@ -150,7 +150,7 @@ export default class Autolink extends Component {
       <Text
         {...textProps}
         key={index}
-        style={[styles.link, this.props.linkStyle]}
+        style={this.props.linkStyle || styles.link}
         onPress={() => this.onPress(match)}
         onLongPress={() => this.onLongPress(match)}
       >
