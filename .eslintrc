@@ -1,6 +1,7 @@
 {
   "extends": "airbnb",
   "rules": {
+    "class-methods-use-this": "off",
     "prefer-const": ["error", {"destructuring": "all"}],
     "import/no-extraneous-dependencies": ["error", {"devDependencies": true, "peerDependencies": true}],
     "react/jsx-filename-extension": ["error", {"extensions": [".js", ".jsx"]}],

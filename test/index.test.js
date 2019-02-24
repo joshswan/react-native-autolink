@@ -11,7 +11,7 @@ import { Text } from 'react-native';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import Autolink from '../src/index';
+import Autolink from '../src';
 
 describe('<Autolink />', () => {
   it('should render a Text node', () => {

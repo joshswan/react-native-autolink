@@ -9,10 +9,17 @@
 import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
 import Autolinker from 'autolinker';
-import { Alert, Linking, Platform, StyleSheet, Text } from 'react-native';
+import {
+  Alert,
+  Linking,
+  Platform,
+  StyleSheet,
+  Text,
+} from 'react-native';
+import * as Truncate from './truncate';
 import matchers from './matchers';
 
-const tagBuilder = Autolinker.prototype.getTagBuilder();
+// const tagBuilder = Autolinker.prototype.getTagBuilder();
 
 const styles = StyleSheet.create({
   link: {
@@ -30,21 +37,27 @@ export default class Autolink extends Component {
 
     switch (truncateLocation) {
       case 'end':
-        fn = Autolinker.truncate.TruncateEnd;
+        fn = Truncate.end;
         break;
       case 'middle':
-        fn = Autolinker.truncate.TruncateMiddle;
+        fn = Truncate.middle;
         break;
       default:
-        fn = Autolinker.truncate.TruncateSmart;
+        fn = Truncate.smart;
     }
 
     return fn(text, truncate, truncateChars);
   }
 
   onPress(match, alertShown) {
+    const {
+      onPress,
+      showAlert,
+      webFallback,
+    } = this.props;
+
     // Check if alert needs to be shown
-    if (this.props.showAlert && !alertShown) {
+    if (showAlert && !alertShown) {
       Alert.alert(
         'Leaving App',
         'Do you want to continue?',
@@ -64,9 +77,9 @@ export default class Autolink extends Component {
     ] = this.getUrl(match);
 
     // Call custom onPress handler or open link/fallback
-    if (this.props.onPress) {
-      this.props.onPress(url, match);
-    } else if (this.props.webFallback) {
+    if (onPress) {
+      onPress(url, match);
+    } else if (webFallback) {
       Linking.canOpenURL(url).then((supported) => {
         Linking.openURL(!supported && fallback ? fallback : url);
       });
@@ -76,17 +89,18 @@ export default class Autolink extends Component {
   }
 
   onLongPress(match) {
-    // Get url for match
-    const [
-      url,
-    ] = this.getUrl(match);
+    const { onLongPress } = this.props;
 
-    if (this.props.onLongPress) {
-      this.props.onLongPress(url, match);
+    if (onLongPress) {
+      // Get url for match
+      const [url] = this.getUrl(match);
+
+      onLongPress(url, match);
     }
   }
 
   getUrl(match) {
+    const { hashtag, mention, phone } = this.props;
     const type = match.getType();
 
     switch (type) {
@@ -96,7 +110,7 @@ export default class Autolink extends Component {
       case 'hashtag': {
         const tag = encodeURIComponent(match.getHashtag());
 
-        switch (this.props.hashtag) {
+        switch (hashtag) {
           case 'instagram':
             return [`instagram://tag?name=${tag}`, `https://www.instagram.com/explore/tags/${tag}/`];
           case 'twitter':
@@ -112,13 +126,13 @@ export default class Autolink extends Component {
         return [Platform.OS === 'ios' ? `http://maps.apple.com/?q=${encodeURIComponent(latlng)}&ll=${query}` : `https://www.google.com/maps/search/?api=1&query=${query}`];
       }
       case 'mention': {
-        const mention = match.getMention();
+        const mentionText = match.getMention();
 
-        switch (this.props.mention) {
+        switch (mention) {
           case 'instagram':
-            return [`instagram://user?username=${mention}`, `https://www.instagram.com/${mention}/`];
+            return [`instagram://user?username=${mentionText}`, `https://www.instagram.com/${mentionText}/`];
           case 'twitter':
-            return [`twitter://user?screen_name=${mention}`, `https://twitter.com/${mention}`];
+            return [`twitter://user?screen_name=${mentionText}`, `https://twitter.com/${mentionText}`];
           default:
             return [match.getMatchedText()];
         }
@@ -126,7 +140,7 @@ export default class Autolink extends Component {
       case 'phone': {
         const number = match.getNumber();
 
-        switch (this.props.phone) {
+        switch (phone) {
           case 'sms':
           case 'text':
             return [`sms:${number}`];
@@ -144,13 +158,14 @@ export default class Autolink extends Component {
   }
 
   renderLink(text, match, index, textProps) {
-    const truncated = this.props.truncate ? this.constructor.truncate(text, this.props) : text;
+    const { truncate, linkStyle } = this.props;
+    const truncated = truncate ? this.constructor.truncate(text, this.props) : text;
 
     return (
       <Text
         {...textProps}
         key={index}
-        style={this.props.linkStyle || styles.link}
+        style={linkStyle || styles.link}
         onPress={() => this.onPress(match)}
         onLongPress={() => this.onLongPress(match)}
       >
@@ -221,13 +236,14 @@ export default class Autolink extends Component {
 
       // Custom matchers
       matchers.forEach(({ id, regex, Match }) => {
+        // eslint-disable-next-line react/destructuring-assignment
         if (this.props[id]) {
           text = text.replace(regex, (...args) => {
             const token = generateToken();
             const matchedText = args[0];
 
             matches[token] = new Match({
-              tagBuilder,
+              // tagBuilder,
               matchedText,
               offset: args[args.length - 2],
               [id]: matchedText,
@@ -258,9 +274,9 @@ export default class Autolink extends Component {
           case 'mention':
           case 'phone':
           case 'url':
-            return (renderLink) ?
-              renderLink(match.getAnchorText(), match, index) :
-              this.renderLink(match.getAnchorText(), match, index, other);
+            return (renderLink)
+              ? renderLink(match.getAnchorText(), match, index)
+              : this.renderLink(match.getAnchorText(), match, index, other);
           default:
             return part;
         }
