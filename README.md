@@ -41,7 +41,7 @@ class MyComponent extends Component {
 | `twitter` | `Boolean` | `false` | **DEPRECATED. Use `mention` prop.** Enable Twitter handle linking (`twitter://user?screen_name={handle}`). |
 | `url` | `Boolean/Object` | `true` | Enable url linking (`https://{url}`). Possible values: `true`, `false`, `{ schemeMatches: true/false, wwwMatches: true/false, tldMatches: true/false }` |
 | `stripPrefix` | `Boolean` | `true` | Enable stripping of protocol from link text (`https://url` -> `url`). |
-| `stripTrailingSlash` | `Boolean` | `true` | Enable stripping of trailing slashs from link text (`https://example.com/` -> `https://example.com`). |
+| `stripTrailingSlash` | `Boolean` | `true` | Enable stripping of trailing slashs from link text (`example.com/page/` -> `example.com/page`). |
 | `linkStyle` | `TextStyle` | | Custom styling to apply to Text nodes of links. |
 | `onPress` | `function` | | Custom function handler for link press events. Arguments: `url:String`, [`match:Object`][match-url]. |
 | `onLongPress` | `function` | | Function handler for long press events. Arguments: `url:String`, [`match:Object`][match-url] |
