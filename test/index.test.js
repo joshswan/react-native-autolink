@@ -124,6 +124,17 @@ describe('<Autolink />', () => {
     expect(wrapper.contains('https://github.com')).to.equal(true);
   });
 
+  it('should remove url trailing slashes when stripTrailingSlash prop enabled', () => {
+    const wrapper = shallow(<Autolink text="github.com/" stripTrailingSlash />);
+    expect(wrapper.contains('github.com/')).to.equal(false);
+    expect(wrapper.contains('github.com')).to.equal(true);
+  });
+
+  it('should not remove url trailing slashes when stripTrailingSlash prop disabled', () => {
+    const wrapper = shallow(<Autolink text="github.com/joshswan/" stripTrailingSlash={false} />);
+    expect(wrapper.contains('github.com/joshswan/')).to.equal(true);
+  });
+
   it('should truncate urls to length specified in truncate prop', () => {
     const wrapper = shallow((
       <Autolink
