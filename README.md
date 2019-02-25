@@ -34,13 +34,14 @@ class MyComponent extends Component {
 | ---- | ---- | ------- | ----------- |
 | `text` | `String` | | ***Required.*** The string to parse for links. |
 | `email` | `Boolean` | `true` | Enable email linking (`mailto:{email}`). |
-| `hashtag` | `Boolean/String` | `false` | Enable hashtag linking to supplied service. Possible values: `false`, `"instagram"`, `"twitter"`. |
+| `hashtag` | `Boolean/String` | `false` | Enable hashtag linking to supplied service. Possible values: `false`, `"facebook"`, `"instagram"`, `"twitter"`. |
 | `latlng` | `Boolean` | `false` | *Experimental* Enable latitude, longitude linking to maps. |
-| `mention` | `Boolean/String` | `false` | Enable mention/handle linking to supplied service. Possible values: `false`, `"instagram"`, `"twitter"`. |
+| `mention` | `Boolean/String` | `false` | Enable mention/handle linking to supplied service. Possible values: `false`, `"instagram"`, `"soundcloud"`, `"twitter"`. |
 | `phone` | `Boolean/String` | `true` | Enable phone linking (`tel:{number}`, `sms:{number}`) for calling/texting. Possible values: `false`, `"text"`|
 | `twitter` | `Boolean` | `false` | **DEPRECATED. Use `mention` prop.** Enable Twitter handle linking (`twitter://user?screen_name={handle}`). |
 | `url` | `Boolean/Object` | `true` | Enable url linking (`https://{url}`). Possible values: `true`, `false`, `{ schemeMatches: true/false, wwwMatches: true/false, tldMatches: true/false }` |
 | `stripPrefix` | `Boolean` | `true` | Enable stripping of protocol from link text (`https://url` -> `url`). |
+| `stripTrailingSlash` | `Boolean` | `true` | Enable stripping of trailing slashs from link text (`https://example.com/` -> `https://example.com`). |
 | `linkStyle` | `TextStyle` | | Custom styling to apply to Text nodes of links. |
 | `onPress` | `function` | | Custom function handler for link press events. Arguments: `url:String`, [`match:Object`][match-url]. |
 | `onLongPress` | `function` | | Function handler for long press events. Arguments: `url:String`, [`match:Object`][match-url] |

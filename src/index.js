@@ -111,6 +111,8 @@ export default class Autolink extends Component {
         const tag = encodeURIComponent(match.getHashtag());
 
         switch (hashtag) {
+          case 'facebook':
+            return [`fb://hashtag/${tag}`, `https://www.facebook.com/hashtag/${tag}`];
           case 'instagram':
             return [`instagram://tag?name=${tag}`, `https://www.instagram.com/explore/tags/${tag}/`];
           case 'twitter':
@@ -126,13 +128,15 @@ export default class Autolink extends Component {
         return [Platform.OS === 'ios' ? `http://maps.apple.com/?q=${encodeURIComponent(latlng)}&ll=${query}` : `https://www.google.com/maps/search/?api=1&query=${query}`];
       }
       case 'mention': {
-        const mentionText = match.getMention();
+        const username = match.getMention();
 
         switch (mention) {
           case 'instagram':
-            return [`instagram://user?username=${mentionText}`, `https://www.instagram.com/${mentionText}/`];
+            return [`instagram://user?username=${username}`, `https://www.instagram.com/${username}/`];
+          case 'soundcloud':
+            return [`https://soundcloud.com/${username}`];
           case 'twitter':
-            return [`twitter://user?screen_name=${mentionText}`, `https://twitter.com/${mentionText}`];
+            return [`twitter://user?screen_name=${username}`, `https://twitter.com/${username}`];
           default:
             return [match.getMatchedText()];
         }
@@ -190,6 +194,7 @@ export default class Autolink extends Component {
       renderLink,
       showAlert,
       stripPrefix,
+      stripTrailingSlash,
       style,
       text,
       truncate,
@@ -225,6 +230,7 @@ export default class Autolink extends Component {
         phone,
         urls: url,
         stripPrefix,
+        stripTrailingSlash,
         replaceFn: (match) => {
           const token = generateToken();
 
@@ -298,6 +304,7 @@ Autolink.defaultProps = {
   phone: true,
   showAlert: false,
   stripPrefix: true,
+  stripTrailingSlash: true,
   truncate: 32,
   truncateChars: '..',
   truncateLocation: 'smart',
@@ -308,10 +315,20 @@ Autolink.defaultProps = {
 
 Autolink.propTypes = {
   email: PropTypes.bool,
-  hashtag: PropTypes.oneOf([false, 'instagram', 'twitter']),
+  hashtag: PropTypes.oneOf([
+    false,
+    'facebook',
+    'instagram',
+    'twitter',
+  ]),
   latlng: PropTypes.bool,
   linkStyle: Text.propTypes.style, // eslint-disable-line react/no-typos
-  mention: PropTypes.oneOf([false, 'instagram', 'twitter']),
+  mention: PropTypes.oneOf([
+    false,
+    'instagram',
+    'soundcloud',
+    'twitter',
+  ]),
   numberOfLines: PropTypes.number,
   onPress: PropTypes.func,
   onLongPress: PropTypes.func,
@@ -322,6 +339,7 @@ Autolink.propTypes = {
   renderLink: PropTypes.func,
   showAlert: PropTypes.bool,
   stripPrefix: PropTypes.bool,
+  stripTrailingSlash: PropTypes.bool,
   style: Text.propTypes.style, // eslint-disable-line react/no-typos
   text: PropTypes.string.isRequired,
   truncate: PropTypes.number,
