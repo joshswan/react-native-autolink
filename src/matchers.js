@@ -6,7 +6,7 @@
  * https://github.com/joshswan/react-native-autolink/blob/master/LICENSE
  */
 
-import { Match } from 'autolinker';
+import { Match } from 'autolinker/dist/es2015';
 
 export default [
   // LatLng

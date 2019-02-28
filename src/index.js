@@ -8,7 +8,7 @@
 
 import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
-import Autolinker from 'autolinker';
+import { Autolinker, AnchorTagBuilder } from 'autolinker/dist/es2015';
 import {
   Alert,
   Linking,
@@ -19,7 +19,7 @@ import {
 import * as Truncate from './truncate';
 import matchers from './matchers';
 
-// const tagBuilder = Autolinker.prototype.getTagBuilder();
+const tagBuilder = new AnchorTagBuilder();
 
 const styles = StyleSheet.create({
   link: {
@@ -249,7 +249,7 @@ export default class Autolink extends Component {
             const matchedText = args[0];
 
             matches[token] = new Match({
-              // tagBuilder,
+              tagBuilder,
               matchedText,
               offset: args[args.length - 2],
               [id]: matchedText,
