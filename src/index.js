@@ -6,7 +6,7 @@
  * https://github.com/joshswan/react-native-autolink/blob/master/LICENSE
  */
 
-import React, { Component, createElement } from 'react';
+import React, { PureComponent, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { Autolinker, AnchorTagBuilder } from 'autolinker/dist/es2015';
 import {
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Autolink extends Component {
+export default class Autolink extends PureComponent {
   static truncate(text, {
     truncate = 32,
     truncateChars = '..',
