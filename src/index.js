@@ -179,9 +179,6 @@ export default class Autolink extends PureComponent {
   }
 
   render() {
-    // Destructure props
-    /* eslint-disable no-unused-vars */
-    /* https://github.com/babel/babel-eslint/issues/95 */
     let {
       email,
       hashtag,
@@ -330,7 +327,6 @@ Autolink.propTypes = {
     'soundcloud',
     'twitter',
   ]),
-  numberOfLines: PropTypes.number,
   onPress: PropTypes.func,
   onLongPress: PropTypes.func,
   phone: PropTypes.oneOfType([
