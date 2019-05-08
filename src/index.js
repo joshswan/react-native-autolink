@@ -199,6 +199,7 @@ export default class Autolink extends PureComponent {
       text,
       truncate,
       truncateChars,
+      truncateLocation,
       twitter,
       url,
       webFallback,
