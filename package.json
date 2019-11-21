@@ -4,6 +4,7 @@
   "description": "Autolinking component for React Native",
   "author": "Josh Swan <josh@disruptivelabs.io>",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "license": "MIT",
   "repository": {
     "type": "git",
