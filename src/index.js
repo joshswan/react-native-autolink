@@ -167,6 +167,7 @@ export default class Autolink extends PureComponent {
 
     return (
       <Text
+        // eslint-disable-next-line react/jsx-props-no-spreading
         {...textProps}
         key={index}
         style={linkStyle || styles.link}
@@ -265,7 +266,7 @@ export default class Autolink extends PureComponent {
 
     const nodes = text
       .split(tokenRegexp)
-      .filter(part => !!part)
+      .filter((part) => !!part)
       .map((part, index) => {
         const match = matches[part];
 
