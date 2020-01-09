@@ -1,7 +1,7 @@
 /*!
  * React Native Autolink
  *
- * Copyright 2016-2019 Josh Swan
+ * Copyright 2016-2020 Josh Swan
  * Released under the MIT license
  * https://github.com/joshswan/react-native-autolink/blob/master/LICENSE
  */
