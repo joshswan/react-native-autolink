@@ -32,6 +32,7 @@ class MyComponent extends Component {
 
 | Prop | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
+| `style` | `Stylesheet` | | Custom stylesheet to provide to text |
 | `text` | `String` | | ***Required.*** The string to parse for links. |
 | `email` | `Boolean` | `true` | Enable email linking (`mailto:{email}`). |
 | `hashtag` | `Boolean/String` | `false` | Enable hashtag linking to supplied service. Possible values: `false`, `"facebook"`, `"instagram"`, `"twitter"`. |
