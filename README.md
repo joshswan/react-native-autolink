@@ -30,6 +30,8 @@ class MyComponent extends Component {
 
 ## Props
 
+**Note: Any props not listed below will be passed through to the main Text node (e.g. style, numberOfLines).**
+
 | Prop | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
 | `text` | `String` | | ***Required.*** The string to parse for links. |
@@ -51,8 +53,6 @@ class MyComponent extends Component {
 | `truncateChars` | `String` | `..` | Characters to replace truncated url segments with, if enabled. |
 | `truncateLocation` | `String` | `"smart"` | Specify location of truncation. Possible values: `"smart"`, `"end"`, `"middle"`. |
 | `webFallback` | `Boolean` | Android: `true` iOS: `false` | Link to web versions of Instagram/Twitter for hashtag and mention links when users don't have the respective app installed. *Requires `LSApplicationQueriesSchemes` on iOS. See: https://facebook.github.io/react-native/docs/linking.html* |
-
-**Any other props will be passed through to the main Text node (e.g. style, numberOfLines).**
 
 [build-url]: https://travis-ci.org/joshswan/react-native-autolink
 [build-image]: https://travis-ci.org/joshswan/react-native-autolink.svg?branch=master
