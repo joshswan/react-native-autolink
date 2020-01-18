@@ -4,10 +4,10 @@ import { Match } from 'autolinker';
 
 export interface AutolinkProps {
   email?: boolean;
-  hashtag?: false | 'facebook' | 'instagram' | 'twitter';
+  hashtag?: true | false | 'facebook' | 'instagram' | 'twitter';
   latlng?: boolean;
   linkStyle?: StyleProp<TextStyle>;
-  mention?: false | 'instagram' | 'soundcloud' | 'twitter';
+  mention?: true | false | 'instagram' | 'soundcloud' | 'twitter';
   onPress?: (url: string, match: Match) => void;
   onLongPress?: (url: string, match: Match) => void;
   phone?: boolean | 'text';
