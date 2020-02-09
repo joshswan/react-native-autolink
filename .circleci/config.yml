@@ -1,0 +1,36 @@
+version: 2.1
+
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-
+            - yarn-packages-v1-
+      - run:
+          name: yarn install
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run: mkdir artifacts
+      - run:
+          name: lint
+          command: yarn lint --format junit --output-file ./artifacts/eslint/results.xml
+      - run:
+          name: test
+          command: yarn test --ci --reporters=default --reporters=jest-junit
+      - store_artifacts:
+          path: artifacts/eslint/results.xml
+          prefix: lint
+      - store_artifacts:
+          path: artifacts/jest/results.xml
+          prefix: tests
+      - store_test_results:
+          path: artifacts
