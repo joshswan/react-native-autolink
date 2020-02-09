@@ -27,23 +27,20 @@
   "scripts": {
     "build": "tsc",
     "lint": "tsc --noEmit && eslint src --ext .ts,.tsx",
-    "test": "mocha --require @babel/register --require test/setup.js --recursive test/*.test.js"
+    "test": "jest"
   },
   "dependencies": {
-    "autolinker": "^3.11.1",
-    "prop-types": "^15.7.2"
+    "autolinker": "^3.11.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
-    "@babel/register": "^7.8.3",
+    "@babel/preset-typescript": "^7.8.3",
+    "@types/jest": "^25.1.2",
     "@types/react": "^16.9.19",
     "@types/react-native": "^0.61.12",
     "@typescript-eslint/eslint-plugin": "^2.19.0",
     "@typescript-eslint/parser": "^2.19.0",
     "babel-eslint": "^10.0.3",
-    "chai": "^4.2.0",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.18.2",
@@ -51,16 +48,19 @@
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.7.0",
     "jest": "^25.1.0",
-    "mocha": "^6.2.2",
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "react-native": "^0.61.5",
-    "react-native-mock-render": "^0.1.8",
-    "sinon": "^8.1.1",
-    "ts-node": "^8.6.2",
+    "react-test-renderer": "^16.12.0",
     "typescript": "^3.7.5"
   },
   "peerDependencies": {
     "react-native": ">=0.25.0"
+  },
+  "jest": {
+    "preset": "react-native",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(react-native|autolinker)/)"
+    ]
   }
 }

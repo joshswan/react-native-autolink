@@ -32,5 +32,11 @@
     "react/static-property-placement": ["error", "static public field"],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.test.ts", "*.test.tsx"],
+      "env": { "jest": true, "node": true }
+    }
+  ]
 }

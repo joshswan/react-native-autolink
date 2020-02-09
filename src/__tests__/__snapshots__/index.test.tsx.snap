@@ -1,0 +1,393 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Autolink /> does not match scheme-containing url when schemeMatches disabled 1`] = `
+<Text>
+  http://github.com
+</Text>
+`;
+
+exports[`<Autolink /> does not match top-level domain url when wwwMatches disabled 1`] = `
+<Text>
+  github.com
+</Text>
+`;
+
+exports[`<Autolink /> does not match www-containing url when wwwMatches disabled 1`] = `
+<Text>
+  www.github.com
+</Text>
+`;
+
+exports[`<Autolink /> does not remove url prefixes when stripPrefix prop disabled 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    https://github.com
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> does not remove url trailing slashes when stripTrailingSlash prop disabled 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    github.com/joshswan/
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> does not truncate urls when zero is passed for truncate prop 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    github.com/joshswan/react-native-autolink
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> does not wrap a hashtag in a link Text node when hashtag prop disabled 1`] = `
+<Text>
+  #awesome
+</Text>
+`;
+
+exports[`<Autolink /> does not wrap a latitude/longitude pair in a link Text node when latlng prop disabled 1`] = `
+<Text>
+  34.0522, -118.2437
+</Text>
+`;
+
+exports[`<Autolink /> does not wrap a mention/handle in a link Text node when mention prop disabled 1`] = `
+<Text>
+  @twitter
+</Text>
+`;
+
+exports[`<Autolink /> does not wrap a phone number in a link Text node when phone prop disabled 1`] = `
+<Text>
+  415-555-5555
+</Text>
+`;
+
+exports[`<Autolink /> does not wrap a url in a link Text node when url prop disabled 1`] = `
+<Text>
+  https://github.com/joshswan/react-native-autolink
+</Text>
+`;
+
+exports[`<Autolink /> does not wrap an email address in a link Text node when email prop disabled 1`] = `
+<Text>
+  josh@example.com
+</Text>
+`;
+
+exports[`<Autolink /> links multiple elements individually 1`] = `
+<Text>
+  Hi 
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    @josh
+  </Text>
+   (
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    josh@example.com
+  </Text>
+   or 
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    415-555-5555
+  </Text>
+  ), check out 
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    github.com/joshswan/..e-autolink
+  </Text>
+  . It's 
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    #awesome
+  </Text>
+  !
+</Text>
+`;
+
+exports[`<Autolink /> matches top-level domain url when wwwMatches enabled 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    github.com
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> removes url prefixes when stripPrefix prop enabled 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    github.com
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> removes url trailing slashes when stripTrailingSlash prop enabled 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    github.com
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> renders a Text node 1`] = `<Text />`;
+
+exports[`<Autolink /> renders a string when nothing to link 1`] = `
+<Text>
+  Testing
+</Text>
+`;
+
+exports[`<Autolink /> renders links using renderLink prop if provided 1`] = `
+<Text>
+  <Text>
+    josh@example.com:0
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> replaces removed protion of truncated url with truncateChars prop value 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    github.com/joshswan/__e-autolink
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> truncates urls at the end when specified in truncateLocation prop 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    https://github.com/joshswan/re..
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> truncates urls in the middle when specified in truncateLocation prop 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    https://github...native-autolink
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> truncates urls to length specified in truncate prop 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    github.com/joshswan/..e-autolink
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> wraps a hashtag in a link Text node when hashtag prop enabled 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    #awesome
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> wraps a latitude/longitude pair in a link Text node when latlng prop enabled 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    34.0522, -118.2437
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> wraps a mention/handle in a link Text node when mention prop enabled 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    @twitter
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> wraps a phone number in a link Text node when phone prop enabled 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    415-555-5555
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> wraps a url in a link Text node when url prop enabled 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    github.com/joshswan/..e-autolink
+  </Text>
+</Text>
+`;
+
+exports[`<Autolink /> wraps an email address with a link Text node when email prop enabled 1`] = `
+<Text>
+  <Text
+    onLongPress={[Function]}
+    onPress={[Function]}
+    style={
+      Object {
+        "color": "#0E7AFE",
+      }
+    }
+  >
+    josh@example.com
+  </Text>
+</Text>
+`;
