@@ -6,18 +6,28 @@
  * https://github.com/joshswan/react-native-autolink/blob/master/LICENSE
  */
 
-import React, { PureComponent, createElement } from 'react';
-import PropTypes from 'prop-types';
-import { Autolinker, AnchorTagBuilder } from 'autolinker/dist/es2015';
+import React, { PureComponent, createElement, ReactNode } from 'react';
+import {
+  Autolinker,
+  AnchorTagBuilder,
+  Match,
+  EmailMatch,
+  HashtagMatch,
+  MentionMatch,
+  PhoneMatch,
+} from 'autolinker/dist/es2015';
 import {
   Alert,
   Linking,
   Platform,
   StyleSheet,
+  StyleProp,
   Text,
+  TextStyle,
+  TextProps,
 } from 'react-native';
 import * as Truncate from './truncate';
-import matchers from './matchers';
+import { Matchers, MatcherId, LatLngMatch } from './matchers';
 
 const tagBuilder = new AnchorTagBuilder();
 
@@ -27,12 +37,37 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Autolink extends PureComponent {
-  static truncate(text, {
+interface Props {
+  email?: boolean;
+  hashtag?: false | 'facebook' | 'instagram' | 'twitter';
+  latlng?: boolean;
+  linkStyle?: StyleProp<TextStyle>;
+  mention?: false | 'instagram' | 'soundcloud' | 'twitter';
+  onPress?: (url: string, match: Match) => void;
+  onLongPress?: (url: string, match: Match) => void;
+  phone?: boolean | 'text' | 'sms';
+  renderLink?: (text: string, match: Match, index: number) => React.ReactNode;
+  showAlert?: boolean;
+  stripPrefix?: boolean;
+  stripTrailingSlash?: boolean;
+  text: string;
+  truncate?: number;
+  truncateChars?: string;
+  truncateLocation?: 'end' | 'middle' | 'smart';
+  url?: boolean | {
+    schemeMatches?: boolean;
+    wwwMatches?: boolean;
+    tldMatches?: boolean;
+  };
+  webFallback?: boolean;
+}
+
+export default class Autolink extends PureComponent<TextProps & Props> {
+  static truncate(text: string, {
     truncate = 32,
     truncateChars = '..',
     truncateLocation = 'smart',
-  } = {}) {
+  } = {}): string {
     let fn;
 
     switch (truncateLocation) {
@@ -49,7 +84,23 @@ export default class Autolink extends PureComponent {
     return fn(text, truncate, truncateChars);
   }
 
-  onPress(match, alertShown) {
+  static defaultProps = {
+    email: true,
+    hashtag: false,
+    latlng: false,
+    mention: false,
+    phone: true,
+    showAlert: false,
+    stripPrefix: true,
+    stripTrailingSlash: true,
+    truncate: 32,
+    truncateChars: '..',
+    truncateLocation: 'smart',
+    url: true,
+    webFallback: Platform.OS !== 'ios', // iOS requires LSApplicationQueriesSchemes for Linking.canOpenURL
+  };
+
+  onPress(match: Match, alertShown?: boolean): void {
     const {
       onPress,
       showAlert,
@@ -88,7 +139,7 @@ export default class Autolink extends PureComponent {
     }
   }
 
-  onLongPress(match) {
+  onLongPress(match: Match): void {
     const { onLongPress } = this.props;
 
     if (onLongPress) {
@@ -99,16 +150,16 @@ export default class Autolink extends PureComponent {
     }
   }
 
-  getUrl(match) {
+  getUrl(match: Match): string[] {
     const { hashtag, mention, phone } = this.props;
     const type = match.getType();
 
     switch (type) {
       case 'email': {
-        return [`mailto:${encodeURIComponent(match.getEmail())}`];
+        return [`mailto:${encodeURIComponent((match as EmailMatch).getEmail())}`];
       }
       case 'hashtag': {
-        const tag = encodeURIComponent(match.getHashtag());
+        const tag = encodeURIComponent((match as HashtagMatch).getHashtag());
 
         switch (hashtag) {
           case 'facebook':
@@ -122,13 +173,13 @@ export default class Autolink extends PureComponent {
         }
       }
       case 'latlng': {
-        const latlng = match.getLatLng();
+        const latlng = (match as LatLngMatch).getLatLng();
         const query = latlng.replace(/\s/g, '');
 
         return [Platform.OS === 'ios' ? `http://maps.apple.com/?q=${encodeURIComponent(latlng)}&ll=${query}` : `https://www.google.com/maps/search/?api=1&query=${query}`];
       }
       case 'mention': {
-        const username = match.getMention();
+        const username = (match as MentionMatch).getMention();
 
         switch (mention) {
           case 'instagram':
@@ -142,7 +193,7 @@ export default class Autolink extends PureComponent {
         }
       }
       case 'phone': {
-        const number = match.getNumber();
+        const number = (match as PhoneMatch).getNumber();
 
         switch (phone) {
           case 'sms':
@@ -161,9 +212,14 @@ export default class Autolink extends PureComponent {
     }
   }
 
-  renderLink(text, match, index, textProps) {
+  renderLink(
+    text: string,
+    match: Match,
+    index: number,
+    textProps: Partial<TextProps>,
+  ): ReactNode {
     const { truncate, linkStyle } = this.props;
-    const truncated = truncate ? this.constructor.truncate(text, this.props) : text;
+    const truncated = truncate ? Autolink.truncate(text, this.props) : text;
 
     return (
       <Text
@@ -179,8 +235,9 @@ export default class Autolink extends PureComponent {
     );
   }
 
-  render() {
-    let {
+  render(): ReactNode {
+    const {
+      children,
       email,
       hashtag,
       latlng,
@@ -198,16 +255,10 @@ export default class Autolink extends PureComponent {
       truncate,
       truncateChars,
       truncateLocation,
-      twitter,
       url,
       webFallback,
       ...other
     } = this.props;
-
-    // Backwards compatibility for Twitter prop
-    if (!mention && twitter) {
-      mention = 'twitter';
-    }
 
     // Creates a token with a random UID that should not be guessable or
     // conflict with other parts of the string.
@@ -219,14 +270,15 @@ export default class Autolink extends PureComponent {
       return () => `@__ELEMENT-${uid}-${counter++}__@`; // eslint-disable-line no-plusplus
     })();
 
-    const matches = {};
+    const matches: { [token: string]: Match } = {};
+    let linkedText: string;
 
     try {
-      text = Autolinker.link(text || '', {
+      linkedText = Autolinker.link(text || '', {
         email,
         hashtag,
         mention,
-        phone,
+        phone: !!phone,
         urls: url,
         stripPrefix,
         stripTrailingSlash,
@@ -240,18 +292,18 @@ export default class Autolink extends PureComponent {
       });
 
       // Custom matchers
-      matchers.forEach(({ id, regex, Match }) => {
+      Matchers.forEach((matcher) => {
         // eslint-disable-next-line react/destructuring-assignment
-        if (this.props[id]) {
-          text = text.replace(regex, (...args) => {
+        if (this.props[matcher.id as MatcherId]) {
+          linkedText = linkedText.replace(matcher.regex, (...args) => {
             const token = generateToken();
             const matchedText = args[0];
 
-            matches[token] = new Match({
+            matches[token] = new matcher.Match({
               tagBuilder,
               matchedText,
               offset: args[args.length - 2],
-              [id]: matchedText,
+              [matcher.id as MatcherId]: matchedText,
             });
 
             return token;
@@ -264,7 +316,7 @@ export default class Autolink extends PureComponent {
       return null;
     }
 
-    const nodes = text
+    const nodes = linkedText
       .split(tokenRegexp)
       .filter((part) => !!part)
       .map((part, index) => {
@@ -288,73 +340,8 @@ export default class Autolink extends PureComponent {
       });
 
     return createElement(Text, {
-      ref: (component) => { this._root = component; }, // eslint-disable-line no-underscore-dangle
       style,
       ...other,
     }, ...nodes);
   }
 }
-
-Autolink.defaultProps = {
-  email: true,
-  hashtag: false,
-  latlng: false,
-  mention: false,
-  phone: true,
-  showAlert: false,
-  stripPrefix: true,
-  stripTrailingSlash: true,
-  truncate: 32,
-  truncateChars: '..',
-  truncateLocation: 'smart',
-  twitter: false,
-  url: true,
-  webFallback: Platform.OS !== 'ios', // iOS requires LSApplicationQueriesSchemes for Linking.canOpenURL
-};
-
-Autolink.propTypes = {
-  email: PropTypes.bool,
-  hashtag: PropTypes.oneOf([
-    false,
-    'facebook',
-    'instagram',
-    'twitter',
-  ]),
-  latlng: PropTypes.bool,
-  linkStyle: Text.propTypes.style, // eslint-disable-line react/no-typos
-  mention: PropTypes.oneOf([
-    false,
-    'instagram',
-    'soundcloud',
-    'twitter',
-  ]),
-  onPress: PropTypes.func,
-  onLongPress: PropTypes.func,
-  phone: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.string,
-  ]),
-  renderLink: PropTypes.func,
-  showAlert: PropTypes.bool,
-  stripPrefix: PropTypes.bool,
-  stripTrailingSlash: PropTypes.bool,
-  style: Text.propTypes.style, // eslint-disable-line react/no-typos
-  text: PropTypes.string.isRequired,
-  truncate: PropTypes.number,
-  truncateChars: PropTypes.string,
-  truncateLocation: PropTypes.oneOf([
-    'end',
-    'middle',
-    'smart',
-  ]),
-  twitter: PropTypes.bool,
-  url: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.shape({
-      schemeMatches: PropTypes.bool,
-      wwwMatches: PropTypes.bool,
-      tldMatches: PropTypes.bool,
-    }),
-  ]),
-  webFallback: PropTypes.bool,
-};

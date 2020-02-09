@@ -3,8 +3,8 @@
   "version": "1.9.2",
   "description": "Autolinking component for React Native",
   "author": "Josh Swan <josh@disruptivelabs.io>",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -20,12 +20,13 @@
     "linking"
   ],
   "files": [
-    "src/",
+    "dist/",
     "LICENSE",
     "README.md"
   ],
   "scripts": {
-    "lint": "eslint src/**/*.js test/**/*.js",
+    "build": "tsc",
+    "lint": "tsc --noEmit && eslint src --ext .ts,.tsx",
     "test": "mocha --require @babel/register --require test/setup.js --recursive test/*.test.js"
   },
   "dependencies": {
@@ -33,24 +34,31 @@
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.2",
-    "@babel/register": "^7.7.0",
+    "@babel/core": "^7.8.4",
+    "@babel/register": "^7.8.3",
+    "@types/react": "^16.9.19",
+    "@types/react-native": "^0.61.12",
+    "@typescript-eslint/eslint-plugin": "^2.19.0",
+    "@typescript-eslint/parser": "^2.19.0",
     "babel-eslint": "^10.0.3",
     "chai": "^4.2.0",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.15.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "jest": "^25.1.0",
     "mocha": "^6.2.2",
-    "react": "16.9.0",
-    "react-dom": "16.9.0",
-    "react-native": "^0.61.4",
-    "react-native-mock-render": "^0.1.7",
-    "sinon": "^7.5.0"
+    "react": "16.12.0",
+    "react-dom": "16.12.0",
+    "react-native": "^0.61.5",
+    "react-native-mock-render": "^0.1.8",
+    "sinon": "^8.1.1",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
   },
   "peerDependencies": {
     "react-native": ">=0.25.0"
