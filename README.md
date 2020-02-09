@@ -54,8 +54,8 @@ class MyComponent extends Component {
 | `truncateLocation` | `String` | `"smart"` | Specify location of truncation. Possible values: `"smart"`, `"end"`, `"middle"`. |
 | `webFallback` | `Boolean` | Android: `true` iOS: `false` | Link to web versions of Instagram/Twitter for hashtag and mention links when users don't have the respective app installed. *Requires `LSApplicationQueriesSchemes` on iOS. See: https://facebook.github.io/react-native/docs/linking.html* |
 
-[build-url]: https://travis-ci.org/joshswan/react-native-autolink
-[build-image]: https://travis-ci.org/joshswan/react-native-autolink.svg?branch=master
+[build-url]: https://circleci.com/gh/joshswan/react-native-autolink
+[build-image]: https://circleci.com/gh/joshswan/react-native-autolink.svg?style=svg
 [depstat-url]: https://david-dm.org/joshswan/react-native-autolink
 [depstat-image]: https://david-dm.org/joshswan/react-native-autolink.svg
 [devdepstat-url]: https://david-dm.org/joshswan/react-native-autolink#info=devDependencies
