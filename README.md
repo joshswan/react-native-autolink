@@ -1,5 +1,6 @@
 # React Native AutoLink
-[![NPM Version][npm-image]][npm-url] [![Build Status][build-image]][build-url] [![Dependency Status][depstat-image]][depstat-url] [![Dev Dependency Status][devdepstat-image]][devdepstat-url]
+
+[![Version][version-image]][package-url] [![Downloads][downloads-image]][package-url] [![Build Status][build-image]][build-url] [![License][license-image]][license-url]
 
 Auto-Linking component for React Native. Parses text and wraps URLs, phone numbers, emails, social handles, hashtags, and more with Text nodes and onPress handlers. And it's all fully customizable :)
 
@@ -54,12 +55,36 @@ class MyComponent extends Component {
 | `truncateLocation` | `String` | `"smart"` | Specify location of truncation. Possible values: `"smart"`, `"end"`, `"middle"`. |
 | `webFallback` | `Boolean` | Android: `true` iOS: `false` | Link to web versions of Instagram/Twitter for hashtag and mention links when users don't have the respective app installed. *Requires `LSApplicationQueriesSchemes` on iOS. See: https://facebook.github.io/react-native/docs/linking.html* |
 
+## Supported By
+
+<a href="https://www.disruptivelabs.io">
+  <img src="https://www.disruptivelabs.io/images/logo.png" alt="Disruptive Labs" width="150" />
+</a>
+
+## License
+
+```text
+ Copyright (c) 2016-2020 Josh Swan
+
+ Licensed under the The MIT License (MIT) (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+    https://raw.githubusercontent.com/joshswan/react-native-autolink/master/LICENSE
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+ See the License for the specific language governing permissions and
+ limitations under the License.
+```
+
+[build-image]: https://img.shields.io/circleci/build/gh/joshswan/react-native-autolink?style=flat-square
 [build-url]: https://circleci.com/gh/joshswan/react-native-autolink
-[build-image]: https://circleci.com/gh/joshswan/react-native-autolink.svg?style=svg
-[depstat-url]: https://david-dm.org/joshswan/react-native-autolink
-[depstat-image]: https://david-dm.org/joshswan/react-native-autolink.svg
-[devdepstat-url]: https://david-dm.org/joshswan/react-native-autolink#info=devDependencies
-[devdepstat-image]: https://david-dm.org/joshswan/react-native-autolink/dev-status.svg
-[npm-url]: https://www.npmjs.com/package/react-native-autolink
-[npm-image]: https://badge.fury.io/js/react-native-autolink.svg
+[downloads-image]: https://img.shields.io/npm/dm/react-native-autolink?style=flat-square
+[license-image]: https://img.shields.io/npm/l/react-native-autolink?color=blue&style=flat-square
+[license-url]: https://github.com/joshswan/react-native-autolink/blob/master/LICENSE
+[package-url]: https://www.npmjs.com/package/react-native-autolink
+[version-image]: https://img.shields.io/npm/v/react-native-autolink?style=flat-square
 [match-url]: http://greg-jacobs.com/Autolinker.js/api/index.html#!/api/Autolinker.match.Match
