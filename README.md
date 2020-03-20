@@ -6,7 +6,7 @@ Auto-Linking component for React Native. Parses text and wraps URLs, phone numbe
 
 ## Installation
 
-```javascript
+```shell
 npm install react-native-autolink --save
 ```
 
@@ -23,7 +23,8 @@ class MyComponent extends Component {
       <Autolink
         text="This is the string to parse for urls (https://github.com/joshswan/react-native-autolink), phone numbers (415-555-5555), emails (josh@example.com), mentions/handles (@twitter), and hashtags (#exciting)"
         hashtag="instagram"
-        mention="twitter" />
+        mention="twitter"
+      />
     );
   }
 }
@@ -31,29 +32,294 @@ class MyComponent extends Component {
 
 ## Props
 
-**Note: Any props not listed below will be passed through to the main Text node (e.g. style, numberOfLines).**
+- [`component?`](#component)
+- [`email?`](#email)
+- [`hashtag?`](#hashtag)
+- [`latlng?`](#latlng)
+- [`linkProps?`](#linkprops)
+- [`linkStyle?`](#linkstyle)
+- [`mention?`](#mention)
+- [`onPress?`](#onpress)
+- [`onLongPress?`](#onlongpress)
+- [`phone?`](#phone)
+- [`renderLink?`](#renderlink)
+- [`renderText?`](#rendertext)
+- [`showAlert?`](#showalert)
+- [`stripPrefix?`](#stripprefix)
+- [`stripTrailingSlash?`](#striptrailingslash)
+- [`text`](#text)
+- [`textProps?`](#textprops)
+- [`truncate?`](#truncate)
+- [`truncateChars?`](#truncatechars)
+- [`truncateLocation?`](#truncatelocation)
+- [`url?`](#url)
+- [`webFallback?`](#webfallback)
 
-| Prop | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `text` | `String` | | ***Required.*** The string to parse for links. |
-| `email` | `Boolean` | `true` | Enable email linking (`mailto:{email}`). |
-| `hashtag` | `Boolean/String` | `false` | Enable hashtag linking to supplied service. Possible values: `false`, `"facebook"`, `"instagram"`, `"twitter"`. |
-| `latlng` | `Boolean` | `false` | *Experimental* Enable latitude, longitude linking to maps. |
-| `mention` | `Boolean/String` | `false` | Enable mention/handle linking to supplied service. Possible values: `false`, `"instagram"`, `"soundcloud"`, `"twitter"`. |
-| `phone` | `Boolean/String` | `true` | Enable phone linking (`tel:{number}`, `sms:{number}`) for calling/texting. Possible values: `false`, `"text"`|
-| `twitter` | `Boolean` | `false` | **DEPRECATED. Use `mention` prop.** Enable Twitter handle linking (`twitter://user?screen_name={handle}`). |
-| `url` | `Boolean/Object` | `true` | Enable url linking (`https://{url}`). Possible values: `true`, `false`, `{ schemeMatches: true/false, wwwMatches: true/false, tldMatches: true/false }` |
-| `stripPrefix` | `Boolean` | `true` | Enable stripping of protocol from link text (`https://url` -> `url`). |
-| `stripTrailingSlash` | `Boolean` | `true` | Enable stripping of trailing slashs from link text (`example.com/page/` -> `example.com/page`). |
-| `linkStyle` | `TextStyle` | | Custom styling to apply to Text nodes of links. |
-| `onPress` | `function` | | Custom function handler for link press events. Arguments: `url:String`, [`match:Object`][match-url]. |
-| `onLongPress` | `function` | | Function handler for long press events. Arguments: `url:String`, [`match:Object`][match-url] |
-| `renderLink` | `function` | | Custom render function for rendering link nodes. Arguments: `text:String`, [`match:Object`][match-url], `index:Number`. |
-| `showAlert` | `Boolean` | `false` | Displays an alert before leaving the app to help with accidental clicks. Possible values: `true`, `false` |
-| `truncate` | `Number` | `32` | Truncate long link text for display (e.g. `https://www.google.com/../something.html`). Possible values: `0` to disable, `1+` to truncate to that maximum length. |
-| `truncateChars` | `String` | `..` | Characters to replace truncated url segments with, if enabled. |
-| `truncateLocation` | `String` | `"smart"` | Specify location of truncation. Possible values: `"smart"`, `"end"`, `"middle"`. |
-| `webFallback` | `Boolean` | Android: `true` iOS: `false` | Link to web versions of Instagram/Twitter for hashtag and mention links when users don't have the respective app installed. *Requires `LSApplicationQueriesSchemes` on iOS. See: https://facebook.github.io/react-native/docs/linking.html* |
+**Note:** All other props (e.g. `numberOfLines`, `style`, etc.) will be passed through to the container component, which is either `Text` (default) or a custom component supplied to the `component` prop.
+
+### `component`
+
+|        Type         | Required | Default | Description |
+| ------------------- | -------- | ------- | ----------- |
+| React.ComponentType |    No    | `Text`  | Override the component used as the output container. |
+
+```js
+<Autolink text={text} component={View} />
+```
+
+### `email`
+
+|  Type   | Required | Default | Description |
+| ------- | -------- | ------- | ----------- |
+| boolean |    No    | `true`  | Whether to link emails (`mailto:{email}`). |
+
+```js
+<Autolink text={text} email={false} />
+```
+
+### `hashtag`
+
+|       Type        | Required | Default | Description |
+| ----------------- | -------- | ------- | ----------- |
+| boolean or string |    No    | `false`  | Whether to link hashtags to supplied service. Possible values: `false` (disabled), `"facebook"`, `"instagram"`, `"twitter"`. |
+
+```js
+<Autolink text={text} hashtag="facebook" />
+```
+
+### `latlng`
+
+|  Type   | Required | Default | Description |
+| ------- | -------- | ------- | ----------- |
+| boolean |    No    | `false`  | Whether to link latitude, longitude pairs. |
+
+*Warning:* Still experimental.
+
+```js
+<Autolink text={text} latlng />
+```
+
+### `linkProps`
+
+|   Type    | Required | Default | Description |
+| --------- | -------- | ------- | ----------- |
+| TextProps |    No    |  `{}`   | Attributes applied to link Text components. |
+
+```js
+<Autolink text={text} linkProps={{ suppressHighlighting: true, testID: 'link' }} />
+```
+
+### `linkStyle`
+
+|   Type    | Required | Default | Description |
+| --------- | -------- | ------- | ----------- |
+| TextStyle |    No    |  `{}`   | Styles applied to link Text components. *Note:* Will be overriden if `style` supplied in [`linkProps`](#linkprops). |
+
+```js
+<Autolink text={text} linkStyle={{ color: 'blue' }} />
+```
+
+### `mention`
+
+|       Type        | Required | Default | Description |
+| ----------------- | -------- | ------- | ----------- |
+| boolean or string |    No    | `false`  | Whether to link mentions/handles to supplied service. Possible values: `false` (disabled), `"instagram"`, `"soundcloud"`, `"twitter"`. |
+
+```js
+<Autolink text={text} mention="instagram" />
+```
+
+### `onPress`
+
+|   Type   | Required | Default | Description |
+| -------- | -------- | ------- | ----------- |
+| function |    No    |         | Override default link press behavior. Signature: `(url: string, match: Match) => void`. |
+
+```js
+<Autolink
+  text={text}
+  onPress={(url, match) => {
+    switch (match.getType()) {
+      case 'mention':
+        Alert.alert('Mention pressed!');
+      default:
+        Alert.alert('Link pressed!');
+    }
+  }}
+/>
+```
+
+### `onLongPress`
+
+|   Type   | Required | Default | Description |
+| -------- | -------- | ------- | ----------- |
+| function |    No    |  none   | Handle link long press events. Signature: `(url: string, match: Match) => void`. |
+
+```js
+<Autolink
+  text={text}
+  onLongPress={(url, match) => {
+    switch (match.getType()) {
+      case 'mention':
+        Alert.alert('Mention long pressed!');
+      default:
+        Alert.alert('Link long pressed!');
+    }
+  }}
+/>
+```
+
+### `phone`
+
+|       Type        | Required | Default | Description |
+| ----------------- | -------- | ------- | ----------- |
+| boolean or string |    No    | `true`  | Whether to link phone numbers. Possible values: `false` (disabled), `true` (`tel:{number}`), `"sms"` or `"text"` (`sms:{number}`). |
+
+*Note:* Currently, only US numbers are supported.
+
+```js
+<Autolink text={text} phone="sms" />
+```
+
+### `renderLink`
+
+|   Type   | Required | Default | Description |
+| -------- | -------- | ------- | ----------- |
+| function |    No    |         | Override default link rendering behavior. Signature: `(text: string, match: Match, index: number) => React.ReactNode`. |
+
+*Note:* You'll need to handle press logic yourself when using `renderLink`.
+
+```js
+<Autolink
+  text={text}
+  component={View}
+  renderLink={(text, match) => <MyLinkPreviewComponent url={match.getAnchorHref()} />}
+/>
+```
+
+### `renderText`
+
+|   Type   | Required | Default | Description |
+| -------- | -------- | ------- | ----------- |
+| function |    No    |         | Override default text rendering behavior. Signature: `(text: string, index: number) => React.ReactNode`. |
+
+```js
+<Autolink
+  text={text}
+  component={View}
+  renderText={(text) => <MyTypographyComponent>{text}</MyTypographyComponent>}
+/>
+```
+
+### `showAlert`
+
+|  Type   | Required | Default | Description |
+| ------- | -------- | ------- | ----------- |
+| boolean |    No    | `false`  | Whether to display an alert before leaving the app (for privacy or accidental clicks). |
+
+```js
+<Autolink text={text} showAlert />
+```
+
+### `stripPrefix`
+
+|  Type   | Required | Default | Description |
+| ------- | -------- | ------- | ----------- |
+| boolean |    No    | `true`  | Whether to strip protocol from URL link text (e.g. `https://github.com` -> `github.com`). |
+
+```js
+<Autolink text={text} stripPrefix={false} />
+```
+
+### `stripTrailingSlash`
+
+|  Type   | Required | Default | Description |
+| ------- | -------- | ------- | ----------- |
+| boolean |    No    | `true`  | Whether to strip trailing slashes from URL link text (e.g. `github.com/` -> `github.com`). |
+
+```js
+<Autolink text={text} stripTrailingSlash={false} />
+```
+
+### `text`
+
+|  Type   | Required | Default | Description |
+| ------- | -------- | ------- | ----------- |
+| string  |   Yes    |         | The string to parse for links. |
+
+```js
+<Autolink text={text} />
+```
+
+### `textProps`
+
+|   Type    | Required | Default | Description |
+| --------- | -------- | ------- | ----------- |
+| TextProps |    No    |  `{}`   | Attributes applied to non-link Text components. |
+
+```js
+<Autolink text={text} textProps={{ selectable: false }} />
+```
+
+### `truncate`
+
+|   Type    | Required | Default | Description |
+| --------- | -------- | ------- | ----------- |
+|  number   |    No    |  `32`   | Maximum length of URL link text. Possible values: `0` (disabled), `1+` (maximum length). |
+
+```js
+<Autolink text={text} truncate={20} />
+```
+
+### `truncateChars`
+
+|   Type    | Required | Default | Description |
+| --------- | -------- | ------- | ----------- |
+|  string   |    No    |  `..`   | Characters to replace truncated URL link text segments with (e.g. `github.com/../repo`) |
+
+```js
+<Autolink text={text} truncateChars="**" />
+```
+
+### `truncateLocation`
+
+|   Type    | Required |  Default   | Description |
+| --------- | -------- | ---------- | ----------- |
+|  string   |    No    | `"smart"`  | Override truncation location. Possible values: `"smart"`, `"end"`, `"middle"`. |
+
+```js
+<Autolink text={text} truncateLocation="end" />
+```
+
+### `url`
+
+|       Type        | Required | Default | Description |
+| ----------------- | -------- | ------- | ----------- |
+| boolean or object |    No    | `true`  | Whether to link URLs. Possible values: `false` (disabled), `true`, `UrlConfig` (see below). |
+
+```js
+type UrlConfig = {
+  // Whether to link URLs prefixed with a scheme (e.g. https://github.com)
+  schemeMatches?: boolean;
+  // Whether to link URLs prefix with www (e.g. www.github.com)
+  wwwMatches?: boolean;
+  // Whether to link URLs with TLDs but not scheme or www prefixs (e.g. github.com)
+  tldMatches?: boolean;
+};
+```
+
+```js
+<Autolink text={text} url={false} />
+<Autolink text={text} url={{ tldMatches: false }} />
+```
+
+### `webFallback`
+
+|  Type   | Required |            Default            | Description |
+| ------- | -------- | ----------------------------- | ----------- |
+| boolean |    No    | Android: `true`, iOS: `false` | Whether to link to web versions of services (e.g. Facebook, Instagram, Twitter) for hashtag and mention links when users don't have the respective app installed. |
+
+*Note:* Requires `LSApplicationQueriesSchemes` on iOS so it is disabled by default on iOS. See [Linking docs](https://reactnative.dev/docs/linking.html) for more info.
 
 ## Supported By
 
