@@ -2,19 +2,25 @@
 
 exports[`<Autolink /> does not match scheme-containing url when schemeMatches disabled 1`] = `
 <Text>
-  http://github.com
+  <Text>
+    http://github.com
+  </Text>
 </Text>
 `;
 
 exports[`<Autolink /> does not match top-level domain url when wwwMatches disabled 1`] = `
 <Text>
-  github.com
+  <Text>
+    github.com
+  </Text>
 </Text>
 `;
 
 exports[`<Autolink /> does not match www-containing url when wwwMatches disabled 1`] = `
 <Text>
-  www.github.com
+  <Text>
+    www.github.com
+  </Text>
 </Text>
 `;
 
@@ -68,43 +74,57 @@ exports[`<Autolink /> does not truncate urls when zero is passed for truncate pr
 
 exports[`<Autolink /> does not wrap a hashtag in a link Text node when hashtag prop disabled 1`] = `
 <Text>
-  #awesome
+  <Text>
+    #awesome
+  </Text>
 </Text>
 `;
 
 exports[`<Autolink /> does not wrap a latitude/longitude pair in a link Text node when latlng prop disabled 1`] = `
 <Text>
-  34.0522, -118.2437
+  <Text>
+    34.0522, -118.2437
+  </Text>
 </Text>
 `;
 
 exports[`<Autolink /> does not wrap a mention/handle in a link Text node when mention prop disabled 1`] = `
 <Text>
-  @twitter
+  <Text>
+    @twitter
+  </Text>
 </Text>
 `;
 
 exports[`<Autolink /> does not wrap a phone number in a link Text node when phone prop disabled 1`] = `
 <Text>
-  415-555-5555
+  <Text>
+    415-555-5555
+  </Text>
 </Text>
 `;
 
 exports[`<Autolink /> does not wrap a url in a link Text node when url prop disabled 1`] = `
 <Text>
-  https://github.com/joshswan/react-native-autolink
+  <Text>
+    https://github.com/joshswan/react-native-autolink
+  </Text>
 </Text>
 `;
 
 exports[`<Autolink /> does not wrap an email address in a link Text node when email prop disabled 1`] = `
 <Text>
-  josh@example.com
+  <Text>
+    josh@example.com
+  </Text>
 </Text>
 `;
 
 exports[`<Autolink /> links multiple elements individually 1`] = `
 <Text>
-  Hi 
+  <Text>
+    Hi 
+  </Text>
   <Text
     onLongPress={[Function]}
     onPress={[Function]}
@@ -116,7 +136,9 @@ exports[`<Autolink /> links multiple elements individually 1`] = `
   >
     @josh
   </Text>
-   (
+  <Text>
+     (
+  </Text>
   <Text
     onLongPress={[Function]}
     onPress={[Function]}
@@ -128,7 +150,9 @@ exports[`<Autolink /> links multiple elements individually 1`] = `
   >
     josh@example.com
   </Text>
-   or 
+  <Text>
+     or 
+  </Text>
   <Text
     onLongPress={[Function]}
     onPress={[Function]}
@@ -140,7 +164,9 @@ exports[`<Autolink /> links multiple elements individually 1`] = `
   >
     415-555-5555
   </Text>
-  ), check out 
+  <Text>
+    ), check out 
+  </Text>
   <Text
     onLongPress={[Function]}
     onPress={[Function]}
@@ -152,7 +178,9 @@ exports[`<Autolink /> links multiple elements individually 1`] = `
   >
     github.com/joshswan/..e-autolink
   </Text>
-  . It's 
+  <Text>
+    . It's 
+  </Text>
   <Text
     onLongPress={[Function]}
     onPress={[Function]}
@@ -164,7 +192,9 @@ exports[`<Autolink /> links multiple elements individually 1`] = `
   >
     #awesome
   </Text>
-  !
+  <Text>
+    !
+  </Text>
 </Text>
 `;
 
@@ -218,9 +248,19 @@ exports[`<Autolink /> removes url trailing slashes when stripTrailingSlash prop 
 
 exports[`<Autolink /> renders a Text node 1`] = `<Text />`;
 
+exports[`<Autolink /> renders a custom container node 1`] = `
+<View>
+  <Text>
+    Testing
+  </Text>
+</View>
+`;
+
 exports[`<Autolink /> renders a string when nothing to link 1`] = `
 <Text>
-  Testing
+  <Text>
+    Testing
+  </Text>
 </Text>
 `;
 
@@ -230,6 +270,16 @@ exports[`<Autolink /> renders links using renderLink prop if provided 1`] = `
     josh@example.com:0
   </Text>
 </Text>
+`;
+
+exports[`<Autolink /> renders text using renderText prop if provided 1`] = `
+<View>
+  <View>
+    <Text>
+      Testing
+    </Text>
+  </View>
+</View>
 `;
 
 exports[`<Autolink /> replaces removed protion of truncated url with truncateChars prop value 1`] = `

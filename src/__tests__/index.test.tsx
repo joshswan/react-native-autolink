@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import renderer from 'react-test-renderer';
 import Autolink from '..';
 
@@ -19,6 +19,11 @@ describe('<Autolink />', () => {
 
   test('renders a string when nothing to link', () => {
     const tree = renderer.create(<Autolink text="Testing" />).toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  test('renders a custom container node', () => {
+    const tree = renderer.create(<Autolink component={View} text="Testing" />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 
@@ -182,6 +187,12 @@ describe('<Autolink />', () => {
   test('renders links using renderLink prop if provided', () => {
     const renderLink = (text, match, index) => <Text>{`${text}:${index}`}</Text>;
     const tree = renderer.create(<Autolink text="josh@example.com" renderLink={renderLink} />).toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  test('renders text using renderText prop if provided', () => {
+    const renderText = (text) => <View><Text>{text}</Text></View>;
+    const tree = renderer.create(<Autolink component={View} text="Testing" renderText={renderText} />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 

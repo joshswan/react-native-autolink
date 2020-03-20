@@ -28,6 +28,7 @@ import {
 } from 'react-native';
 import * as Truncate from './truncate';
 import { Matchers, MatcherId, LatLngMatch } from './matchers';
+import { PropsOf } from './types';
 
 const tagBuilder = new AnchorTagBuilder();
 
@@ -37,20 +38,24 @@ const styles = StyleSheet.create({
   },
 });
 
-interface Props {
+interface AutolinkProps<C extends React.ComponentType = React.ComponentType> {
+  component?: C;
   email?: boolean;
   hashtag?: false | 'facebook' | 'instagram' | 'twitter';
   latlng?: boolean;
+  linkProps?: TextProps;
   linkStyle?: StyleProp<TextStyle>;
   mention?: false | 'instagram' | 'soundcloud' | 'twitter';
   onPress?: (url: string, match: Match) => void;
   onLongPress?: (url: string, match: Match) => void;
   phone?: boolean | 'text' | 'sms';
   renderLink?: (text: string, match: Match, index: number) => React.ReactNode;
+  renderText?: (text: string, index: number) => React.ReactNode;
   showAlert?: boolean;
   stripPrefix?: boolean;
   stripTrailingSlash?: boolean;
   text: string;
+  textProps?: TextProps;
   truncate?: number;
   truncateChars?: string;
   truncateLocation?: 'end' | 'middle' | 'smart';
@@ -62,7 +67,13 @@ interface Props {
   webFallback?: boolean;
 }
 
-export default class Autolink extends PureComponent<TextProps & Props> {
+type Props<C extends React.ComponentType> = AutolinkProps<C> & Omit<
+  PropsOf<C>, keyof AutolinkProps
+>;
+
+export default class Autolink<
+  C extends React.ComponentType = typeof Text
+> extends PureComponent<Props<C>> {
   static truncate(text: string, {
     truncate = 32,
     truncateChars = '..',
@@ -88,11 +99,13 @@ export default class Autolink extends PureComponent<TextProps & Props> {
     email: true,
     hashtag: false,
     latlng: false,
+    linkProps: {},
     mention: false,
     phone: true,
     showAlert: false,
     stripPrefix: true,
     stripTrailingSlash: true,
+    textProps: {},
     truncate: 32,
     truncateChars: '..',
     truncateLocation: 'smart',
@@ -216,19 +229,19 @@ export default class Autolink extends PureComponent<TextProps & Props> {
     text: string,
     match: Match,
     index: number,
-    textProps: Partial<TextProps>,
+    textProps: Partial<TextProps> = {},
   ): ReactNode {
     const { truncate, linkStyle } = this.props;
     const truncated = truncate ? Autolink.truncate(text, this.props) : text;
 
     return (
       <Text
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...textProps}
-        key={index}
         style={linkStyle || styles.link}
         onPress={() => this.onPress(match)}
         onLongPress={() => this.onLongPress(match)}
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...textProps}
+        key={index}
       >
         {truncated}
       </Text>
@@ -238,20 +251,23 @@ export default class Autolink extends PureComponent<TextProps & Props> {
   render(): ReactNode {
     const {
       children,
+      component = Text,
       email,
       hashtag,
       latlng,
+      linkProps,
       linkStyle,
       mention,
       onPress,
       onLongPress,
       phone,
       renderLink,
+      renderText,
       showAlert,
       stripPrefix,
       stripTrailingSlash,
-      style,
       text,
+      textProps,
       truncate,
       truncateChars,
       truncateLocation,
@@ -322,26 +338,24 @@ export default class Autolink extends PureComponent<TextProps & Props> {
       .map((part, index) => {
         const match = matches[part];
 
-        if (!match) return part;
-
-        switch (match.getType()) {
+        switch (match?.getType()) {
           case 'email':
           case 'hashtag':
           case 'latlng':
           case 'mention':
           case 'phone':
           case 'url':
-            return (renderLink)
+            return renderLink
               ? renderLink(match.getAnchorText(), match, index)
-              : this.renderLink(match.getAnchorText(), match, index, other);
+              : this.renderLink(match.getAnchorText(), match, index, linkProps);
           default:
-            return part;
+            return renderText
+              ? renderText(part, index)
+              // eslint-disable-next-line react/jsx-props-no-spreading, react/no-array-index-key
+              : <Text {...textProps} key={index}>{part}</Text>;
         }
       });
 
-    return createElement(Text, {
-      style,
-      ...other,
-    }, ...nodes);
+    return createElement(component, other, ...nodes);
   }
 }
