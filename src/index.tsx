@@ -31,6 +31,8 @@ import { Matchers, MatcherId, LatLngMatch } from './matchers';
 import { UserCustomMatch, UserCustomMatchSpec } from './user-custom-match';
 import { PropsOf } from './types';
 
+export * from './user-custom-match';
+
 const tagBuilder = new AnchorTagBuilder();
 
 const styles = StyleSheet.create({
