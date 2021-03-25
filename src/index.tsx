@@ -28,6 +28,7 @@ import {
 } from 'react-native';
 import * as Truncate from './truncate';
 import { Matchers, MatcherId, LatLngMatch } from './matchers';
+import { UserCustomMatch, UserCustomMatchSpec } from './user-custom-match';
 import { PropsOf } from './types';
 
 const tagBuilder = new AnchorTagBuilder();
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
 
 interface AutolinkProps<C extends React.ComponentType = React.ComponentType> {
   component?: C;
+  customLinks?: UserCustomMatchSpec[];
   email?: boolean;
   hashtag?: false | 'facebook' | 'instagram' | 'twitter';
   latlng?: boolean;
@@ -216,6 +218,7 @@ export default class Autolink<
             return [`tel:${number}`];
         }
       }
+      case 'userCustom':
       case 'url': {
         return [match.getAnchorHref()];
       }
@@ -234,11 +237,24 @@ export default class Autolink<
     const { truncate, linkStyle } = this.props;
     const truncated = truncate ? Autolink.truncate(text, this.props) : text;
 
+    let style: StyleProp<TextStyle> | undefined;
+    let onPress: (() => void) | undefined;
+    let onLongPress: (() => void) | undefined;
+    if (match.getType() === 'userCustom') {
+      style = (match as UserCustomMatch).getStyle();
+      onPress = (match as UserCustomMatch).getOnPress();
+      onLongPress = (match as UserCustomMatch).getOnLongPress();
+    }
+
+    style = style ?? linkStyle ?? styles.link;
+    onPress = onPress ?? (() => this.onPress(match));
+    onLongPress = onLongPress ?? (() => this.onLongPress(match));
+
     return (
       <Text
-        style={linkStyle || styles.link}
-        onPress={() => this.onPress(match)}
-        onLongPress={() => this.onLongPress(match)}
+        style={style}
+        onPress={onPress}
+        onLongPress={onLongPress}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...textProps}
         key={index}
@@ -252,6 +268,7 @@ export default class Autolink<
     const {
       children,
       component = Text,
+      customLinks = [],
       email,
       hashtag,
       latlng,
@@ -326,6 +343,24 @@ export default class Autolink<
           });
         }
       });
+
+      // User-specified custom matchers
+      customLinks.forEach((spec) => {
+        linkedText = linkedText.replace(spec.pattern, (...args) => {
+          const token = generateToken();
+          const matchedText = args[0];
+
+          matches[token] = new UserCustomMatch({
+            ...spec,
+            tagBuilder,
+            matchedText,
+            offset: args[args.length - 2],
+            replacerArgs: args,
+          });
+
+          return token;
+        });
+      });
     } catch (e) {
       console.warn(e); // eslint-disable-line no-console
 
@@ -345,6 +380,7 @@ export default class Autolink<
           case 'mention':
           case 'phone':
           case 'url':
+          case 'userCustom':
             return renderLink
               ? renderLink(match.getAnchorText(), match, index)
               : this.renderLink(match.getAnchorText(), match, index, linkProps);
