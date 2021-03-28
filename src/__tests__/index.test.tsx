@@ -10,6 +10,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import renderer from 'react-test-renderer';
 import Autolink from '..';
+import { LatLngMatcher } from '../matchers';
 
 describe('<Autolink />', () => {
   test('renders a Text node', () => {
@@ -241,15 +242,14 @@ describe('<Autolink />', () => {
   });
 
   /**
-   * EXPERIMENTAL
+   * Custom matchers
    */
-  test('wraps a latitude/longitude pair in a link Text node when latlng prop enabled', () => {
-    const tree = renderer.create(<Autolink text="34.0522, -118.2437" latlng />).toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
-  test('does not wrap a latitude/longitude pair in a link Text node when latlng prop disabled', () => {
-    const tree = renderer.create(<Autolink text="34.0522, -118.2437" latlng={false} />).toJSON();
-    expect(tree).toMatchSnapshot();
+  describe('matchers', () => {
+    test('wraps text based on supplied custom matchers', () => {
+      const tree = renderer
+        .create(<Autolink text="34.0522, -118.2437" matchers={[LatLngMatcher]} />)
+        .toJSON();
+      expect(tree).toMatchSnapshot();
+    });
   });
 });

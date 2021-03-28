@@ -27,11 +27,11 @@ import {
   TextProps,
 } from 'react-native';
 import * as Truncate from './truncate';
-import { Matchers, MatcherId, LatLngMatch } from './matchers';
 import { CustomMatch, CustomMatcher } from './CustomMatch';
 import { PropsOf } from './types';
 
 export * from './CustomMatch';
+export * from './matchers';
 
 const tagBuilder = new AnchorTagBuilder();
 
@@ -45,7 +45,6 @@ interface AutolinkProps<C extends React.ComponentType = React.ComponentType> {
   component?: C;
   email?: boolean;
   hashtag?: false | 'facebook' | 'instagram' | 'twitter';
-  latlng?: boolean;
   linkProps?: TextProps;
   linkStyle?: StyleProp<TextStyle>;
   matchers?: CustomMatcher[];
@@ -102,7 +101,6 @@ export default class Autolink<C extends React.ComponentType = typeof Text> exten
   static defaultProps = {
     email: true,
     hashtag: false,
-    latlng: false,
     linkProps: {},
     mention: false,
     phone: true,
@@ -187,16 +185,6 @@ export default class Autolink<C extends React.ComponentType = typeof Text> exten
             return [match.getMatchedText()];
         }
       }
-      case 'latlng': {
-        const latlng = (match as LatLngMatch).getLatLng();
-        const query = latlng.replace(/\s/g, '');
-
-        return [
-          Platform.OS === 'ios'
-            ? `http://maps.apple.com/?q=${encodeURIComponent(latlng)}&ll=${query}`
-            : `https://www.google.com/maps/search/?api=1&query=${query}`,
-        ];
-      }
       case 'mention': {
         const username = (match as MentionMatch).getMention();
 
@@ -225,12 +213,8 @@ export default class Autolink<C extends React.ComponentType = typeof Text> exten
             return [`tel:${number}`];
         }
       }
-      case 'userCustom':
-      case 'url': {
-        return [match.getAnchorHref()];
-      }
       default: {
-        return [match.getMatchedText()];
+        return [match.getAnchorHref() ?? match.getAnchorText()];
       }
     }
   }
@@ -264,7 +248,6 @@ export default class Autolink<C extends React.ComponentType = typeof Text> exten
       component = Text,
       email,
       hashtag,
-      latlng,
       linkProps,
       linkStyle,
       matchers = [],
@@ -316,26 +299,6 @@ export default class Autolink<C extends React.ComponentType = typeof Text> exten
 
           return token;
         },
-      });
-
-      // Custom matchers
-      Matchers.forEach((matcher) => {
-        // eslint-disable-next-line react/destructuring-assignment
-        if (this.props[matcher.id as MatcherId]) {
-          linkedText = linkedText.replace(matcher.regex, (...args) => {
-            const token = generateToken();
-            const matchedText = args[0];
-
-            matches[token] = new matcher.Match({
-              tagBuilder,
-              matchedText,
-              offset: args[args.length - 2],
-              [matcher.id as MatcherId]: matchedText,
-            });
-
-            return token;
-          });
-        }
       });
 
       // User-specified custom matchers
