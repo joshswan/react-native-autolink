@@ -60,9 +60,9 @@ class MyComponent extends Component {
 
 ### `component`
 
-|        Type         | Required | Default | Description |
-| ------------------- | -------- | ------- | ----------- |
-| React.ComponentType |    No    | `Text`  | Override the component used as the output container. |
+| Type                | Required | Default | Description                                          |
+| ------------------- | -------- | ------- | ---------------------------------------------------- |
+| React.ComponentType | No       | `Text`  | Override the component used as the output container. |
 
 ```js
 <Autolink text={text} component={View} />
@@ -70,9 +70,9 @@ class MyComponent extends Component {
 
 ### `customLinks`
 
-|          Type           | Required | Default | Description |
-| ----------------------- | -------- | ------- | ----------- |
-| `UserCustomMatchSpec[]` |    No    |         | Specifications for custom link patterns and their handling (see below). |
+| Type                    | Required | Default | Description                                                             |
+| ----------------------- | -------- | ------- | ----------------------------------------------------------------------- |
+| `UserCustomMatchSpec[]` | No       |         | Specifications for custom link patterns and their handling (see below). |
 
 This property allows the user to establish custom link patterns and handling. It is particularly useful for mixing internal app navigation links with standard external links within the same block of content.
 
@@ -102,22 +102,24 @@ The following hypothetical example handles custom @-mention links of the format 
 ```tsx
 <Autolink
   text={text}
-  customLinks={[{
-    pattern: /@\[([^[]*)]\(([^(^)]*)\)/g,
-    style: { color: '#ff00ff' },
-    extractText: (args) => `@${args[1]}`,
-    onPress: (args) => {
-      navigate('userProfile', { userId: args[2] });
+  customLinks={[
+    {
+      pattern: /@\[([^[]*)]\(([^(^)]*)\)/g,
+      style: { color: '#ff00ff' },
+      extractText: (args) => `@${args[1]}`,
+      onPress: (args) => {
+        navigate('userProfile', { userId: args[2] });
+      },
     },
-  }]}
+  ]}
 />
 ```
 
 ### `email`
 
-|  Type   | Required | Default | Description |
-| ------- | -------- | ------- | ----------- |
-| boolean |    No    | `true`  | Whether to link emails (`mailto:{email}`). |
+| Type    | Required | Default | Description                                |
+| ------- | -------- | ------- | ------------------------------------------ |
+| boolean | No       | `true`  | Whether to link emails (`mailto:{email}`). |
 
 ```js
 <Autolink text={text} email={false} />
@@ -125,9 +127,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `hashtag`
 
-|       Type        | Required | Default | Description |
-| ----------------- | -------- | ------- | ----------- |
-| boolean or string |    No    | `false`  | Whether to link hashtags to supplied service. Possible values: `false` (disabled), `"facebook"`, `"instagram"`, `"twitter"`. |
+| Type              | Required | Default | Description                                                                                                                  |
+| ----------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| boolean or string | No       | `false` | Whether to link hashtags to supplied service. Possible values: `false` (disabled), `"facebook"`, `"instagram"`, `"twitter"`. |
 
 ```js
 <Autolink text={text} hashtag="facebook" />
@@ -135,11 +137,11 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `latlng`
 
-|  Type   | Required | Default | Description |
-| ------- | -------- | ------- | ----------- |
-| boolean |    No    | `false`  | Whether to link latitude, longitude pairs. |
+| Type    | Required | Default | Description                                |
+| ------- | -------- | ------- | ------------------------------------------ |
+| boolean | No       | `false` | Whether to link latitude, longitude pairs. |
 
-*Warning:* Still experimental.
+_Warning:_ Still experimental.
 
 ```js
 <Autolink text={text} latlng />
@@ -147,9 +149,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `linkProps`
 
-|   Type    | Required | Default | Description |
-| --------- | -------- | ------- | ----------- |
-| TextProps |    No    |  `{}`   | Attributes applied to link Text components. |
+| Type      | Required | Default | Description                                 |
+| --------- | -------- | ------- | ------------------------------------------- |
+| TextProps | No       | `{}`    | Attributes applied to link Text components. |
 
 ```js
 <Autolink text={text} linkProps={{ suppressHighlighting: true, testID: 'link' }} />
@@ -157,9 +159,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `linkStyle`
 
-|   Type    | Required | Default | Description |
-| --------- | -------- | ------- | ----------- |
-| TextStyle |    No    |  `{}`   | Styles applied to link Text components. *Note:* Will be overriden if `style` supplied in [`linkProps`](#linkprops). |
+| Type      | Required | Default | Description                                                                                                         |
+| --------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------- |
+| TextStyle | No       | `{}`    | Styles applied to link Text components. _Note:_ Will be overriden if `style` supplied in [`linkProps`](#linkprops). |
 
 ```js
 <Autolink text={text} linkStyle={{ color: 'blue' }} />
@@ -167,9 +169,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `mention`
 
-|       Type        | Required | Default | Description |
-| ----------------- | -------- | ------- | ----------- |
-| boolean or string |    No    | `false`  | Whether to link mentions/handles to supplied service. Possible values: `false` (disabled), `"instagram"`, `"soundcloud"`, `"twitter"`. |
+| Type              | Required | Default | Description                                                                                                                            |
+| ----------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| boolean or string | No       | `false` | Whether to link mentions/handles to supplied service. Possible values: `false` (disabled), `"instagram"`, `"soundcloud"`, `"twitter"`. |
 
 ```js
 <Autolink text={text} mention="instagram" />
@@ -177,9 +179,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `onPress`
 
-|   Type   | Required | Default | Description |
-| -------- | -------- | ------- | ----------- |
-| function |    No    |         | Override default link press behavior. Signature: `(url: string, match: Match) => void`. |
+| Type     | Required | Default | Description                                                                             |
+| -------- | -------- | ------- | --------------------------------------------------------------------------------------- |
+| function | No       |         | Override default link press behavior. Signature: `(url: string, match: Match) => void`. |
 
 ```js
 <Autolink
@@ -197,9 +199,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `onLongPress`
 
-|   Type   | Required | Default | Description |
-| -------- | -------- | ------- | ----------- |
-| function |    No    |  none   | Handle link long press events. Signature: `(url: string, match: Match) => void`. |
+| Type     | Required | Default | Description                                                                      |
+| -------- | -------- | ------- | -------------------------------------------------------------------------------- |
+| function | No       | none    | Handle link long press events. Signature: `(url: string, match: Match) => void`. |
 
 ```js
 <Autolink
@@ -217,11 +219,11 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `phone`
 
-|       Type        | Required | Default | Description |
-| ----------------- | -------- | ------- | ----------- |
-| boolean or string |    No    | `true`  | Whether to link phone numbers. Possible values: `false` (disabled), `true` (`tel:{number}`), `"sms"` or `"text"` (`sms:{number}`). |
+| Type              | Required | Default | Description                                                                                                                        |
+| ----------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| boolean or string | No       | `true`  | Whether to link phone numbers. Possible values: `false` (disabled), `true` (`tel:{number}`), `"sms"` or `"text"` (`sms:{number}`). |
 
-*Note:* Currently, only US numbers are supported.
+_Note:_ Currently, only US numbers are supported.
 
 ```js
 <Autolink text={text} phone="sms" />
@@ -229,11 +231,11 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `renderLink`
 
-|   Type   | Required | Default | Description |
-| -------- | -------- | ------- | ----------- |
-| function |    No    |         | Override default link rendering behavior. Signature: `(text: string, match: Match, index: number) => React.ReactNode`. |
+| Type     | Required | Default | Description                                                                                                            |
+| -------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------- |
+| function | No       |         | Override default link rendering behavior. Signature: `(text: string, match: Match, index: number) => React.ReactNode`. |
 
-*Note:* You'll need to handle press logic yourself when using `renderLink`.
+_Note:_ You'll need to handle press logic yourself when using `renderLink`.
 
 ```js
 <Autolink
@@ -245,9 +247,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `renderText`
 
-|   Type   | Required | Default | Description |
-| -------- | -------- | ------- | ----------- |
-| function |    No    |         | Override default text rendering behavior. Signature: `(text: string, index: number) => React.ReactNode`. |
+| Type     | Required | Default | Description                                                                                              |
+| -------- | -------- | ------- | -------------------------------------------------------------------------------------------------------- |
+| function | No       |         | Override default text rendering behavior. Signature: `(text: string, index: number) => React.ReactNode`. |
 
 ```js
 <Autolink
@@ -259,9 +261,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `showAlert`
 
-|  Type   | Required | Default | Description |
-| ------- | -------- | ------- | ----------- |
-| boolean |    No    | `false`  | Whether to display an alert before leaving the app (for privacy or accidental clicks). |
+| Type    | Required | Default | Description                                                                            |
+| ------- | -------- | ------- | -------------------------------------------------------------------------------------- |
+| boolean | No       | `false` | Whether to display an alert before leaving the app (for privacy or accidental clicks). |
 
 ```js
 <Autolink text={text} showAlert />
@@ -269,9 +271,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `stripPrefix`
 
-|  Type   | Required | Default | Description |
-| ------- | -------- | ------- | ----------- |
-| boolean |    No    | `true`  | Whether to strip protocol from URL link text (e.g. `https://github.com` -> `github.com`). |
+| Type    | Required | Default | Description                                                                               |
+| ------- | -------- | ------- | ----------------------------------------------------------------------------------------- |
+| boolean | No       | `true`  | Whether to strip protocol from URL link text (e.g. `https://github.com` -> `github.com`). |
 
 ```js
 <Autolink text={text} stripPrefix={false} />
@@ -279,9 +281,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `stripTrailingSlash`
 
-|  Type   | Required | Default | Description |
-| ------- | -------- | ------- | ----------- |
-| boolean |    No    | `true`  | Whether to strip trailing slashes from URL link text (e.g. `github.com/` -> `github.com`). |
+| Type    | Required | Default | Description                                                                                |
+| ------- | -------- | ------- | ------------------------------------------------------------------------------------------ |
+| boolean | No       | `true`  | Whether to strip trailing slashes from URL link text (e.g. `github.com/` -> `github.com`). |
 
 ```js
 <Autolink text={text} stripTrailingSlash={false} />
@@ -289,9 +291,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `text`
 
-|  Type   | Required | Default | Description |
-| ------- | -------- | ------- | ----------- |
-| string  |   Yes    |         | The string to parse for links. |
+| Type   | Required | Default | Description                    |
+| ------ | -------- | ------- | ------------------------------ |
+| string | Yes      |         | The string to parse for links. |
 
 ```js
 <Autolink text={text} />
@@ -299,9 +301,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `textProps`
 
-|   Type    | Required | Default | Description |
-| --------- | -------- | ------- | ----------- |
-| TextProps |    No    |  `{}`   | Attributes applied to non-link Text components. |
+| Type      | Required | Default | Description                                     |
+| --------- | -------- | ------- | ----------------------------------------------- |
+| TextProps | No       | `{}`    | Attributes applied to non-link Text components. |
 
 ```js
 <Autolink text={text} textProps={{ selectable: false }} />
@@ -309,9 +311,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `truncate`
 
-|   Type    | Required | Default | Description |
-| --------- | -------- | ------- | ----------- |
-|  number   |    No    |  `32`   | Maximum length of URL link text. Possible values: `0` (disabled), `1+` (maximum length). |
+| Type   | Required | Default | Description                                                                              |
+| ------ | -------- | ------- | ---------------------------------------------------------------------------------------- |
+| number | No       | `32`    | Maximum length of URL link text. Possible values: `0` (disabled), `1+` (maximum length). |
 
 ```js
 <Autolink text={text} truncate={20} />
@@ -319,9 +321,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `truncateChars`
 
-|   Type    | Required | Default | Description |
-| --------- | -------- | ------- | ----------- |
-|  string   |    No    |  `..`   | Characters to replace truncated URL link text segments with (e.g. `github.com/../repo`) |
+| Type   | Required | Default | Description                                                                             |
+| ------ | -------- | ------- | --------------------------------------------------------------------------------------- |
+| string | No       | `..`    | Characters to replace truncated URL link text segments with (e.g. `github.com/../repo`) |
 
 ```js
 <Autolink text={text} truncateChars="**" />
@@ -329,9 +331,9 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `truncateLocation`
 
-|   Type    | Required |  Default   | Description |
-| --------- | -------- | ---------- | ----------- |
-|  string   |    No    | `"smart"`  | Override truncation location. Possible values: `"smart"`, `"end"`, `"middle"`. |
+| Type   | Required | Default   | Description                                                                    |
+| ------ | -------- | --------- | ------------------------------------------------------------------------------ |
+| string | No       | `"smart"` | Override truncation location. Possible values: `"smart"`, `"end"`, `"middle"`. |
 
 ```js
 <Autolink text={text} truncateLocation="end" />
@@ -339,18 +341,18 @@ The following hypothetical example handles custom @-mention links of the format 
 
 ### `url`
 
-|       Type        | Required | Default | Description |
-| ----------------- | -------- | ------- | ----------- |
-| boolean or object |    No    | `true`  | Whether to link URLs. Possible values: `false` (disabled), `true`, `UrlConfig` (see below). |
+| Type              | Required | Default | Description                                                                                 |
+| ----------------- | -------- | ------- | ------------------------------------------------------------------------------------------- |
+| boolean or object | No       | `true`  | Whether to link URLs. Possible values: `false` (disabled), `true`, `UrlConfig` (see below). |
 
 ```js
 type UrlConfig = {
   // Whether to link URLs prefixed with a scheme (e.g. https://github.com)
-  schemeMatches?: boolean;
+  schemeMatches?: boolean,
   // Whether to link URLs prefix with www (e.g. www.github.com)
-  wwwMatches?: boolean;
+  wwwMatches?: boolean,
   // Whether to link URLs with TLDs but not scheme or www prefixs (e.g. github.com)
-  tldMatches?: boolean;
+  tldMatches?: boolean,
 };
 ```
 
@@ -361,11 +363,11 @@ type UrlConfig = {
 
 ### `webFallback`
 
-|  Type   | Required |            Default            | Description |
-| ------- | -------- | ----------------------------- | ----------- |
-| boolean |    No    | Android: `true`, iOS: `false` | Whether to link to web versions of services (e.g. Facebook, Instagram, Twitter) for hashtag and mention links when users don't have the respective app installed. |
+| Type    | Required | Default                       | Description                                                                                                                                                       |
+| ------- | -------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| boolean | No       | Android: `true`, iOS: `false` | Whether to link to web versions of services (e.g. Facebook, Instagram, Twitter) for hashtag and mention links when users don't have the respective app installed. |
 
-*Note:* Requires `LSApplicationQueriesSchemes` on iOS so it is disabled by default on iOS. See [Linking docs](https://reactnative.dev/docs/linking.html) for more info.
+_Note:_ Requires `LSApplicationQueriesSchemes` on iOS so it is disabled by default on iOS. See [Linking docs](https://reactnative.dev/docs/linking.html) for more info.
 
 ## Supported By
 
@@ -376,7 +378,7 @@ type UrlConfig = {
 ## License
 
 ```text
- Copyright (c) 2016-2020 Josh Swan
+ Copyright (c) 2016-2021 Josh Swan
 
  Licensed under the The MIT License (MIT) (the "License");
  you may not use this file except in compliance with the License.

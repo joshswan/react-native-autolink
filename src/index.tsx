@@ -1,7 +1,7 @@
 /*!
  * React Native Autolink
  *
- * Copyright 2016-2020 Josh Swan
+ * Copyright 2016-2021 Josh Swan
  * Released under the MIT license
  * https://github.com/joshswan/react-native-autolink/blob/master/LICENSE
  */
@@ -63,26 +63,26 @@ interface AutolinkProps<C extends React.ComponentType = React.ComponentType> {
   truncate?: number;
   truncateChars?: string;
   truncateLocation?: 'end' | 'middle' | 'smart';
-  url?: boolean | {
-    schemeMatches?: boolean;
-    wwwMatches?: boolean;
-    tldMatches?: boolean;
-  };
+  url?:
+    | boolean
+    | {
+        schemeMatches?: boolean;
+        wwwMatches?: boolean;
+        tldMatches?: boolean;
+      };
   webFallback?: boolean;
 }
 
-type Props<C extends React.ComponentType> = AutolinkProps<C> & Omit<
-  PropsOf<C>, keyof AutolinkProps
->;
+type Props<C extends React.ComponentType> = AutolinkProps<C> &
+  Omit<PropsOf<C>, keyof AutolinkProps>;
 
-export default class Autolink<
-  C extends React.ComponentType = typeof Text
-> extends PureComponent<Props<C>> {
-  static truncate(text: string, {
-    truncate = 32,
-    truncateChars = '..',
-    truncateLocation = 'smart',
-  } = {}): string {
+export default class Autolink<C extends React.ComponentType = typeof Text> extends PureComponent<
+  Props<C>
+> {
+  static truncate(
+    text: string,
+    { truncate = 32, truncateChars = '..', truncateLocation = 'smart' } = {},
+  ): string {
     let fn;
 
     switch (truncateLocation) {
@@ -121,31 +121,20 @@ export default class Autolink<
     // Bypass default press handling if matcher has custom onPress
     if (match instanceof CustomMatch && match.getMatcher().onPress?.(match)) return;
 
-    const {
-      onPress,
-      showAlert,
-      webFallback,
-    } = this.props;
+    const { onPress, showAlert, webFallback } = this.props;
 
     // Check if alert needs to be shown
     if (showAlert && !alertShown) {
-      Alert.alert(
-        'Leaving App',
-        'Do you want to continue?',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'OK', onPress: () => this.onPress(match, true) },
-        ],
-      );
+      Alert.alert('Leaving App', 'Do you want to continue?', [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'OK', onPress: () => this.onPress(match, true) },
+      ]);
 
       return;
     }
 
     // Get url(s) for match
-    const [
-      url,
-      fallback,
-    ] = this.getUrl(match);
+    const [url, fallback] = this.getUrl(match);
 
     // Call custom onPress handler or open link/fallback
     if (onPress) {
@@ -188,7 +177,10 @@ export default class Autolink<
           case 'facebook':
             return [`fb://hashtag/${tag}`, `https://www.facebook.com/hashtag/${tag}`];
           case 'instagram':
-            return [`instagram://tag?name=${tag}`, `https://www.instagram.com/explore/tags/${tag}/`];
+            return [
+              `instagram://tag?name=${tag}`,
+              `https://www.instagram.com/explore/tags/${tag}/`,
+            ];
           case 'twitter':
             return [`twitter://search?query=%23${tag}`, `https://twitter.com/hashtag/${tag}`];
           default:
@@ -199,14 +191,21 @@ export default class Autolink<
         const latlng = (match as LatLngMatch).getLatLng();
         const query = latlng.replace(/\s/g, '');
 
-        return [Platform.OS === 'ios' ? `http://maps.apple.com/?q=${encodeURIComponent(latlng)}&ll=${query}` : `https://www.google.com/maps/search/?api=1&query=${query}`];
+        return [
+          Platform.OS === 'ios'
+            ? `http://maps.apple.com/?q=${encodeURIComponent(latlng)}&ll=${query}`
+            : `https://www.google.com/maps/search/?api=1&query=${query}`,
+        ];
       }
       case 'mention': {
         const username = (match as MentionMatch).getMention();
 
         switch (mention) {
           case 'instagram':
-            return [`instagram://user?username=${username}`, `https://www.instagram.com/${username}/`];
+            return [
+              `instagram://user?username=${username}`,
+              `https://www.instagram.com/${username}/`,
+            ];
           case 'soundcloud':
             return [`https://soundcloud.com/${username}`];
           case 'twitter':
@@ -375,10 +374,14 @@ export default class Autolink<
             : this.renderLink(match.getAnchorText(), match, index, linkProps);
         }
 
-        return renderText
-          ? renderText(part, index)
+        return renderText ? (
+          renderText(part, index)
+        ) : (
           // eslint-disable-next-line react/jsx-props-no-spreading, react/no-array-index-key
-          : <Text {...textProps} key={index}>{part}</Text>;
+          <Text {...textProps} key={index}>
+            {part}
+          </Text>
+        );
       });
 
     return createElement(component, other, ...nodes);
