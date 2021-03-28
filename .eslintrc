@@ -19,6 +19,7 @@
   },
   "rules": {
     "class-methods-use-this": "off",
+    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
     "import/extensions": ["error", "ignorePackages", {
       "js": "never",
       "mjs": "never",

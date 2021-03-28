@@ -28,10 +28,10 @@ import {
 } from 'react-native';
 import * as Truncate from './truncate';
 import { Matchers, MatcherId, LatLngMatch } from './matchers';
-import { UserCustomMatch, UserCustomMatchSpec } from './user-custom-match';
+import { CustomMatch, CustomMatcher } from './CustomMatch';
 import { PropsOf } from './types';
 
-export * from './user-custom-match';
+export * from './CustomMatch';
 
 const tagBuilder = new AnchorTagBuilder();
 
@@ -43,12 +43,12 @@ const styles = StyleSheet.create({
 
 interface AutolinkProps<C extends React.ComponentType = React.ComponentType> {
   component?: C;
-  customLinks?: UserCustomMatchSpec[];
   email?: boolean;
   hashtag?: false | 'facebook' | 'instagram' | 'twitter';
   latlng?: boolean;
   linkProps?: TextProps;
   linkStyle?: StyleProp<TextStyle>;
+  matchers?: CustomMatcher[];
   mention?: false | 'instagram' | 'soundcloud' | 'twitter';
   onPress?: (url: string, match: Match) => void;
   onLongPress?: (url: string, match: Match) => void;
@@ -117,7 +117,10 @@ export default class Autolink<
     webFallback: Platform.OS !== 'ios', // iOS requires LSApplicationQueriesSchemes for Linking.canOpenURL
   };
 
-  onPress(match: Match, alertShown?: boolean): void {
+  onPress(match: Match | CustomMatch, alertShown?: boolean): void {
+    // Bypass default press handling if matcher has custom onPress
+    if (match instanceof CustomMatch && match.getMatcher().onPress?.(match)) return;
+
     const {
       onPress,
       showAlert,
@@ -157,6 +160,9 @@ export default class Autolink<
   }
 
   onLongPress(match: Match): void {
+    // Bypass default press handling if matcher has custom onLongPress
+    if (match instanceof CustomMatch && match.getMatcher().onLongPress?.(match)) return;
+
     const { onLongPress } = this.props;
 
     if (onLongPress) {
@@ -232,31 +238,18 @@ export default class Autolink<
 
   renderLink(
     text: string,
-    match: Match,
+    match: Match | CustomMatch,
     index: number,
     textProps: Partial<TextProps> = {},
   ): ReactNode {
     const { truncate, linkStyle } = this.props;
     const truncated = truncate ? Autolink.truncate(text, this.props) : text;
 
-    let style: StyleProp<TextStyle> | undefined;
-    let onPress: (() => void) | undefined;
-    let onLongPress: (() => void) | undefined;
-    if (match.getType() === 'userCustom') {
-      style = (match as UserCustomMatch).getStyle();
-      onPress = (match as UserCustomMatch).getOnPress();
-      onLongPress = (match as UserCustomMatch).getOnLongPress();
-    }
-
-    style = style ?? linkStyle ?? styles.link;
-    onPress = onPress ?? (() => this.onPress(match));
-    onLongPress = onLongPress ?? (() => this.onLongPress(match));
-
     return (
       <Text
-        style={style}
-        onPress={onPress}
-        onLongPress={onLongPress}
+        style={(match as CustomMatch).getMatcher?.().style ?? linkStyle ?? styles.link}
+        onPress={() => this.onPress(match)}
+        onLongPress={() => this.onLongPress(match)}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...textProps}
         key={index}
@@ -270,12 +263,12 @@ export default class Autolink<
     const {
       children,
       component = Text,
-      customLinks = [],
       email,
       hashtag,
       latlng,
       linkProps,
       linkStyle,
+      matchers = [],
       mention,
       onPress,
       onLongPress,
@@ -347,17 +340,17 @@ export default class Autolink<
       });
 
       // User-specified custom matchers
-      customLinks.forEach((spec) => {
-        linkedText = linkedText.replace(spec.pattern, (...args) => {
+      matchers.forEach((matcher) => {
+        linkedText = linkedText.replace(matcher.pattern, (...replacerArgs) => {
           const token = generateToken();
-          const matchedText = args[0];
+          const matchedText = replacerArgs[0];
 
-          matches[token] = new UserCustomMatch({
-            ...spec,
-            tagBuilder,
+          matches[token] = new CustomMatch({
+            matcher,
             matchedText,
-            offset: args[args.length - 2],
-            replacerArgs: args,
+            offset: replacerArgs[replacerArgs.length - 2],
+            replacerArgs,
+            tagBuilder,
           });
 
           return token;
@@ -375,23 +368,17 @@ export default class Autolink<
       .map((part, index) => {
         const match = matches[part];
 
-        switch (match?.getType()) {
-          case 'email':
-          case 'hashtag':
-          case 'latlng':
-          case 'mention':
-          case 'phone':
-          case 'url':
-          case 'userCustom':
-            return renderLink
-              ? renderLink(match.getAnchorText(), match, index)
-              : this.renderLink(match.getAnchorText(), match, index, linkProps);
-          default:
-            return renderText
-              ? renderText(part, index)
-              // eslint-disable-next-line react/jsx-props-no-spreading, react/no-array-index-key
-              : <Text {...textProps} key={index}>{part}</Text>;
+        // Check if rendering link or text node
+        if (match?.getType()) {
+          return renderLink
+            ? renderLink(match.getAnchorText(), match, index)
+            : this.renderLink(match.getAnchorText(), match, index, linkProps);
         }
+
+        return renderText
+          ? renderText(part, index)
+          // eslint-disable-next-line react/jsx-props-no-spreading, react/no-array-index-key
+          : <Text {...textProps} key={index}>{part}</Text>;
       });
 
     return createElement(component, other, ...nodes);
