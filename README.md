@@ -33,6 +33,7 @@ class MyComponent extends Component {
 ## Props
 
 - [`component?`](#component)
+- [`customLinks?`](#customLinks)
 - [`email?`](#email)
 - [`hashtag?`](#hashtag)
 - [`latlng?`](#latlng)
@@ -65,6 +66,51 @@ class MyComponent extends Component {
 
 ```js
 <Autolink text={text} component={View} />
+```
+
+### `customLinks`
+
+|          Type           | Required | Default | Description |
+| ----------------------- | -------- | ------- | ----------- |
+| `UserCustomMatchSpec[]` |    No    |         | Specifications for custom link patterns and their handling (see below). |
+
+This property allows the user to establish custom link patterns and handling. It is particularly useful for mixing internal app navigation links with standard external links within the same block of content.
+
+```ts
+interface UserCustomMatchSpec {
+  /** Regular expression pattern to match user-specified custom links */
+  pattern: RegExp;
+  /** Custom function for extracting link text from regex replacer args */
+  extractText?: (replacerArgs: ReplacerArgs) => string;
+  /** Custom function for extracting link URL from regex replacer args */
+  extractUrl?: (replacerArgs: ReplacerArgs) => string;
+  /** Custom override for styling links of this type */
+  style?: StyleProp<TextStyle>;
+  /** Custom override for handling presses on links of this type */
+  onPress?: (replacerArgs: ReplacerArgs) => void;
+  /** Custom override for handling long-presses on links of this type */
+  onLongPress?: (replacerArgs: ReplacerArgs) => void;
+}
+```
+
+The `ReplacerArgs` type is an array containing the variadic arguments passed to a replacer function as provided to `String.replace`. Essentially, element 0 is the entire matched link, and elements 1 through N are any captured subexpressions. More details can be found [in this documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_function_as_a_parameter).
+
+When using the built-in link handling, the `extractUrl` function can be provided to determine the URL to which the link should navigate. Alternatively the `onPress` function will bypass that entirely, allowing the user to provide custom handling specific to this link type, useful for navigating within the application.
+
+The following hypothetical example handles custom @-mention links of the format `@[Name](userId)`, navigating to a user profile screen:
+
+```tsx
+<Autolink
+  text={text}
+  customLinks={[{
+    pattern: /@\[([^[]*)]\(([^(^)]*)\)/g,
+    style: { color: '#ff00ff' },
+    extractText: (args) => `@${args[1]}`,
+    onPress: (args) => {
+      navigate('userProfile', { userId: args[2] });
+    },
+  }]}
+/>
 ```
 
 ### `email`

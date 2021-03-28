@@ -49,4 +49,4 @@ export const CustomMatchers = {
 
 export type MatcherId = keyof typeof CustomMatchers;
 
-export const Matchers = Object.keys(CustomMatchers).map((key) => CustomMatchers[key as MatcherId]);
+export const Matchers = Object.values(CustomMatchers);
