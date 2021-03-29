@@ -53,4 +53,8 @@ export class CustomMatch extends Match {
   getMatcher(): CustomMatcher {
     return this.matcher;
   }
+
+  getReplacerArgs(): ReplacerArgs {
+    return this.replacerArgs;
+  }
 }
