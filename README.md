@@ -46,7 +46,6 @@ _Note_: No link types are enabled by default as of v4. Be sure to enable one or 
 - [`component?`](#component)
 - [`email?`](#email)
 - [`hashtag?`](#hashtag)
-- [`latlng?`](#latlng)
 - [`linkProps?`](#linkprops)
 - [`linkStyle?`](#linkstyle)
 - [`matchers?`](#matchers)
@@ -97,18 +96,6 @@ _Note_: No link types are enabled by default as of v4. Be sure to enable one or 
 
 ```js
 <Autolink text={text} hashtag="facebook" />
-```
-
-### `latlng`
-
-| Type    | Required | Default | Description                                |
-| ------- | -------- | ------- | ------------------------------------------ |
-| boolean | No       | `false` | Whether to link latitude, longitude pairs. |
-
-_Warning:_ Still experimental.
-
-```js
-<Autolink text={text} latlng />
 ```
 
 ### `linkProps`
