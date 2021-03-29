@@ -20,9 +20,17 @@ describe('Phone matchers', () => {
       expect(getText('+48571775914').replace(IntlPhoneMatcher.pattern, 'MATCH')).toBe(resultText);
       expect(getText('+447487428082').replace(IntlPhoneMatcher.pattern, 'MATCH')).toBe(resultText);
     });
+
+    test('returns appropriate link url', () => {
+      expect(IntlPhoneMatcher.getLinkUrl(['+14085550123'])).toBe('tel:+14085550123');
+    });
   });
 
   describe('PhoneMatchersByCountry', () => {
+    test('returns appropriate link url', () => {
+      expect(PhoneMatchersByCountry.US.getLinkUrl(['+1 (408) 555-0123'])).toBe('tel:+14085550123');
+    });
+
     test('matches French phone numbers', () => {
       expect(getText('+33699520828').replace(PhoneMatchersByCountry.FR.pattern, 'MATCH')).toBe(
         resultText,

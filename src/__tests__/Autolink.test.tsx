@@ -7,10 +7,11 @@
  */
 
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import renderer from 'react-test-renderer';
 import { Autolink } from '../Autolink';
-import { LatLngMatcher } from '../matchers';
+import { CustomMatch } from '../CustomMatch';
+import { IntlPhoneMatcher, LatLngMatcher } from '../matchers';
 
 describe('<Autolink />', () => {
   test('renders a Text node', () => {
@@ -234,6 +235,46 @@ describe('<Autolink />', () => {
     expect(onLongPress.mock.calls[0][0]).toBe('mailto:josh%40example.com');
   });
 
+  describe('alert', () => {
+    test('displays alert before linking when showAlert prop enabled', () => {
+      const spy = jest.spyOn(Alert, 'alert').mockImplementationOnce(() => {});
+      const tree = renderer.create(<Autolink text="#awesome" hashtag="instagram" showAlert />);
+      tree.root.findAllByType(Text)[1].props.onPress();
+      expect(spy).toBeCalledTimes(1);
+      expect(spy).toBeCalledWith('Leaving App', 'Do you want to continue?', expect.any(Array));
+    });
+  });
+
+  describe('urls', () => {
+    test('uses hashtag url when pressing linked hashtag', () => {
+      const onPress = jest.fn();
+      const tree = renderer.create(
+        <Autolink text="#awesome" hashtag="instagram" onPress={onPress} />,
+      );
+      tree.root.findAllByType(Text)[1].props.onPress();
+      expect(onPress.mock.calls.length).toBe(1);
+      expect(onPress.mock.calls[0][0]).toBe('instagram://tag?name=awesome');
+    });
+
+    test('uses mention url when pressing linked mention', () => {
+      const onPress = jest.fn();
+      const tree = renderer.create(
+        <Autolink text="@twitter" mention="twitter" onPress={onPress} />,
+      );
+      tree.root.findAllByType(Text)[1].props.onPress();
+      expect(onPress.mock.calls.length).toBe(1);
+      expect(onPress.mock.calls[0][0]).toBe('twitter://user?screen_name=twitter');
+    });
+
+    test('uses phone url when pressing linked phone number', () => {
+      const onPress = jest.fn();
+      const tree = renderer.create(<Autolink text="415-555-5555" phone onPress={onPress} />);
+      tree.root.findAllByType(Text)[1].props.onPress();
+      expect(onPress.mock.calls.length).toBe(1);
+      expect(onPress.mock.calls[0][0]).toBe('tel:4155555555');
+    });
+  });
+
   /**
    * Custom matchers
    */
@@ -243,6 +284,53 @@ describe('<Autolink />', () => {
         .create(<Autolink text="34.0522, -118.2437" matchers={[LatLngMatcher]} />)
         .toJSON();
       expect(tree).toMatchSnapshot();
+    });
+
+    test('calls custom onPress handlers', () => {
+      const onPress = jest.fn();
+      const tree = renderer.create(
+        <Autolink text="+14085550123" matchers={[{ ...IntlPhoneMatcher, onPress }]} />,
+      );
+      tree.root.findAllByType(Text)[1].props.onPress();
+      expect(onPress.mock.calls.length).toBe(1);
+      expect(onPress.mock.calls[0][0]).toBeInstanceOf(CustomMatch);
+    });
+
+    test('calls custom onLongPress handlers', () => {
+      const onLongPress = jest.fn();
+      const tree = renderer.create(
+        <Autolink text="+14085550123" matchers={[{ ...IntlPhoneMatcher, onLongPress }]} />,
+      );
+      tree.root.findAllByType(Text)[1].props.onLongPress();
+      expect(onLongPress.mock.calls.length).toBe(1);
+      expect(onLongPress.mock.calls[0][0]).toBeInstanceOf(CustomMatch);
+    });
+
+    test('uses getLinkText when rendering link', () => {
+      const tree = renderer
+        .create(
+          <Autolink
+            text="+14085550123"
+            matchers={[{ ...IntlPhoneMatcher, getLinkText: () => '__LINK_TEXT__' }]}
+          />,
+        )
+        .toJSON();
+      expect(tree).toMatchSnapshot();
+    });
+
+    test('uses getLinkUrl when using default onPress handler', () => {
+      const onPress = jest.fn();
+      const tree = renderer.create(
+        <Autolink
+          text="+14085550123"
+          onPress={onPress}
+          matchers={[{ ...IntlPhoneMatcher, getLinkUrl: () => '__LINK_URL__' }]}
+        />,
+      );
+      tree.root.findAllByType(Text)[1].props.onPress();
+      expect(onPress.mock.calls.length).toBe(1);
+      expect(onPress.mock.calls[0][0]).toBe('__LINK_URL__');
+      expect(onPress.mock.calls[0][1]).toBeInstanceOf(CustomMatch);
     });
   });
 });
