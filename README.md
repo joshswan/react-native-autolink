@@ -2,43 +2,54 @@
 
 [![Version][version-image]][package-url] [![Downloads][downloads-image]][package-url] [![Build Status][build-image]][build-url] [![License][license-image]][license-url]
 
-Auto-Linking component for React Native. Parses text and wraps URLs, phone numbers, emails, social handles, hashtags, and more with Text nodes and onPress handlers. And it's all fully customizable :)
+Auto-Linking component for React Native. Parses text and wraps URLs, phone numbers, emails, social handles, hashtags, and more with Text nodes and onPress handlers.
+
+**New in v4**: Autolink any pattern using [custom regex matchers](#custom-matchers) and click handlers! Thanks @lafiosca!
 
 ## Installation
 
 ```shell
-npm install react-native-autolink --save
+npm i react-native-autolink
 ```
 
 ## Usage
 
-Simply import the library and pass desired props:
+Simply import the library and enable the link types you want to auto-link:
 
 ```javascript
 import Autolink from 'react-native-autolink';
 
-class MyComponent extends Component {
-  render() {
-    return (
-      <Autolink
-        text="This is the string to parse for urls (https://github.com/joshswan/react-native-autolink), phone numbers (415-555-5555), emails (josh@example.com), mentions/handles (@twitter), and hashtags (#exciting)"
-        hashtag="instagram"
-        mention="twitter"
-      />
-    );
-  }
-}
+const MyComponent = () => (
+  <Autolink
+    // Required: the text to parse for links
+    text="This is the string to parse for urls (https://github.com/joshswan/react-native-autolink), phone numbers (415-555-5555), emails (josh@example.com), mentions/handles (@twitter), and hashtags (#exciting)"
+    // Optional: enable email linking
+    email
+    // Optional: enable hashtag linking to instagram
+    hashtag="instagram"
+    // Optional: enable @username linking to twitter
+    mention="twitter"
+    // Optional: enable phone linking
+    phone="sms"
+    // Optional: enable URL linking
+    url
+    // Optional: custom linking matchers
+    matchers={[MyCustomTextMatcher]}
+  />
+);
 ```
+
+_Note_: No link types are enabled by default as of v4. Be sure to enable one or more (e.g. `email`, `hashtag`, `phone`, etc.) or you won't see anything linked!
 
 ## Props
 
 - [`component?`](#component)
-- [`customLinks?`](#customLinks)
 - [`email?`](#email)
 - [`hashtag?`](#hashtag)
 - [`latlng?`](#latlng)
 - [`linkProps?`](#linkprops)
 - [`linkStyle?`](#linkstyle)
+- [`matchers?`](#matchers)
 - [`mention?`](#mention)
 - [`onPress?`](#onpress)
 - [`onLongPress?`](#onlongpress)
@@ -66,53 +77,6 @@ class MyComponent extends Component {
 
 ```js
 <Autolink text={text} component={View} />
-```
-
-### `customLinks`
-
-| Type                    | Required | Default | Description                                                             |
-| ----------------------- | -------- | ------- | ----------------------------------------------------------------------- |
-| `UserCustomMatchSpec[]` | No       |         | Specifications for custom link patterns and their handling (see below). |
-
-This property allows the user to establish custom link patterns and handling. It is particularly useful for mixing internal app navigation links with standard external links within the same block of content.
-
-```ts
-interface UserCustomMatchSpec {
-  /** Regular expression pattern to match user-specified custom links */
-  pattern: RegExp;
-  /** Custom function for extracting link text from regex replacer args */
-  extractText?: (replacerArgs: ReplacerArgs) => string;
-  /** Custom function for extracting link URL from regex replacer args */
-  extractUrl?: (replacerArgs: ReplacerArgs) => string;
-  /** Custom override for styling links of this type */
-  style?: StyleProp<TextStyle>;
-  /** Custom override for handling presses on links of this type */
-  onPress?: (replacerArgs: ReplacerArgs) => void;
-  /** Custom override for handling long-presses on links of this type */
-  onLongPress?: (replacerArgs: ReplacerArgs) => void;
-}
-```
-
-The `ReplacerArgs` type is an array containing the variadic arguments passed to a replacer function as provided to `String.replace`. Essentially, element 0 is the entire matched link, and elements 1 through N are any captured subexpressions. More details can be found [in this documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_function_as_a_parameter).
-
-When using the built-in link handling, the `extractUrl` function can be provided to determine the URL to which the link should navigate. Alternatively the `onPress` function will bypass that entirely, allowing the user to provide custom handling specific to this link type, useful for navigating within the application.
-
-The following hypothetical example handles custom @-mention links of the format `@[Name](userId)`, navigating to a user profile screen:
-
-```tsx
-<Autolink
-  text={text}
-  customLinks={[
-    {
-      pattern: /@\[([^[]*)]\(([^(^)]*)\)/g,
-      style: { color: '#ff00ff' },
-      extractText: (args) => `@${args[1]}`,
-      onPress: (args) => {
-        navigate('userProfile', { userId: args[2] });
-      },
-    },
-  ]}
-/>
 ```
 
 ### `email`
@@ -165,6 +129,18 @@ _Warning:_ Still experimental.
 
 ```js
 <Autolink text={text} linkStyle={{ color: 'blue' }} />
+```
+
+### `matchers`
+
+| Type              | Required | Default | Description                                                                                     |
+| ----------------- | -------- | ------- | ----------------------------------------------------------------------------------------------- |
+| `CustomMatcher[]` | No       |         | Array of custom matcher objects with optional press handlers, styling, and text/url extraction. |
+
+See the [Custom Matchers](#custom-matchers) section below for more information.
+
+```js
+<Autolink text={text} matchers={[MyCustomMatcher]} />
 ```
 
 ### `mention`
@@ -368,6 +344,74 @@ type UrlConfig = {
 | boolean | No       | Android: `true`, iOS: `false` | Whether to link to web versions of services (e.g. Facebook, Instagram, Twitter) for hashtag and mention links when users don't have the respective app installed. |
 
 _Note:_ Requires `LSApplicationQueriesSchemes` on iOS so it is disabled by default on iOS. See [Linking docs](https://reactnative.dev/docs/linking.html) for more info.
+
+## Custom Matchers
+
+Custom matchers allow for complete customization of Autolink. You can match text based on a custom regular expression, supply custom `onPress` and `onLongPress` handlers, custom link styles, and even custom functions for creating the text and/or URL for the match.
+
+Custom matchers are particularly useful for matching other types of data that aren't supported out-of-the-box (e.g. international phone numbers) and for mixing internal app navigation links with standard external links within the same block of content.
+
+Check out the section below for a few [ready-to-go custom matchers](#available-matchers).
+
+```ts
+interface CustomMatcher {
+  /* Regular expression pattern to match/link user-specified patterns */
+  pattern: RegExp;
+  /* Custom press handler for links of this type */
+  onPress?: (match: CustomMatch) => void;
+  /* Custom long-press handler for links of this type */
+  onLongPress?: (match: CustomMatch) => void;
+  /* Custom styling for links of this type */
+  style?: StyleProp<TextStyle>;
+  /* Custom type/identifier for use with match.getType() */
+  type?: string;
+  /* Custom function for extracting link text using regex replacer args */
+  getLinkText?: (replacerArgs: ReplacerArgs) => string;
+  /* Custom function for extracting link URL using regex replacer args */
+  getLinkUrl?: (replacerArgs: ReplacerArgs) => string;
+}
+```
+
+The `ReplacerArgs` type supplied to `getLinkText` and `getLinkUrl` is an array containing the variadic arguments passed to a replacer function as provided to `String.replace`. Essentially, element 0 is the entire matched link, and elements 1 through N are any captured subexpressions. More details can be found [in the documentation on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_function_as_a_parameter).
+
+The `CustomMatch` class supplied to `onPress` and `onLongPress` (or their non-custom-matcher companions above) includes a few methods that can be useful as well, e.g. `getMatcher()` to return the `CustomMatcher` object and `getReplacerArgs` to return the same array discussed above.
+
+### Custom Matcher Usage
+
+When using the built-in link handling, the `getLinkUrl` function can be provided to determine the URL to which the link should navigate. Alternatively the `onPress` function will bypass that entirely, allowing the user to provide custom handling specific to this link type, e.g. for navigating within the application.
+
+The following hypothetical example handles custom @-mention links of the format `@[Name](userId)`, navigating to a user profile screen:
+
+```js
+<Autolink
+  text={text}
+  matchers={[
+    {
+      pattern: /@\[([^[]*)]\(([^(^)]*)\)/g,
+      style: { color: '#ff00ff' },
+      getLinkText: (replacerArgs) => `@${replacerArgs[1]}`,
+      onPress: (match) => {
+        navigate('userProfile', { userId: match.getReplacerArgs()[2] });
+      },
+    },
+  ]}
+/>
+```
+
+### Available Matchers
+
+A few custom matchers (e.g. `LatLngMatcher`, `IntlPhoneMatcher`, `PhoneMatchersByCountry`) are already included and available for use. They're just objects so they're easily customizable too! PRs are welcome for additional custom matchers that could be useful to the community.
+
+```js
+import { Autolink, LatLngMatcher } from 'react-native-autolink';
+
+<Autolink text="Some text with locations 32.123, -117.123" matchers={[LatLngMatcher]} />;
+
+// Or customize the matcher
+const MyLatLngMatcher = { ...LatLngMatcher, onPress: () => alert('LatLng pressed!') };
+
+<Autolink text={text} matchers={[MyLatLngMatcher]} />;
+```
 
 ## Supported By
 
