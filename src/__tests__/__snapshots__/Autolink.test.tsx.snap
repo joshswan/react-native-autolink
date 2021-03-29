@@ -56,22 +56,6 @@ exports[`<Autolink /> does not remove url trailing slashes when stripTrailingSla
 </Text>
 `;
 
-exports[`<Autolink /> does not truncate urls when zero is passed for truncate prop 1`] = `
-<Text>
-  <Text
-    onLongPress={[Function]}
-    onPress={[Function]}
-    style={
-      Object {
-        "color": "#0E7AFE",
-      }
-    }
-  >
-    github.com/joshswan/react-native-autolink
-  </Text>
-</Text>
-`;
-
 exports[`<Autolink /> does not wrap a hashtag in a link Text node when hashtag prop disabled 1`] = `
 <Text>
   <Text>
@@ -168,7 +152,7 @@ exports[`<Autolink /> links multiple elements individually 1`] = `
       }
     }
   >
-    github.com/joshswan/..e-autolink
+    github.com/joshswan/react-native-autolink
   </Text>
   <Text>
     . It's 
@@ -413,7 +397,7 @@ exports[`<Autolink /> wraps a url in a link Text node when url prop enabled 1`] 
       }
     }
   >
-    github.com/joshswan/..e-autolink
+    github.com/joshswan/react-native-autolink
   </Text>
 </Text>
 `;

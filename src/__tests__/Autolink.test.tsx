@@ -9,7 +9,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import renderer from 'react-test-renderer';
-import Autolink from '..';
+import { Autolink } from '../Autolink';
 import { LatLngMatcher } from '../matchers';
 
 describe('<Autolink />', () => {
@@ -153,13 +153,6 @@ describe('<Autolink />', () => {
   test('truncates urls to length specified in truncate prop', () => {
     const tree = renderer
       .create(<Autolink text="github.com/joshswan/react-native-autolink" truncate={32} />)
-      .toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
-  test('does not truncate urls when zero is passed for truncate prop', () => {
-    const tree = renderer
-      .create(<Autolink text="github.com/joshswan/react-native-autolink" truncate={0} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
