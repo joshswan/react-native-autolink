@@ -64,7 +64,7 @@ _Note_: No link types are enabled by default as of v4. Be sure to enable one or 
 - [`truncateChars?`](#truncatechars)
 - [`truncateLocation?`](#truncatelocation)
 - [`url?`](#url)
-- [`webFallback?`](#webfallback)
+- [`useNativeSchemes?`](#usenativeschemes)
 
 **Note:** All other props (e.g. `numberOfLines`, `style`, etc.) will be passed through to the container component, which is either `Text` (default) or a custom component supplied to the `component` prop.
 
