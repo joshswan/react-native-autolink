@@ -16,16 +16,7 @@ import {
   MentionMatch,
   PhoneMatch,
 } from 'autolinker/dist/es2015';
-import {
-  Alert,
-  Linking,
-  Platform,
-  StyleSheet,
-  StyleProp,
-  Text,
-  TextStyle,
-  TextProps,
-} from 'react-native';
+import { Alert, Linking, StyleSheet, StyleProp, Text, TextStyle, TextProps } from 'react-native';
 import { truncate } from './truncate';
 import { CustomMatch, CustomMatcher } from './CustomMatch';
 import { PolymorphicComponentProps } from './types';
@@ -75,7 +66,7 @@ export interface AutolinkProps {
         wwwMatches?: boolean;
         tldMatches?: boolean;
       };
-  webFallback?: boolean;
+  useNativeSchemes?: boolean;
 }
 
 type AutolinkComponentProps<C extends React.ElementType = typeof Text> = PolymorphicComponentProps<
@@ -107,26 +98,25 @@ export const Autolink = React.memo(
     truncateChars = '..',
     truncateLocation = 'smart',
     url = true,
-    // iOS requires LSApplicationQueriesSchemes for Linking.canOpenURL
-    webFallback = Platform.OS !== 'ios' && Platform.OS !== 'macos',
+    useNativeSchemes = false,
     ...props
   }: AutolinkComponentProps<C>): JSX.Element | null => {
     const getUrl = useCallback(
-      (match: Match): string[] => {
+      (match: Match): string => {
         switch (match.getType()) {
           case 'email':
             return urls.getEmailUrl(match as EmailMatch);
           case 'hashtag':
-            return urls.getHashtagUrl(match as HashtagMatch, hashtag);
+            return urls.getHashtagUrl(match as HashtagMatch, hashtag, useNativeSchemes);
           case 'mention':
-            return urls.getMentionUrl(match as MentionMatch, mention);
+            return urls.getMentionUrl(match as MentionMatch, mention, useNativeSchemes);
           case 'phone':
             return urls.getPhoneUrl(match as PhoneMatch, phone);
           default:
-            return [match.getAnchorHref()];
+            return match.getAnchorHref();
         }
       },
-      [hashtag, mention, phone],
+      [hashtag, mention, phone, useNativeSchemes],
     );
 
     const onPress = useCallback(
@@ -146,19 +136,15 @@ export const Autolink = React.memo(
           return;
         }
 
-        const [linkUrl, fallbackUrl] = getUrl(match);
+        const linkUrl = getUrl(match);
 
         if (onPressProp) {
           onPressProp(linkUrl, match);
-        } else if (webFallback) {
-          Linking.canOpenURL(linkUrl).then((supported) => {
-            Linking.openURL(!supported && fallbackUrl ? fallbackUrl : linkUrl);
-          });
         } else {
           Linking.openURL(linkUrl);
         }
       },
-      [getUrl, onPressProp, showAlert, webFallback],
+      [getUrl, onPressProp, showAlert],
     );
 
     const onLongPress = useCallback(
@@ -170,7 +156,7 @@ export const Autolink = React.memo(
         }
 
         if (onLongPressProp) {
-          const [linkUrl] = getUrl(match);
+          const linkUrl = getUrl(match);
           onLongPressProp(linkUrl, match);
         }
       },

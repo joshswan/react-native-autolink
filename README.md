@@ -324,13 +324,13 @@ type UrlConfig = {
 <Autolink text={text} url={{ tldMatches: false }} />
 ```
 
-### `webFallback`
+### `useNativeSchemes`
 
-| Type    | Required | Default                       | Description                                                                                                                                                       |
-| ------- | -------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| boolean | No       | Android: `true`, iOS: `false` | Whether to link to web versions of services (e.g. Facebook, Instagram, Twitter) for hashtag and mention links when users don't have the respective app installed. |
+| Type    | Required | Default | Description                                                                                                                        |
+| ------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| boolean | No       | `false` | Whether to use native app schemes (e.g. `twitter://`) rather than web URLs when linking to services for hashtag and mention links. |
 
-_Note:_ Requires `LSApplicationQueriesSchemes` on iOS so it is disabled by default on iOS. See [Linking docs](https://reactnative.dev/docs/linking.html) for more info.
+_Note:_ Prior to v4, the `webFallback` prop enabled a check to see whether the user had a particular app installed using `Linking.canOpenUrl`, falling back to a web link if not. Due to permissions requirements on iOS and upcoming changes on Android, this feature was removed and instead, services will be linked to the web versions by default. Use the `useNativeSchemes` prop to enable native app linking or use the `onPress` and/or `matchers` props to provide your own custom logic for linking and opening apps.
 
 ## Custom Matchers
 

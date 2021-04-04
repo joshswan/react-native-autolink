@@ -253,13 +253,23 @@ describe('<Autolink />', () => {
       );
       tree.root.findAllByType(Text)[1].props.onPress();
       expect(onPress.mock.calls.length).toBe(1);
-      expect(onPress.mock.calls[0][0]).toBe('instagram://tag?name=awesome');
+      expect(onPress.mock.calls[0][0]).toBe('https://www.instagram.com/explore/tags/awesome/');
     });
 
     test('uses mention url when pressing linked mention', () => {
       const onPress = jest.fn();
       const tree = renderer.create(
         <Autolink text="@twitter" mention="twitter" onPress={onPress} />,
+      );
+      tree.root.findAllByType(Text)[1].props.onPress();
+      expect(onPress.mock.calls.length).toBe(1);
+      expect(onPress.mock.calls[0][0]).toBe('https://twitter.com/twitter');
+    });
+
+    test('uses native scheme for mention url when enabled', () => {
+      const onPress = jest.fn();
+      const tree = renderer.create(
+        <Autolink text="@twitter" mention="twitter" onPress={onPress} useNativeSchemes />,
       );
       tree.root.findAllByType(Text)[1].props.onPress();
       expect(onPress.mock.calls.length).toBe(1);
