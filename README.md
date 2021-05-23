@@ -184,7 +184,7 @@ See the [Custom Matchers](#custom-matchers) section below for more information.
 
 | Type              | Required | Default | Description                                                                                                                        |
 | ----------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| boolean or string | No       | `true`  | Whether to link phone numbers. Possible values: `false` (disabled), `true` (`tel:{number}`), `"sms"` or `"text"` (`sms:{number}`). |
+| boolean or string | No       | `true`  | Whether to link phone numbers. Possible values: `false` (disabled), `true` (creates the hyperlink `tel:{number}`), `"sms"` or `"text"` (creates the hyperlink `sms:{number}`). |
 
 _Note:_ Currently, only US numbers are supported.
 
@@ -318,6 +318,8 @@ type UrlConfig = {
   tldMatches?: boolean,
 };
 ```
+
+Setting `url={true}` is equivalent to `url={schemeMatches: true, wwwMatches: true, tldMatches: true}`.
 
 ```js
 <Autolink text={text} url={false} />
