@@ -276,7 +276,7 @@ _Note:_ You'll need to handle press logic yourself when using `renderLink`.
 
 | Type   | Required | Default | Description                                                                              |
 | ------ | -------- | ------- | ---------------------------------------------------------------------------------------- |
-| number | No       | `32`    | Maximum length of URL link text. Possible values: `0` (disabled), `1+` (maximum length). |
+| number | No       | `0`     | Maximum length of URL link text. Possible values: `0` (disabled), `1+` (maximum length). |
 
 ```js
 <Autolink text={text} truncate={20} />
