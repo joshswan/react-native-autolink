@@ -409,7 +409,7 @@ const MyLatLngMatcher = { ...LatLngMatcher, onPress: () => alert('LatLng pressed
 ## License
 
 ```text
- Copyright (c) 2016-2021 Josh Swan
+ Copyright (c) 2016-2023 Josh Swan
 
  Licensed under the The MIT License (MIT) (the "License");
  you may not use this file except in compliance with the License.
