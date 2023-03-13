@@ -69,7 +69,7 @@ export interface AutolinkProps {
   useNativeSchemes?: boolean;
 }
 
-type AutolinkComponentProps<C extends React.ElementType = typeof Text> = PolymorphicComponentProps<
+export type AutolinkComponentProps<C extends React.ElementType = typeof Text> = PolymorphicComponentProps<
   C,
   AutolinkProps
 >;
