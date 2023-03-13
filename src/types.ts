@@ -1,9 +1,8 @@
 // Polymorphic component types
 // Source: https://www.benmvp.com/blog/polymorphic-react-components-typescript/
 
-export type PropsOf<
-  C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>
-> = JSX.LibraryManagedAttributes<C, React.ComponentPropsWithRef<C>>;
+export type PropsOf<C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> =
+  JSX.LibraryManagedAttributes<C, React.ComponentPropsWithRef<C>>;
 
 type AsProp<C extends React.ElementType> = {
   /**
@@ -38,5 +37,5 @@ export type InheritableElementProps<C extends React.ElementType, Props = unknown
  */
 export type PolymorphicComponentProps<
   C extends React.ElementType,
-  Props = unknown
+  Props = unknown,
 > = InheritableElementProps<C, Props & AsProp<C>>;
