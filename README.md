@@ -39,8 +39,6 @@ const MyComponent = () => (
 );
 ```
 
-_Note_: No link types are enabled by default as of v4. Be sure to enable one or more (e.g. `email`, `hashtag`, `phone`, etc.) or you won't see anything linked!
-
 ## Props
 
 - [`component?`](#component)
