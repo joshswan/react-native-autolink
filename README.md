@@ -354,6 +354,8 @@ interface CustomMatcher {
   getLinkText?: (replacerArgs: ReplacerArgs) => string;
   /* Custom function for extracting link URL using regex replacer args */
   getLinkUrl?: (replacerArgs: ReplacerArgs) => string;
+  /* Custom function for rendering link - remember to attach press handlers! */
+  renderLink?: (text: string, match: CustomMatch, index: number) => React.ReactNode;
 }
 ```
 
