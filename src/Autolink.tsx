@@ -190,7 +190,7 @@ export const Autolink = React.memo(
     const uid = useRef(Math.floor(Math.random() * 0x10000000000).toString(16));
     const [generateToken, tokenRegexp] = makeTokenGenerator(uid.current);
 
-    const matches: { [token: string]: Match } = {};
+    const matches: { [token: string]: Match | CustomMatch } = {};
     let linkedText: string;
 
     try {
@@ -242,7 +242,11 @@ export const Autolink = React.memo(
 
         // Check if rendering link or text node
         if (match?.getType()) {
-          return (renderLinkProp || renderLink)(match.getAnchorText(), match, index);
+          return ((match as any).getRenderFn?.() || renderLinkProp || renderLink)(
+            match.getAnchorText(),
+            match,
+            index,
+          );
         }
 
         return renderText ? (

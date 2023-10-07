@@ -342,5 +342,26 @@ describe('<Autolink />', () => {
       expect(onPress.mock.calls[0][0]).toBe('__LINK_URL__');
       expect(onPress.mock.calls[0][1]).toBeInstanceOf(CustomMatch);
     });
+
+    test('uses renderLink when rendering link', () => {
+      const onPress = jest.fn();
+      const renderLink = jest
+        .fn()
+        .mockImplementation((text: string) => <Text onPress={onPress}>{text}</Text>);
+      const tree = renderer.create(
+        <Autolink
+          text="+14085550123"
+          onPress={onPress}
+          matchers={[{ ...IntlPhoneMatcher, renderLink }]}
+        />,
+      );
+      expect(renderLink.mock.calls.length).toBe(1);
+      expect(renderLink.mock.calls[0][0]).toBe('+14085550123');
+      expect(renderLink.mock.calls[0][1]).toBeInstanceOf(CustomMatch);
+      expect(renderLink.mock.calls[0][2]).toBe(0);
+      expect(tree).toMatchSnapshot();
+      tree.root.findAllByType(Text)[1].props.onPress();
+      expect(onPress.mock.calls.length).toBe(1);
+    });
   });
 });

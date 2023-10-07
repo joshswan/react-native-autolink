@@ -190,6 +190,16 @@ exports[`<Autolink /> matchers uses getLinkText when rendering link 1`] = `
 </Text>
 `;
 
+exports[`<Autolink /> matchers uses renderLink when rendering link 1`] = `
+<Text>
+  <Text
+    onPress={[MockFunction]}
+  >
+    +14085550123
+  </Text>
+</Text>
+`;
+
 exports[`<Autolink /> matchers wraps text based on supplied custom matchers 1`] = `
 <Text>
   <Text

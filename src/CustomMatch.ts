@@ -1,4 +1,5 @@
 import { Match, MatchConfig } from 'autolinker/dist/es2015';
+import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 
 // The variadic arguments of a regex replacer function, wrapped in an array.
@@ -20,6 +21,8 @@ export interface CustomMatcher {
   getLinkText?: (replacerArgs: ReplacerArgs) => string;
   /* Custom function for extracting link URL using regex replacer args */
   getLinkUrl?: (replacerArgs: ReplacerArgs) => string;
+  /* Custom function for rendering link - remember to attach press handlers! */
+  renderLink?: (text: string, match: CustomMatch, index: number) => React.ReactNode;
 }
 
 export interface CustomMatchConfig extends MatchConfig {
@@ -56,5 +59,9 @@ export class CustomMatch extends Match {
 
   getReplacerArgs(): ReplacerArgs {
     return this.replacerArgs;
+  }
+
+  getRenderFn(): CustomMatcher['renderLink'] {
+    return this.matcher.renderLink;
   }
 }
