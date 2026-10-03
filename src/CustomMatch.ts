@@ -1,3 +1,11 @@
+/*!
+ * React Native Autolink
+ *
+ * Copyright 2016-2026 Josh Swan
+ * Released under the MIT license
+ * https://github.com/joshswan/react-native-autolink/blob/main/LICENSE
+ */
+
 import { Match, MatchConfig } from 'autolinker/dist/es2015';
 import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';

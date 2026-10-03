@@ -1,3 +1,11 @@
+/*!
+ * React Native Autolink
+ *
+ * Copyright 2016-2026 Josh Swan
+ * Released under the MIT license
+ * https://github.com/joshswan/react-native-autolink/blob/main/LICENSE
+ */
+
 import React, { act } from 'react';
 import { Text } from 'react-native';
 import renderer, { ReactTestRenderer } from 'react-test-renderer';
