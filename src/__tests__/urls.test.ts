@@ -6,7 +6,7 @@
  * https://github.com/joshswan/react-native-autolink/blob/main/LICENSE
  */
 
-import { EmailMatch, HashtagMatch, MentionMatch, PhoneMatch } from 'autolinker/dist/es2015';
+import { EmailMatch, HashtagMatch, MentionMatch, PhoneMatch } from 'autolinker/dist/commonjs';
 import { getEmailUrl, getHashtagUrl, getMentionUrl, getPhoneUrl } from '../urls';
 
 describe('urls', () => {

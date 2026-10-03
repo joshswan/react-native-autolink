@@ -15,7 +15,7 @@ import {
   HashtagMatch,
   MentionMatch,
   PhoneMatch,
-} from 'autolinker/dist/es2015';
+} from 'autolinker/dist/commonjs';
 import { Alert, Linking, StyleSheet, StyleProp, Text, TextStyle, TextProps } from 'react-native';
 import { truncate } from './truncate';
 import { CustomMatch, CustomMatcher } from './CustomMatch';

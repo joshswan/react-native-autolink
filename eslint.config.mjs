@@ -21,6 +21,20 @@ export default defineConfig(
       'react/prop-types': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
+      // Autolinker's ES2015 build breaks Expo static rendering (#84), and the package root
+      // resolves to it on web, so always import the CommonJS build explicitly.
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [{ name: 'autolinker', message: 'Import from autolinker/dist/commonjs instead.' }],
+          patterns: [
+            {
+              group: ['autolinker/dist/es2015*'],
+              message: 'Import from autolinker/dist/commonjs instead.',
+            },
+          ],
+        },
+      ],
     },
   },
   {
