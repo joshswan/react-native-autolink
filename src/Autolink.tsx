@@ -6,7 +6,7 @@
  * https://github.com/joshswan/react-native-autolink/blob/master/LICENSE
  */
 
-import React, { createElement, useCallback, useRef } from 'react';
+import React, { createElement, useCallback } from 'react';
 import {
   Autolinker,
   AnchorTagBuilder,
@@ -21,15 +21,6 @@ import { truncate } from './truncate';
 import { CustomMatch, CustomMatcher } from './CustomMatch';
 import { PolymorphicComponentProps } from './types';
 import * as urls from './urls';
-
-const makeTokenGenerator = (uid: string): [() => string, RegExp] => {
-  let counter = 0;
-  return [
-    // eslint-disable-next-line no-plusplus
-    () => `@__ELEMENT-${uid}-${counter++}__@`,
-    new RegExp(`(@__ELEMENT-${uid}-\\d+__@)`, 'g'),
-  ];
-};
 
 const styles = StyleSheet.create({
   link: {
@@ -185,16 +176,11 @@ export const Autolink = React.memo(
       [linkProps, linkStyle, truncateProp, truncateChars, truncateLocation, onPress, onLongPress],
     );
 
-    // Creates a token with a random UID that should not be guessable or
-    // conflict with other parts of the string.
-    const uid = useRef(Math.floor(Math.random() * 0x10000000000).toString(16));
-    const [generateToken, tokenRegexp] = makeTokenGenerator(uid.current);
-
-    const matches: { [token: string]: Match | CustomMatch } = {};
-    let linkedText: string;
+    const input = text || '';
+    let matches: Match[];
 
     try {
-      linkedText = Autolinker.link(text || '', {
+      matches = Autolinker.parse(input, {
         email,
         hashtag,
         mention,
@@ -202,30 +188,49 @@ export const Autolink = React.memo(
         urls: url,
         stripPrefix,
         stripTrailingSlash,
-        replaceFn: (match) => {
-          const token = generateToken();
-
-          matches[token] = match;
-
-          return token;
-        },
       });
 
       // User-specified custom matchers
       matchers.forEach((matcher) => {
-        linkedText = linkedText.replace(matcher.pattern, (...replacerArgs) => {
-          const token = generateToken();
+        // Search the original input so regexes never see replacement tokens.
+        // Non-global patterns should still find the first match outside an existing link.
+        const pattern =
+          matcher.pattern.global || matcher.pattern.sticky
+            ? matcher.pattern
+            : new RegExp(matcher.pattern.source, `${matcher.pattern.flags}g`);
+        const previousMatches = [...matches].sort((a, b) => a.getOffset() - b.getOffset());
+        let previousIndex = 0;
+        let hasMatch = false;
+
+        input.replace(pattern, (...replacerArgs) => {
           const matchedText = replacerArgs[0];
+          if (!matcher.pattern.global && hasMatch) return matchedText;
 
-          matches[token] = new CustomMatch({
-            matcher,
-            matchedText,
-            offset: replacerArgs[replacerArgs.length - 2],
-            replacerArgs,
-            tagBuilder,
-          });
+          const hasNamedGroups = typeof replacerArgs[replacerArgs.length - 1] === 'object';
+          const offset = replacerArgs[replacerArgs.length - (hasNamedGroups ? 3 : 2)];
+          // Regex matches arrive in order; scan previous matches only once per matcher.
+          while (
+            previousIndex < previousMatches.length &&
+            previousMatches[previousIndex].getOffset() !== offset &&
+            previousMatches[previousIndex].getOffset() +
+              previousMatches[previousIndex].getMatchedText().length <=
+              offset
+          ) {
+            previousIndex += 1;
+          }
+          const previous = previousMatches[previousIndex];
+          const overlaps =
+            previous &&
+            (offset === previous.getOffset() ||
+              (offset < previous.getOffset() + previous.getMatchedText().length &&
+                offset + matchedText.length > previous.getOffset()));
 
-          return token;
+          if (overlaps) return matchedText;
+
+          matches.push(new CustomMatch({ matcher, matchedText, offset, replacerArgs, tagBuilder }));
+          hasMatch = true;
+
+          return matchedText;
         });
       });
     } catch (e) {
@@ -234,30 +239,37 @@ export const Autolink = React.memo(
       return null;
     }
 
-    const nodes = linkedText
-      .split(tokenRegexp)
-      .filter((part) => !!part)
-      .map((part, index) => {
-        const match = matches[part];
-
-        // Check if rendering link or text node
-        if (match?.getType()) {
-          return ((match as any).getRenderFn?.() || renderLinkProp || renderLink)(
-            match.getAnchorText(),
-            match,
-            index,
-          );
-        }
-
-        return renderText ? (
-          renderText(part, index)
-        ) : (
-          // eslint-disable-next-line react/jsx-props-no-spreading, react/no-array-index-key
-          <Text {...textProps} key={index}>
-            {part}
-          </Text>
-        );
+    const parts: (string | Match)[] = [];
+    let lastIndex = 0;
+    matches
+      .sort((a, b) => a.getOffset() - b.getOffset())
+      .forEach((match) => {
+        const offset = match.getOffset();
+        if (offset > lastIndex) parts.push(input.slice(lastIndex, offset));
+        parts.push(match);
+        lastIndex = offset + match.getMatchedText().length;
       });
+    if (lastIndex < input.length) parts.push(input.slice(lastIndex));
+
+    const nodes = parts.map((part, index) => {
+      // Check if rendering link or text node
+      if (typeof part !== 'string') {
+        if (part instanceof CustomMatch) {
+          const customRender = part.getRenderFn();
+          if (customRender) return customRender(part.getAnchorText(), part, index);
+        }
+        return (renderLinkProp || renderLink)(part.getAnchorText(), part, index);
+      }
+
+      return renderText ? (
+        renderText(part, index)
+      ) : (
+        // eslint-disable-next-line react/jsx-props-no-spreading, react/no-array-index-key
+        <Text {...textProps} key={index}>
+          {part}
+        </Text>
+      );
+    });
 
     return createElement(as || component || Text, props, ...nodes);
   },
