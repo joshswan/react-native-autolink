@@ -1,0 +1,25 @@
+name: PR title
+
+# PRs are squash merged with the PR title as the commit message, so the title
+# must be a conventional commit for release-please to version releases correctly.
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      # Pass the title through the environment rather than interpolating it into the script
+      - run: printf '%s\n' "$PR_TITLE" | yarn -s commitlint --verbose
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
