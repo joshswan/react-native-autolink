@@ -403,7 +403,10 @@ const MyLatLngMatcher = { ...LatLngMatcher, onPress: () => alert('LatLng pressed
 ## Supported By
 
 <a href="https://www.disruptivelabs.io">
-  <img src="https://www.disruptivelabs.io/images/logo.png" alt="Disruptive Labs" width="150" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/joshswan/react-native-autolink/main/.github/assets/disruptive-labs-dark.svg" />
+    <img src="https://raw.githubusercontent.com/joshswan/react-native-autolink/main/.github/assets/disruptive-labs-light.svg" alt="Disruptive Labs" width="150" />
+  </picture>
 </a>
 
 ## License
@@ -425,8 +428,8 @@ const MyLatLngMatcher = { ...LatLngMatcher, onPress: () => alert('LatLng pressed
  limitations under the License.
 ```
 
-[build-image]: https://img.shields.io/circleci/build/gh/joshswan/react-native-autolink?style=flat-square
-[build-url]: https://circleci.com/gh/joshswan/react-native-autolink
+[build-image]: https://img.shields.io/github/actions/workflow/status/joshswan/react-native-autolink/ci.yml?branch=main&style=flat-square
+[build-url]: https://github.com/joshswan/react-native-autolink/actions/workflows/ci.yml
 [downloads-image]: https://img.shields.io/npm/dm/react-native-autolink?style=flat-square
 [license-image]: https://img.shields.io/npm/l/react-native-autolink?color=blue&style=flat-square
 [license-url]: https://github.com/joshswan/react-native-autolink/blob/main/LICENSE
