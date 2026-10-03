@@ -1,8 +1,9 @@
 // Polymorphic component types
 // Source: https://www.benmvp.com/blog/polymorphic-react-components-typescript/
 
-export type PropsOf<C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> =
-  JSX.LibraryManagedAttributes<C, React.ComponentPropsWithRef<C>>;
+export type PropsOf<
+  C extends keyof React.JSX.IntrinsicElements | React.JSXElementConstructor<any>,
+> = React.JSX.LibraryManagedAttributes<C, React.ComponentPropsWithRef<C>>;
 
 type AsProp<C extends React.ElementType> = {
   /**
