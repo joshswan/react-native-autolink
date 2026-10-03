@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`<Autolink /> does not match scheme-containing url when schemeMatches disabled 1`] = `
 <Text>

@@ -409,13 +409,13 @@ const MyLatLngMatcher = { ...LatLngMatcher, onPress: () => alert('LatLng pressed
 ## License
 
 ```text
- Copyright (c) 2016-2023 Josh Swan
+ Copyright (c) 2016-2026 Josh Swan
 
  Licensed under the The MIT License (MIT) (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
 
-    https://raw.githubusercontent.com/joshswan/react-native-autolink/master/LICENSE
+    https://raw.githubusercontent.com/joshswan/react-native-autolink/main/LICENSE
 
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
@@ -429,7 +429,7 @@ const MyLatLngMatcher = { ...LatLngMatcher, onPress: () => alert('LatLng pressed
 [build-url]: https://circleci.com/gh/joshswan/react-native-autolink
 [downloads-image]: https://img.shields.io/npm/dm/react-native-autolink?style=flat-square
 [license-image]: https://img.shields.io/npm/l/react-native-autolink?color=blue&style=flat-square
-[license-url]: https://github.com/joshswan/react-native-autolink/blob/master/LICENSE
+[license-url]: https://github.com/joshswan/react-native-autolink/blob/main/LICENSE
 [package-url]: https://www.npmjs.com/package/react-native-autolink
 [version-image]: https://img.shields.io/npm/v/react-native-autolink?style=flat-square
 [match-url]: http://greg-jacobs.com/Autolinker.js/api/index.html#!/api/Autolinker.match.Match

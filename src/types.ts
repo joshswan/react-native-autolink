@@ -1,8 +1,17 @@
+/*!
+ * React Native Autolink
+ *
+ * Copyright 2016-2026 Josh Swan
+ * Released under the MIT license
+ * https://github.com/joshswan/react-native-autolink/blob/main/LICENSE
+ */
+
 // Polymorphic component types
 // Source: https://www.benmvp.com/blog/polymorphic-react-components-typescript/
 
-export type PropsOf<C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> =
-  JSX.LibraryManagedAttributes<C, React.ComponentPropsWithRef<C>>;
+export type PropsOf<
+  C extends keyof React.JSX.IntrinsicElements | React.JSXElementConstructor<any>,
+> = React.JSX.LibraryManagedAttributes<C, React.ComponentPropsWithRef<C>>;
 
 type AsProp<C extends React.ElementType> = {
   /**

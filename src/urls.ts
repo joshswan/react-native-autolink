@@ -1,3 +1,11 @@
+/*!
+ * React Native Autolink
+ *
+ * Copyright 2016-2026 Josh Swan
+ * Released under the MIT license
+ * https://github.com/joshswan/react-native-autolink/blob/main/LICENSE
+ */
+
 import { EmailMatch, HashtagMatch, MentionMatch, PhoneMatch } from 'autolinker/dist/es2015';
 
 export const getEmailUrl = (match: EmailMatch): string =>
