@@ -3,7 +3,6 @@ import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 
 // The variadic arguments of a regex replacer function, wrapped in an array.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ReplacerArgs = [string, ...any[]];
 
 export interface CustomMatcher {

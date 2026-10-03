@@ -166,7 +166,6 @@ function AutolinkComponent<C extends React.ElementType = typeof Text>({
           }
           onPress={() => onPress(match)}
           onLongPress={() => onLongPress(match)}
-          // eslint-disable-next-line react/jsx-props-no-spreading
           {...linkProps}
           key={index}
         >
@@ -235,7 +234,6 @@ function AutolinkComponent<C extends React.ElementType = typeof Text>({
       });
     });
   } catch (e) {
-    // eslint-disable-next-line no-console
     console.warn('RN Autolink error:', e);
     return null;
   }
@@ -265,7 +263,6 @@ function AutolinkComponent<C extends React.ElementType = typeof Text>({
     return renderText ? (
       renderText(part, index)
     ) : (
-      // eslint-disable-next-line react/jsx-props-no-spreading, react/no-array-index-key
       <Text {...textProps} key={index}>
         {part}
       </Text>

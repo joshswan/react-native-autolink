@@ -232,7 +232,11 @@ describe('<Autolink />', () => {
       const tree = create(<Autolink text="#awesome" hashtag="instagram" showAlert />);
       tree.root.findAllByType(Text)[1].props.onPress();
       expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith('Leaving App', 'Do you want to continue?', expect.any(Array));
+      expect(spy).toHaveBeenCalledWith(
+        'Leaving App',
+        'Do you want to continue?',
+        expect.any(Array),
+      );
     });
   });
 
