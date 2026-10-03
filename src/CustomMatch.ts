@@ -6,7 +6,7 @@
  * https://github.com/joshswan/react-native-autolink/blob/main/LICENSE
  */
 
-import { Match, MatchConfig } from 'autolinker/dist/es2015';
+import { Match, MatchConfig } from 'autolinker/dist/commonjs';
 import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 
