@@ -25,10 +25,10 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "lint": "tsc --noEmit && eslint .",
-    "prepare": "husky install",
-    "release": "release-it",
+    "prepack": "yarn build",
+    "prepare": "husky",
     "test": "jest"
   },
   "dependencies": {
@@ -36,12 +36,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7",
-    "@commitlint/cli": "^17.7.2",
-    "@commitlint/config-conventional": "^17.7.0",
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
     "@eslint/js": "9",
     "@react-native/babel-preset": "0.87",
     "@react-native/jest-preset": "0.87",
-    "@release-it/conventional-changelog": "^7.0.2",
     "@types/jest": "30",
     "@types/react": "19",
     "eslint": "9",
@@ -50,14 +49,13 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.13.0",
-    "husky": "^8.0.3",
+    "husky": "9",
     "jest": "30",
     "prettier": "3",
     "react": "19",
     "react-native": "0.87",
     "react-test-renderer": "19",
-    "release-it": "^16.2.1",
-    "rimraf": "^4.4.1",
+    "rimraf": "6",
     "typescript": "~6.0",
     "typescript-eslint": "^8.71.0"
   },
@@ -70,26 +68,5 @@
     "transformIgnorePatterns": [
       "node_modules/(?!(@?react-native.*|autolinker.*)/)"
     ]
-  },
-  "release-it": {
-    "git": {
-      "commitMessage": "chore: release ${version}",
-      "tagName": "v${version}"
-    },
-    "npm": {
-      "publish": true
-    },
-    "github": {
-      "release": true,
-      "releaseName": "${version}"
-    },
-    "hooks": {
-      "after:bump": "rimraf dist && yarn build"
-    },
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": "conventionalcommits"
-      }
-    }
   }
 }
