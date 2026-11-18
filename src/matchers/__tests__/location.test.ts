@@ -25,7 +25,15 @@ describe('Location matchers', () => {
 
     test('matches latitude/longitude pair in text', () => {
       expect(text.replace(LatLngMatcher.pattern, 'MATCH')).toBe('Location is MATCH.');
+      expect('At -33.86,151.21 now'.replace(LatLngMatcher.pattern, 'MATCH')).toBe('At MATCH now');
     });
+
+    test.each(['Price is $1,250 today', '1999, 2000 and 2001', 'lat 91.5, 10', '45.0, 181'])(
+      'does not match inside longer numbers or out-of-range values: %s',
+      (sample) => {
+        expect(sample.match(LatLngMatcher.pattern)).toBeNull();
+      },
+    );
 
     test('returns appropriate link url', () => {
       Platform.OS = 'android';
