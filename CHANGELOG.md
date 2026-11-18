@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.4](https://github.com/joshswan/react-native-autolink/compare/v4.2.3...v4.2.4) (2026-11-18)
+
+
+### Bug Fixes
+
+* prevent location and phone matchers from matching inside longer numbers ([#94](https://github.com/joshswan/react-native-autolink/issues/94)) ([ac9b1ba](https://github.com/joshswan/react-native-autolink/commit/ac9b1ba15704b17d1a92afc25ec5727a1f4222fd))
+
 ## [4.2.3](https://github.com/joshswan/react-native-autolink/compare/v4.2.2...v4.2.3) (2026-10-03)
 
 
