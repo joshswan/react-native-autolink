@@ -7,10 +7,16 @@
  */
 
 import type { CustomMatcher } from '../CustomMatch';
+import { bounded } from './bounded';
+
+// Phone numbers shouldn't be matched inside longer runs of digits (order numbers, IDs, etc.)
+const digitBoundaries = { before: '\\d', after: '\\d' };
 
 export const IntlPhoneMatcher: CustomMatcher = {
-  pattern:
+  pattern: bounded(
     /\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}/g,
+    digitBoundaries,
+  ),
   type: 'phone-intl',
   getLinkUrl: ([number]) => `tel:${number}`,
 };
@@ -31,7 +37,7 @@ export const PhoneMatchersByCountry = Object.entries(patternsByCountry).reduce(
   (matchers, [countryCode, pattern]) => ({
     ...matchers,
     [countryCode]: {
-      pattern,
+      pattern: bounded(pattern, digitBoundaries),
       type: `phone-${countryCode}`,
       getLinkUrl: ([number]) => `tel:${number.replace(/[^\d+]/g, '')}`,
     } as CustomMatcher,

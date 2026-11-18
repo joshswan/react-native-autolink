@@ -21,12 +21,29 @@ describe('Phone matchers', () => {
       expect(getText('+447487428082').replace(IntlPhoneMatcher.pattern, 'MATCH')).toBe(resultText);
     });
 
+    test('does not match part of a longer number', () => {
+      expect('ID +12345678901234567890'.match(IntlPhoneMatcher.pattern)).toBeNull();
+    });
+
     test('returns appropriate link url', () => {
       expect(IntlPhoneMatcher.getLinkUrl(['+14085550123'])).toBe('tel:+14085550123');
     });
   });
 
   describe('PhoneMatchersByCountry', () => {
+    test.each(Object.entries(PhoneMatchersByCountry))(
+      'does not match %s numbers inside longer numbers',
+      (_, matcher) => {
+        expect('Order #10123456789'.match(matcher.pattern)).toBeNull();
+      },
+    );
+
+    test('matches US numbers with punctuation', () => {
+      expect('Call (408) 555-0123.'.replace(PhoneMatchersByCountry.US.pattern, 'MATCH')).toBe(
+        'Call MATCH.',
+      );
+    });
+
     test('returns appropriate link url', () => {
       expect(PhoneMatchersByCountry.US.getLinkUrl(['+1 (408) 555-0123'])).toBe('tel:+14085550123');
     });
